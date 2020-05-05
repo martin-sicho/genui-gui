@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import DashboardLayout from './layouts/DashboardLayout';
 import './vibe/scss/styles.scss';
 import '../node_modules/react-grid-layout/css/styles.css'
@@ -48,11 +48,11 @@ const fetchUserInfo = (callback) => {
 
 export default function App() {
   const [user, setUser] = React.useState(null);
-  const loginPagePath = '/login';
-  const appPath = '/';
+  const appPath = process.env.PUBLIC_URL ? `${process.env.PUBLIC_URL}` : '/';
+  const loginPagePath = appPath + '/login/';
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={appPath}>
       <Switch>
         <Route
           exact
@@ -70,7 +70,7 @@ export default function App() {
               />
             )
           }/>
-        <Route path={appPath} render={
+        <Route path='/projects/' render={
           (props) => (
             <DashboardLayout
               {...props}
@@ -83,6 +83,9 @@ export default function App() {
             />
           )
         } />
+        <Route path={appPath}>
+          <Redirect to='/projects/'/>
+        </Route>
       </Switch>
     </BrowserRouter>
   );

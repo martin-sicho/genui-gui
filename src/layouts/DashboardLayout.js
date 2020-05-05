@@ -78,14 +78,14 @@ class DashboardLayout extends Component {
     nav.top.push(
       {
         name: "Compounds",
-        url: current_project.url + "compounds",
+        url: current_project.url + "compounds/",
         icon: 'Box',
       }
     );
     nav.top.push(
       {
         name: "QSAR Models",
-        url: current_project.url + "qsar",
+        url: current_project.url + "qsar/",
         icon: 'Activity',
       }
     );
@@ -96,7 +96,7 @@ class DashboardLayout extends Component {
         children: [
           {
             name: 'DrugEx',
-            url: current_project.url + "generators/drugex",
+            url: current_project.url + "generators/drugex/",
           }
         ],
       },
@@ -108,11 +108,11 @@ class DashboardLayout extends Component {
         children: [
           {
             name: 'Creator',
-            url: current_project.url + "maps/creator",
+            url: current_project.url + "maps/creator/",
           },
           {
             name: 'Explorer',
-            url: current_project.url + "maps/explorer",
+            url: current_project.url + "maps/explorer/",
           }
         ],
       }
@@ -158,7 +158,7 @@ class DashboardLayout extends Component {
     }
 
     if (!this.props.user) {
-      return <div/>
+      return <div/> // TODO: make this nicer (show some progress or information about trying to log in)
     }
 
     const { sidebarCollapsed } = this.state;

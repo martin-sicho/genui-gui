@@ -2,7 +2,7 @@ export default {
   top: [
     {
       name: 'Projects',
-      url: '/projects',
+      url: '/projects/',
       icon: 'Home',
       key: 'projects'
       // badge: {
