@@ -6,6 +6,8 @@ import '../node_modules/react-grid-layout/css/styles.css'
 import '../node_modules/react-resizable/css/styles.css'
 import LoginPage from './views/pages/login/LoginPage';
 
+const PUBLIC_URL = process.env.PUBLIC_URL;
+console.log(`App root set to: ${PUBLIC_URL}`);
 let BACKEND_URL = new URL('http://localhost:8000');
 if (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL) {
   BACKEND_URL = (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL);
@@ -48,15 +50,15 @@ const fetchUserInfo = (callback) => {
 
 export default function App() {
   const [user, setUser] = React.useState(null);
-  const appPath = process.env.PUBLIC_URL ? `${process.env.PUBLIC_URL}` : '/';
-  const loginPagePath = appPath + 'login/';
+  const appPath = PUBLIC_URL ? PUBLIC_URL : '';
+  const loginPath = '/login/';
 
   return (
     <BrowserRouter basename={appPath}>
       <Switch>
         <Route
           exact
-          path={loginPagePath}
+          path={loginPath}
           render={
             (props) => (
               <LoginPage
@@ -65,7 +67,7 @@ export default function App() {
                 fetchUserInfo={fetchUserInfo}
                 setUser={setUser}
                 user={user}
-                loginPagePath={loginPagePath}
+                loginPagePath={loginPath}
                 appPath={appPath}
               />
             )
@@ -78,12 +80,12 @@ export default function App() {
               user={user}
               setUser={setUser}
               fetchUserInfo={fetchUserInfo}
-              loginPagePath={loginPagePath}
+              loginPagePath={loginPath}
               appPath={appPath}
             />
           )
         } />
-        <Route path={appPath}>
+        <Route path="/">
           <Redirect to='/projects/'/>
         </Route>
       </Switch>
