@@ -12,7 +12,6 @@ function ActivitySummaryPlot(props) {
       <Col sm={8}>
         <ActivitySummaryPlotter
           {...props}
-          mols={props.selectedMols}
           onMolHover={setHoverMol}
         />
       </Col>
@@ -53,22 +52,28 @@ function ActivitySummaryPlot(props) {
 
 export default function ActivitySummary(props) {
 
-  const [selectedInOverview, setSelectedInOverview] = React.useState([]);
-  const [selectedInOverviewRev, setSelectedInOverviewRev] = React.useState(0);
+  const [moleculeSelectionInOverview, setMoleculeSelectionInOverview] = React.useState({
+      revision: 0,
+      mols: []
+  });
 
   return (
     <React.Fragment>
       <ActivitySummaryPlot
         {...props}
-        onMolsSelect={setSelectedInOverview}
-        setSelectedMolsOverviewRevision={setSelectedInOverviewRev}
-        selectedMolsOverviewRevision={selectedInOverview}
+        onMolsSelect={mols => setMoleculeSelectionInOverview(prevState => ({
+            revision: prevState.revision + 1,
+            mols: mols
+        }))}
+        onMolsDeselect={() => setMoleculeSelectionInOverview(prevState => ({
+            revision: prevState.revision + 1,
+            mols: []
+        }))}
       />
       <hr/>
       <SelectedListPage
         {...props}
-        selectedMols={selectedInOverview}
-        selectedMolsRevision={selectedInOverviewRev}
+        moleculeSelection={moleculeSelectionInOverview}
         emptyMessage="Select points in the plot above to see the list of compounds associated with those activities."
       />
     </React.Fragment>

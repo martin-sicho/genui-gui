@@ -106,6 +106,7 @@ class GroupedViolinPlot extends React.Component {
           style={{width: "100%", height: "100%"}}
           onHover={this.props.onHover}
           onSelected={this.props.onSelect}
+          onDeselect={this.props.onDeselect}
         />
       </div>
     )

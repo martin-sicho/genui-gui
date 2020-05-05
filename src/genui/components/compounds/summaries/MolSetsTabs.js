@@ -42,7 +42,6 @@ export default function MolSetsTabs(props) {
           extraInfoFields={extraInfoFields}
           extraActivityFields={extraActivityFields}
           molsetListUrl={molsetListUrl}
-          // points={data.map(item => item.point)}
         />
       )
     })

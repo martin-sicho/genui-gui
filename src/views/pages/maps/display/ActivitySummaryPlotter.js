@@ -65,12 +65,10 @@ class ActivitySummaryPlotter extends React.Component {
         onSelect={(eventData) => {
           if (eventData) {
             this.props.onMolsSelect(eventData.points.map(point => point.customdata));
-            if (this.props.setSelectedMolsOverviewRevision) {
-              this.props.setSelectedMolsOverviewRevision(this.props.selectedMolsOverviewRevision + 1);
-            }
           }
         }
         }
+        onDeselect={this.props.onMolsDeselect}
       />
     )
   }

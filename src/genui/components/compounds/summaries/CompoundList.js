@@ -107,16 +107,18 @@ export function CompoundListItem(props) {
   )
 }
 
-export function CompoundListPageItem(props) {
-  return <CompoundListItem {...props} mol={props.pageItem}/>
-}
-
 export default function CompoundList(props) {
   const mols = props.mols;
 
   if (props.paginate) {
     return (
-      <SimplePaginator {...props} items={mols} component={CompoundListPageItem}/>
+        <SimplePaginator items={mols} itemsPerPage={10}>
+          {
+            currentPageItems => currentPageItems.map(item => (
+                <CompoundListItem {...props} key={item.id} mol={item}/>
+            ))
+          }
+        </SimplePaginator>
     )
   } else {
       return (

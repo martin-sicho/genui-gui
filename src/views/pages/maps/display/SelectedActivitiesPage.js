@@ -9,7 +9,6 @@ class SelectedActivitiesPage extends React.Component {
     super(props);
 
     this.state = {
-      currentSelectionRev: props.selectedMolsRevision,
       aggregator: null
     }
   }
@@ -19,20 +18,21 @@ class SelectedActivitiesPage extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.selectedMols.length > 0 && (this.props.selectedMolsRevision !== this.state.currentSelectionRev)) {
-      this.setState({
-        currentSelectionRev: this.props.selectedMolsRevision,
-        aggregator: this.getAggregator(this.props.selectedMols),
-      })
+    if (prevProps.moleculeSelection.revision !== this.props.moleculeSelection.revision) {
+      if (this.props.moleculeSelection.mols.length === 0) {
+        this.setState({aggregator: null})
+      } else {
+        this.setState({
+          // currentSelectionRev: this.props.selectedMolsRevision,
+          aggregator: this.getAggregator(this.props.moleculeSelection.mols),
+        })
+      }
     }
   }
 
   render() {
     return (
       <React.Fragment>
-        <h1>Selected Compounds: Activities Summary</h1>
-        <hr/>
-
         <Row>
           <Col sm={12}>
             {
@@ -49,11 +49,12 @@ class SelectedActivitiesPage extends React.Component {
                         const tabs = groupedActivities.map(group => ({
                           title: group[0].type.value,
                           renderedComponent: (props) => (
-                            <ActivitySummary
-                              {...props}
-                              type={group[0].type}
-                              activities={group}
-                            />
+                              <ActivitySummary
+                                  {...props}
+                                  mols={this.props.moleculeSelection.mols}
+                                  type={group[0].type}
+                                  activities={group}
+                              />
                           )
                         }));
 
@@ -69,7 +70,7 @@ class SelectedActivitiesPage extends React.Component {
                     }
                   }
                 </this.state.aggregator>
-              ) : <p>Select compounds in the map to see details.</p>
+              ) : <p>No compounds selected.</p>
             }
           </Col>
         </Row>

@@ -49,7 +49,7 @@ const fetchUserInfo = (callback) => {
 export default function App() {
   const [user, setUser] = React.useState(null);
   const appPath = process.env.PUBLIC_URL ? `${process.env.PUBLIC_URL}` : '/';
-  const loginPagePath = appPath + '/login/';
+  const loginPagePath = appPath + 'login/';
 
   return (
     <BrowserRouter basename={appPath}>

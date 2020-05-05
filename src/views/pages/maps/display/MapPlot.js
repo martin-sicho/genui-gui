@@ -142,22 +142,13 @@ class MapPlot extends React.Component {
     if (eventData && this.props.onMolsSelect) {
       this.props.onMolsSelect(
         eventData.points.map(point => point.customdata.molecule),
-        eventData.points,
       );
-
-      if (this.props.setSelectedMolsInMapRevision) {
-        this.props.setSelectedMolsInMapRevision(this.props.selectedMolsRevision + 1);
-      }
-
     }
   };
 
   handleDeselect = () => {
-    if (this.props.onDeselect) {
-      this.props.onDeselect();
-      if (this.props.setSelectedMolsInMapRevision) {
-        this.props.setSelectedMolsInMapRevision(this.props.selectedMolsRevision + 1);
-      }
+    if (this.props.onMolsDeselect) {
+      this.props.onMolsDeselect();
     }
   };
 

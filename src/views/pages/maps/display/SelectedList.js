@@ -3,8 +3,6 @@ import React from 'react';
 import { AssayName, ChEMBLID, Relation, TargetName } from '../../compounds/chembl/ActivityFields';
 
 export default function SelectedList(props) {
-  const selectedMols = props.selectedMols;
-
   const molsetClassToExtraActivityFields = {
     "ChEMBLCompounds" : [
       {
@@ -50,7 +48,7 @@ export default function SelectedList(props) {
   return (
     <MolsToMolSetGroups
       {...props}
-      mols={selectedMols}
+      mols={props.moleculeSelection.mols}
     >
       {
         (groups) => {
@@ -58,13 +56,10 @@ export default function SelectedList(props) {
             <MolSetsTabs
               {...props}
               groupedMols={groups}
-              mols={selectedMols}
+              mols={props.moleculeSelection.mols}
               molsetClassToExtraActivityFields={molsetClassToExtraActivityFields}
               molsetClassToExtraInfoFields={molsetClassToExtraInfoFields}
               molsetClassToURLs={molsetClassToURLs}
-              updateCondition={(prevProps, currentProps) => {
-                return prevProps.selectedMolsRevision !== currentProps.selectedMolsRevision;
-              }}
             />
           );
         }
