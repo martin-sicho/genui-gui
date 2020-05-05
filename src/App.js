@@ -25,7 +25,7 @@ const URL_ROOTS = {
   generatorsRoot : generatorsURL,
   drugexRoot : new URL('drugex/', generatorsURL),
   mapsRoot: new URL('maps/', REMOTE_API_ROOT),
-  celeryProgress : new URL('celery-progress/', REMOTE_API_ROOT),
+  celeryProgress : new URL('tasks/progress/', REMOTE_API_ROOT),
 };
 
 const fetchUserInfo = (callback) => {
