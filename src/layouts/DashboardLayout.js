@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Header, SidebarNav, Footer, PageContent, Avatar, PageAlert, Page} from '../vibe';
 import {RoutedPage} from '../genui/'
@@ -185,7 +185,15 @@ class DashboardLayout extends Component {
                 routes={routes}
                 {...this.props}
               >
-                <HeaderNav {...this.props} injected={this.injectContentToHeader} />
+                <HeaderNav
+                    {...this.props}
+                    injected={this.injectContentToHeader}
+                    showProfile={() => {
+                        this.setState({failedToLogIn: true})
+                    }}
+                    onLogout={() => {
+                        this.setState({failedToLogIn: true})
+                    }}/>
               </Header>
               <PageContent>
                 <Switch>
@@ -251,7 +259,6 @@ class DashboardLayout extends Component {
 }
 
 function HeaderNav(props) {
-   const history = useHistory();
    const Injected = props.injected ? props.injected : React.Fragment;
    return (
     <React.Fragment>
@@ -272,7 +279,7 @@ function HeaderNav(props) {
           {/*<DropdownItem>Settings</DropdownItem>*/}
           <DropdownItem onClick={(e) => {
             e.preventDefault();
-            history.push(props.loginPagePath);
+            props.showProfile()
           }}>Profile</DropdownItem>
           <DropdownItem divider />
           <LogInManager
@@ -283,7 +290,7 @@ function HeaderNav(props) {
                 <DropdownItem onClick={(e) => {
                   e.preventDefault();
                   sendLogOutRequest();
-                  history.push(props.loginPagePath)
+                  props.onLogout()
                 }}>Log Out</DropdownItem>
               )
             }
