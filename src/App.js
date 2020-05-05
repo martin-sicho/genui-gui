@@ -9,7 +9,6 @@ import LoginPage from './views/pages/login/LoginPage';
 let BACKEND_URL = new URL('http://localhost:8000');
 if (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL) {
   BACKEND_URL = (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL);
-  console.log('Using REACT_APP_GENUI_BACKEND_ROOT_URL for backend url...');
 }
 console.log(`Set backend URL to: ${BACKEND_URL}`);
 const REMOTE_API_ROOT = new URL('api/', BACKEND_URL);
