@@ -3,6 +3,7 @@ import { TabWidget } from '../../../genui';
 import React from 'react';
 import RegisterTab from './RegisterTab';
 import LoginTab from './LoginTab';
+import "./styles.css"
 
 export default function LoginPage(props) {
 
@@ -18,7 +19,7 @@ export default function LoginPage(props) {
   ];
 
   return (
-    <Container>
+    <Container className="login-container">
       <h1>Sign In</h1>
 
       <hr/>
