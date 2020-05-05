@@ -30,7 +30,6 @@ import {MoleculeMetadata, DataPair} from './components/compounds/details/Molecul
 import ComponentWithPagedResources from './components/ComponentWithPagedResources';
 import MoleculeActivityProvider from './components/compounds/details/MoleculeActivityProvider';
 import {ActivitiesByTypeTabView, ActivitySetTabView, ActivitiesTable, ActivitySetFlatView, ActivitiesByTypeFlatView} from './components/compounds/details/ActivityViews'
-import TabWidgetSmart from './components/TabWidgetSmart';
 import MolsToMolSetGroups from './components/compounds/summaries/MolsToMolSetGroups';
 import MolSetsTabs from './components/compounds/summaries/MolSetsTabs';
 import CompoundList from './components/compounds/summaries/CompoundList';
@@ -51,7 +50,6 @@ export {
   RoutedPage,
   ResponsiveGrid,
   TabWidget,
-  TabWidgetSmart,
   TaskAwareComponent,
   TaskBadgeGroup,
   TaskProgressBar,
