@@ -65,7 +65,6 @@ class MapSelect extends React.Component {
         >
           {
             (allLoaded, activitySets) => {
-              console.log(activitySets);
               return allLoaded ? (
                 <MapTabs
                   {...this.props}
