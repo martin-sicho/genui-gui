@@ -7,17 +7,16 @@ import '../node_modules/react-resizable/css/styles.css'
 import LoginPage from './views/pages/login/LoginPage';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
-console.log(`App root set to: ${PUBLIC_URL}`);
 let BACKEND_URL = new URL('http://localhost:8000');
 if (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL) {
   BACKEND_URL = (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL);
 }
-console.log(`Set backend URL to: ${BACKEND_URL}`);
 const REMOTE_API_ROOT = new URL('api/', BACKEND_URL);
-console.log(`Remote API root at: ${REMOTE_API_ROOT}`);
+console.log(`API root: ${REMOTE_API_ROOT}`);
 
 const generatorsURL = new URL('generators/', REMOTE_API_ROOT);
 const URL_ROOTS = {
+  root: REMOTE_API_ROOT,
   accountsRoot: new URL('accounts/', REMOTE_API_ROOT),
   projectList : new URL('projects/', REMOTE_API_ROOT),
   compoundsRoot: new URL('compounds/', REMOTE_API_ROOT),
