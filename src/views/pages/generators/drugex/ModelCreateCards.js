@@ -9,7 +9,7 @@ import {
   Label,
 } from 'reactstrap';
 import { Field } from 'formik';
-import { FileUpload, ComponentWithObjects, FieldErrorMessage, FormikModelUploadForm, ModelCardNew } from '../../../../genui';
+import { FileUpload, ComponentWithResources, FieldErrorMessage, FormikModelUploadForm, ModelCardNew } from '../../../../genui';
 import * as Yup from 'yup';
 
 function DrugExNetValidationFields(props) {
@@ -82,6 +82,7 @@ export class DrugExNetCreateCard extends React.Component {
       validSetSize: 512,
     };
     const extraParamInit = {
+      parent: this.props.models.length > 0 ? this.props.models[this.props.models.length - 1].id : undefined,
       molset: molsets[0].id,
     };
 
@@ -157,8 +158,8 @@ function DrugExAgentCreateCardRenderer(props) {
 
   const extraParamInit = {
     environment: props.environments[0].id,
-    exploitationNet: props.networks[0].id,
-    explorationNet: props.networks[1].id,
+    exploitationNet: props.networks[props.networks.length - 1].id,
+    explorationNet: props.networks[0].id,
   };
 
   const extraParamsSchema = {
@@ -182,22 +183,27 @@ function DrugExAgentCreateCardRenderer(props) {
 
 export function DrugExAgentCreateCard (props) {
   return (
-    <ComponentWithObjects
+    <ComponentWithResources
       {...props}
-      objectListURL={props.netsUrl}
-      emptyClassName={"DrugExNets"}
-      render={
-        (networks) => {
-          networks = networks["DrugExNets"];
-          return (
-            <DrugExAgentCreateCardRenderer
-              {...props}
-              networks={networks}
-            />
-          )
+      definition={{
+          networks: props.netsUrl
+      }}
+    >
+        {
+            (loaded, data) => {
+                if (loaded) {
+                    return (
+                        <DrugExAgentCreateCardRenderer
+                            {...props}
+                            {...data}
+                        />
+                    )
+                } else {
+                    return <div>Loading...</div>
+                }
+            }
         }
-      }
-    />
+    </ComponentWithResources>
   )
 }
 

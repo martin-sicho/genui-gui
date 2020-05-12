@@ -1,28 +1,9 @@
 import React from "react";
-import { ModelsPage, ComponentWithObjects } from '../../../../genui';
+import { ModelsPage } from '../../../../genui';
 import { DrugExAgentCreateCard, DrugExNetCreateCard, DrugExNetFromFileCard } from './ModelCreateCards';
 import { DrugExAgentCard, DrugExNetCard } from './ModelCards';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import { scrollTo } from '../../../../genui/utils';
-
-class DrugExModelList extends React.Component {
-
-  render() {
-    // const modelClass = this.props.modelClass;
-    // const selectedToAdd = this.props.algorithmChoices.find(element => element.name === modelClass);
-
-    return (
-      <React.Fragment>
-        <h1>{this.props.title}</h1>
-        <hr/>
-        <ModelsPage
-          {...this.props}
-          headerComponent={null}
-        />
-      </React.Fragment>
-    )
-  }
-}
 
 function CreateModelsNav(props) {
 
@@ -83,17 +64,60 @@ function CreateModelsNav(props) {
   )
 }
 
+class DrugExModelList extends React.Component {
+
+  render() {
+    return (
+        <React.Fragment>
+          <h1>{this.props.title}</h1>
+          <hr/>
+          <ModelsPage
+              {...this.props}
+              headerComponent={null}
+          />
+        </React.Fragment>
+    )
+  }
+}
+
+function DrugeExNetGrid(props) {
+  return (
+      <div className={props.modelClass} id={props.modelClass}>
+        <DrugExModelList
+            {...props}
+            cardSetup={{
+              h : {"md" : 12, "sm" : 12},
+              w : {"md" : 1, "sm" : 1},
+              minH : {"md" : 3, "sm" : 3},
+            }}
+        />
+      </div>
+  )
+}
+
+function DrugExAgentGrid(props) {
+  return (
+      <div className={props.modelClass} id={props.modelClass}>
+        <DrugExModelList
+            {...props}
+            cardSetup={{
+              h : {"md" : 13, "sm" : 13},
+              w : {"md" : 1, "sm" : 1},
+              minH : {"md" : 3, "sm" : 3},
+            }}
+        />
+      </div>
+  )
+}
+
 class DrugExPage extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.netsUrl = new URL('networks/', this.props.apiUrls.drugexRoot);
-    this.agentsUrl = new URL('agents/', this.props.apiUrls.drugexRoot);
-    this.qsarUrl = new URL(`models/`, this.props.apiUrls.qsarRoot);
     this.INIT_MAP = {
       DrugExNetwork : {
-        listURL : this.netsUrl,
+        listURL : new URL('networks/', this.props.apiUrls.drugexRoot),
         algorithm: this.props.algorithmChoices.find(algorithm => algorithm.name === "DrugExNetwork"),
         newModelComponent: null,
         newCardSetup: null,
@@ -114,7 +138,7 @@ class DrugExPage extends React.Component {
         },
       },
       DrugExAgent: {
-        listURL : this.agentsUrl,
+        listURL : new URL('agents/', this.props.apiUrls.drugexRoot),
         algorithm: this.props.algorithmChoices.find(algorithm => algorithm.name === "DrugExAgent"),
         newModelComponent: null,
         modelComponent: DrugExAgentCard,
@@ -161,64 +185,23 @@ class DrugExPage extends React.Component {
   }
 
   render() {
-    return (<div className="drugex-models-grids">
-        {
-          Object.keys(this.state.config).map(ModelClass => {
-            const data = this.state.config[ModelClass];
-
-            if (ModelClass === "DrugExAgent") {
-              const qsarModelDefaultClass = "QSARModel";
-              return (
-                <div key={ModelClass} className={ModelClass} id={ModelClass}>
-                  <ComponentWithObjects
-                    objectListURL={this.qsarUrl}
-                    emptyClassName={qsarModelDefaultClass}
-                    {...this.props}
-                    render={
-                      (QSARModels) => {
-                        return (<DrugExModelList
-                            {...this.props}
-                            {...data}
-                            netsUrl={this.netsUrl}
-                            agentsUrl={this.agentsUrl}
-                            qsarUrl={this.qsarUrl}
-                            modelClass={ModelClass}
-                            environments={QSARModels[qsarModelDefaultClass]}
-                            cardSetup={{
-                              h : {"md" : 13, "sm" : 13},
-                              w : {"md" : 1, "sm" : 1},
-                              minH : {"md" : 3, "sm" : 3},
-                            }}
-                          />
-                        )
-                      }
-                    }
-                  />
-                </div>
-              )
-            }
-
-            return (
-              <div key={ModelClass} className={ModelClass} id={ModelClass}>
-                <DrugExModelList
-                  {...this.props}
-                  {...data}
-                  netsUrl={this.netsUrl}
-                  agentsUrl={this.agentsUrl}
-                  qsarUrl={this.qsarUrl}
-                  modelClass={ModelClass}
-                  cardSetup={{
-                    h : {"md" : 12, "sm" : 12},
-                    w : {"md" : 1, "sm" : 1},
-                    minH : {"md" : 3, "sm" : 3},
-                  }}
-                />
-              </div>
-              )
-          })
-        }
-      </div>
-    )
+    const netClass = "DrugExNetwork";
+    const agentClass = "DrugExAgent";
+    return (
+        <div className="drugex-models-grids">
+          <DrugeExNetGrid
+              {...this.props}
+              modelClass={netClass}
+              {...this.state.config[netClass]}
+          />
+          <DrugExAgentGrid
+              {...this.props}
+              modelClass={agentClass}
+              {...this.state.config[agentClass]}
+              netsUrl={this.state.config[netClass].listURL + `?project_id=${this.props.currentProject.id}`}
+          />
+        </div>
+    );
   }
 }
 
