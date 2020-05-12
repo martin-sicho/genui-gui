@@ -1,9 +1,9 @@
 import React from "react";
-import { ModelsPage } from '../../../../genui';
-import { DrugExAgentCreateCard, DrugExNetCreateCard, DrugExNetFromFileCard } from './ModelCreateCards';
-import { DrugExAgentCard, DrugExNetCard } from './ModelCards';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import { scrollTo } from '../../../../genui/utils';
+import {DrugExAgentCreateCard, DrugExNetCreateCard, DrugExNetFromFileCard} from './ModelCreateCards';
+import {DrugExAgentCard, DrugExNetCard} from './ModelCards';
+import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
+import {scrollTo} from '../../../../genui/utils';
+import {DrugeExNetGrid, DrugExAgentGrid} from "./Grids";
 
 function CreateModelsNav(props) {
 
@@ -61,52 +61,6 @@ function CreateModelsNav(props) {
         </UncontrolledDropdown>
       </DropdownMenu>
     </UncontrolledDropdown>
-  )
-}
-
-class DrugExModelList extends React.Component {
-
-  render() {
-    return (
-        <React.Fragment>
-          <h1>{this.props.title}</h1>
-          <hr/>
-          <ModelsPage
-              {...this.props}
-              headerComponent={null}
-          />
-        </React.Fragment>
-    )
-  }
-}
-
-function DrugeExNetGrid(props) {
-  return (
-      <div className={props.modelClass} id={props.modelClass}>
-        <DrugExModelList
-            {...props}
-            cardSetup={{
-              h : {"md" : 12, "sm" : 12},
-              w : {"md" : 1, "sm" : 1},
-              minH : {"md" : 3, "sm" : 3},
-            }}
-        />
-      </div>
-  )
-}
-
-function DrugExAgentGrid(props) {
-  return (
-      <div className={props.modelClass} id={props.modelClass}>
-        <DrugExModelList
-            {...props}
-            cardSetup={{
-              h : {"md" : 13, "sm" : 13},
-              w : {"md" : 1, "sm" : 1},
-              minH : {"md" : 3, "sm" : 3},
-            }}
-        />
-      </div>
   )
 }
 
