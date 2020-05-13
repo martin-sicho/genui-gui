@@ -1,5 +1,5 @@
 import React from "react"
-import { ModelCard, ModelInfoTab, ModelPerformanceTab } from '../../../../genui';
+import { ModelCard, ModelInfoTab, ModelPerformance } from '../../../../genui';
 
 function DrugExPerformanceTab (props) {
   return <div>Performance here...</div>
@@ -43,7 +43,7 @@ export class DrugExNetCard extends React.Component {
       {
         title: "Performance"
         , renderedComponent : (props) =>
-          <ModelPerformanceTab
+          <ModelPerformance
             {...props}
             performanceData={[]} // TODO: fetch performance from server (do this in the tab itself using a url)
             component={DrugExPerformanceTab}
@@ -87,7 +87,7 @@ export class DrugExAgentCard extends React.Component {
       {
         title: "Performance"
         , renderedComponent : () =>
-          <ModelPerformanceTab
+          <ModelPerformance
             {...this.props}
             performanceData={[]} // TODO: fetch performance from server (do this in the tab itself using a url)
             component={DrugExPerformanceTab}

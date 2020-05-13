@@ -1,56 +1,56 @@
 import React from 'react';
 import { Table } from 'reactstrap';
-import { LiveObject, TableDataFromItems, TableHeaderFromItems } from '../../../../genui';
+import {TableDataFromItems, TableFromItems} from '../../../../genui';
 
-class QSARPerformance extends React.Component {
+class QSARPerformanceOverview extends React.Component {
 
-  parseCVData = (perfMatrix, nFolds) => {
-    const ret = [];
-    for (let i = 0; i < nFolds; i++) {
-      const retItem = {};
-      Object.keys(perfMatrix).forEach(
-        (key) => {
-          if (perfMatrix[key].length <= i) {
-            retItem[key] = 'unavailable';
-            retItem.fold = i;
-            return;
-          }
-          retItem[key] = perfMatrix[key][i].value;
-          retItem['fold'] = perfMatrix[key][i].extraArgs.fold;
-        },
-      );
-      ret.push(retItem);
-    }
-    ret.sort((a, b) => a.fold <= b.fold ? -1 : 1);
+  parseCVData = (perfMatrix) => {
+    const ret = {};
+    ret[''] = [
+      {
+        id: 'MIN',
+        value: 'MIN'
+      },
+      {
+        id: 'MAX',
+        value: 'MAX'
+      },
+      {
+        id: 'AVG',
+        value: 'AVG'
+      },
+      {
+        id: 'SD',
+        value: 'SD'
+      },
+    ];
+    Object.keys(perfMatrix).forEach(key => ret[key] = []);
     Object.keys(perfMatrix).forEach(key => {
-      const tmp = { fold: 'MIN' };
+      const tmp = { id: `MIN_${key}` };
       const arr = perfMatrix[key].map(x => x.value);
-      tmp[key] = Math.min(...arr);
-      ret.push(tmp);
+      tmp['value'] = Math.min(...arr).toPrecision(4);
+      ret[key].push(tmp);
     });
     Object.keys(perfMatrix).forEach(key => {
-      const tmp = { fold: 'MAX' };
+      const tmp = { id: `MAX_${key}` };
       const arr = perfMatrix[key].map(x => x.value);
-      tmp[key] = Math.max(...arr);
-      ret.push(tmp);
+      tmp['value'] = Math.max(...arr).toPrecision(4);
+      ret[key].push(tmp);
     });
     Object.keys(perfMatrix).forEach(key => {
-      const tmp = { fold: 'AVG' };
+      const tmp = { id: `AVG_${key}` };
       const arr = perfMatrix[key].map(x => x.value);
-      tmp[key] = arr.reduce((a, b) => a + b, 0) / arr.length;
-      if (Number.isNaN(tmp[key])) {
-        tmp[key] = NaN.toString();
-      }
-      ret.push(tmp);
+      tmp['value'] = (arr.reduce((a, b) => a + b, 0) / arr.length).toPrecision(4);
+      ret[key].push(tmp);
     });
     Object.keys(perfMatrix).forEach(key => {
-      const tmp = { fold: 'SD' };
+      const tmp = { id: `SD_${key}` };
       const arr = perfMatrix[key].map(x => x.value);
       const m = arr.reduce((a, b) => a + b, 0) / arr.length;
-      tmp[key] = Math.sqrt(arr.reduce((sq, n) => {
+      tmp['value'] = (Math.sqrt(arr.reduce((sq, n) => {
         return sq + Math.pow(n - m, 2);
-      }, 0) / (arr.length - 1));
-      ret.push(tmp);
+      }, 0) / (arr.length - 1))).toPrecision(4);
+      ret[key].push(tmp);
     });
     return ret;
   };
@@ -62,13 +62,13 @@ class QSARPerformance extends React.Component {
       return <p>No performance data for this model is available.</p>
     }
 
-    const performanceInfo = model.performance;
+    const performanceInfo = this.props.performance;
     const metrics = validationStratInfo.metrics;
-    const metricsNames = metrics.map((metric) => metric.name);
 
     let validSetPerf = this.props.getPerfMatrix(performanceInfo, 'ModelPerformance', metrics);
     validSetPerf = Object.keys(validSetPerf).map((x) => validSetPerf[x].length > 0 ? validSetPerf[x][0] : null);
     let cvPerf = this.props.getPerfMatrix(performanceInfo, 'ModelPerformanceCV', metrics);
+
     return (
       <React.Fragment>
         <h4>
@@ -76,15 +76,8 @@ class QSARPerformance extends React.Component {
         </h4>
 
         <h5>Cross-Validation</h5>
-        <Table size="sm" hover striped>
-          <TableHeaderFromItems
-            items={['Fold'].concat(metricsNames)}
-          />
-          <TableDataFromItems
-            items={this.parseCVData(cvPerf, validationStratInfo.cvFolds)}
-            dataProps={metricsNames}
-            rowHeaderProp="fold"
-          />
+        <Table size="sm" hover>
+          <TableFromItems items={this.parseCVData(cvPerf)}/>
         </Table>
 
         <h5>Independent Validation Set</h5>
@@ -101,26 +94,6 @@ class QSARPerformance extends React.Component {
         }
       </React.Fragment>
     );
-  }
-}
-
-function QSARPerformanceLive(props) {
-  return (
-    <LiveObject {...props} url={props.modelUrl}>
-      {
-        (model) => (
-          <QSARPerformance {...props} model={model}/>
-        )
-      }
-    </LiveObject>
-  )
-}
-
-export function QSARPerformanceOverview(props) {
-  if (props.tasksRunning) {
-    return <QSARPerformanceLive {...props}/>
-  } else {
-    return <QSARPerformance {...props}/>
   }
 }
 

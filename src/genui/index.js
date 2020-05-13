@@ -7,7 +7,7 @@ import TaskProgressBar from './components/tasks/TaskProgressBar';
 import ComponentWithObjects from './components/ComponentWithObjects';
 import FieldErrorMessage from './components/forms/FieldErrorMessage';
 import ProjectItemSubTitle from './components/ProjectItemCardSubtitle';
-import {TableHeaderFromItems, TableDataFromItems} from './components/tables/Tables';
+import {TableHeaderFromItems, TableDataFromItems, TableFromItems} from './components/tables/Tables';
 import DownloadFile from './components/DownloadFile';
 import LiveObject from './components/LiveObject';
 import ComponentWithResources from './components/ComponentWithResources';
@@ -16,7 +16,7 @@ import ModelsPage from './components/models/ModelsPage';
 import ModelCardNew from './components/models/ModelCardNew';
 import ModelCard from './components/models/ModelCard';
 import ModelInfoTab from './components/models/tabs/ModelInfo';
-import ModelPerformanceTab from './components/models/tabs/ModelPerf';
+import ModelPerformance from './components/models/tabs/ModelPerformance';
 import GenericMolSetCard from './components/compounds/GenericMolSetCard';
 import GenericMolSetGrid from './components/compounds/GenericMolSetGrid';
 import GenericNewMolSetCard from './components/compounds/GenericNewMolSetCard';
@@ -67,7 +67,7 @@ export {
   ModelCardNew,
   ModelCard,
   ModelInfoTab,
-  ModelPerformanceTab,
+  ModelPerformance,
   GenericMolSetCard,
   GenericMolSetGrid,
   GenericNewMolSetCard,
@@ -106,5 +106,6 @@ export {
   ActivitiesByTypeFlatView,
   ActivitySetStatsTable,
   MolsetActivitiesSummary,
-  scrollTo
+  scrollTo,
+  TableFromItems
 }

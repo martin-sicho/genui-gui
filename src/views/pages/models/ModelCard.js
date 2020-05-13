@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModelCard, ModelInfoTab, ModelPerformanceTab, ModelPreds } from '../../../genui';
+import { ModelCard, ModelInfoTab, ModelPerformance, ModelPreds } from '../../../genui';
 import QSARPerformanceOverview from './tabs/PerformanceOverview';
 
 class QSARModelCard extends React.Component {
@@ -79,7 +79,7 @@ class QSARModelCard extends React.Component {
       {
         title: "Performance"
         , renderedComponent : (props) =>
-          <ModelPerformanceTab
+          <ModelPerformance
             {...props}
             component={QSARPerformanceOverview}
           />

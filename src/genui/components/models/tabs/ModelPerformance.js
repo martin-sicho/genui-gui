@@ -1,5 +1,6 @@
 import React from "react";
 import { Col, Row} from 'reactstrap';
+import {ComponentWithPagedResources} from "../../../index";
 
 class ModelPerformance extends React.Component {
 
@@ -30,7 +31,27 @@ class ModelPerformance extends React.Component {
 
     return (<Row>
       <Col sm="12">
-        <SummaryComponent {...this.props} getPerfMatrix={this.getPerfMatrix} getPerfValuesForMetric={this.getPerfValuesForMetric}/>
+        <ComponentWithPagedResources
+          definition={{
+            performance: new URL('performance', this.props.modelUrl)
+          }}
+          updateInterval={2000}
+        >
+          {
+            (data, allLoaded, revision) => {
+              return (
+                  <SummaryComponent
+                  {...this.props}
+                  {...data}
+                  performanceDataComplete={allLoaded}
+                  performanceDataRevision={revision}
+                  getPerfMatrix={this.getPerfMatrix}
+                  getPerfValuesForMetric={this.getPerfValuesForMetric}
+              />
+              )
+            }
+          }
+        </ComponentWithPagedResources>
       </Col>
     </Row>)
   }
