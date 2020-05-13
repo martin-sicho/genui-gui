@@ -39,3 +39,36 @@ export function TableDataFromItems (props) {
     </tbody>
   )
 }
+
+export function TableFromItems(props) {
+  const items = props.items;
+  const header = Object.keys(items);
+
+  return (
+      <React.Fragment>
+        <thead>
+        <tr>
+          {header.map(item => (<th key={item}>{item}</th>))}
+        </tr>
+        </thead>
+        <tbody>
+        {items[header[0]].map((item, idx) => {
+          return (
+              <tr key={item.id}>
+                {
+                  header.map(headerKey => {
+                    const data = items[headerKey][idx];
+                    return (
+                        <td key={data.id}>
+                          {data.value ? data.value : ''}
+                        </td>
+                    )
+                  })
+                }
+              </tr>
+          )
+        })}
+        </tbody>
+      </React.Fragment>
+  )
+}
