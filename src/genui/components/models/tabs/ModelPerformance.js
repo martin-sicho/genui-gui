@@ -39,16 +39,20 @@ class ModelPerformance extends React.Component {
         >
           {
             (data, allLoaded, revision) => {
-              return (
-                  <SummaryComponent
-                  {...this.props}
-                  {...data}
-                  performanceDataComplete={allLoaded}
-                  performanceDataRevision={revision}
-                  getPerfMatrix={this.getPerfMatrix}
-                  getPerfValuesForMetric={this.getPerfValuesForMetric}
-              />
-              )
+              if (!SummaryComponent) {
+                return this.props.render(data.performance, allLoaded, revision, this.getPerfMatrix, this.getPerfValuesForMetric)
+              } else {
+                return (
+                    <SummaryComponent
+                        {...this.props}
+                        {...data}
+                        performanceDataComplete={allLoaded}
+                        performanceDataRevision={revision}
+                        getPerfMatrix={this.getPerfMatrix}
+                        getPerfValuesForMetric={this.getPerfValuesForMetric}
+                    />
+                )
+              }
             }
           }
         </ComponentWithPagedResources>
