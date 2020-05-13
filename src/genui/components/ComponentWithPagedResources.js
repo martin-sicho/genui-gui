@@ -8,6 +8,8 @@ class ComponentWithPagedResources extends React.Component {
   constructor(props) {
     super(props);
 
+    this.interval = this.props.updateInterval ? this.props.updateInterval: null;
+    this.intervalIDs = {};
     this.state = this.initState(0);
   }
 
@@ -18,6 +20,7 @@ class ComponentWithPagedResources extends React.Component {
       data[key] = {
         items : [],
         lastPage : null,
+        lastPageItems: [],
         nextPage : definition[key],
         finished : false,
       }
@@ -62,10 +65,11 @@ class ComponentWithPagedResources extends React.Component {
   // }
 
   componentWillUnmount() {
+    Object.keys(this.intervalIDs).forEach(ID => clearTimeout(this.intervalIDs[ID]));
     this.abort.abort();
   }
 
-  isFinished(state) {
+  allFinished(state) {
     let finished = true;
     Object.keys(state.data).forEach(key => {
       finished = finished && state.data[key].finished;
@@ -73,6 +77,40 @@ class ComponentWithPagedResources extends React.Component {
 
     return finished;
   }
+
+  checkForUpdates = (key) => {
+    this.intervalIDs[key] = setTimeout(() => this.checkForUpdates(key), this.interval);
+    if (this.state.data[key].finished) {
+      fetch(this.state.data[key].lastPage, {signal : this.abort.signal, credentials: "include"})
+          .then(response => response.json())
+          .then(data => {
+            // if (true) {
+            if (data.count > this.state.data[key].items) {
+              this.setState(prevState => {
+                if (!prevState.data[key].finished) {
+                  return;
+                }
+
+                prevState.data[key].items.splice(
+                    prevState.data[key].items.length - prevState.data[key].lastPageItems.length,
+                    prevState.data[key].lastPageItems.length
+                );
+                prevState.data[key].finished = false;
+                prevState.data[key].lastPageItems = [];
+                prevState.isUpdating = true;
+                prevState.revision++;
+
+                return prevState;
+              },() => {
+                clearTimeout(this.intervalIDs[key]);
+                this.intervalIDs[key] = null;
+                this.fetchData(key, this.state.data[key].lastPage);
+              })
+            }
+          })
+          .catch((e) => console.log(e))
+    }
+  };
 
   fetchData = (key, page) => {
     fetch(page, {signal : this.abort.signal, credentials: "include"})
@@ -84,6 +122,9 @@ class ComponentWithPagedResources extends React.Component {
           nextPage = new URL(data.next);
         } else {
           finished = true;
+          if (this.interval) {
+            this.checkForUpdates(key);
+          }
         }
 
         if (this.hasUnmounted) {
@@ -93,11 +134,13 @@ class ComponentWithPagedResources extends React.Component {
         this.setState(prevState => {
           prevState.data[key].items = prevState.data[key].items.concat(data.results);
           prevState.data[key].lastPage = page;
+          prevState.data[key].lastPageItems = data.results;
           prevState.data[key].nextPage = nextPage;
           prevState.data[key].finished = finished;
 
-          if (this.isFinished(prevState)) {
+          if (this.allFinished(prevState)) {
             prevState.isUpdating = false;
+            prevState.revision++;
           }
 
           return prevState;
