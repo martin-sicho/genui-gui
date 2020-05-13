@@ -75,7 +75,7 @@ class ComponentWithObjects extends React.Component {
       if (!prevState.objects.hasOwnProperty(className)) {
         prevState.objects[className] = []
       }
-      prevState.objects[className].push(data);
+      prevState.objects[className].unshift(data);
       return {
         objects : prevState.objects
       };
@@ -89,7 +89,7 @@ class ComponentWithObjects extends React.Component {
         if (overwrite) {
           old_objects[className] = objectList;
         } else {
-          old_objects[className] = old_objects[className].concat(objectList);
+          old_objects[className] = objectList.concat(old_objects[className]);
         }
       } else {
         old_objects[className] = objectList;
