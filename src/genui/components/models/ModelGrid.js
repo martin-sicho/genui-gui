@@ -60,7 +60,6 @@ class ModelGrid extends React.Component {
                           definition={{
                             model : new URL(`${item.data.id}/`, this.props.listURL),
                           }}
-                          {...taskInfo}
                         >
                           {
                             (loaded, resources) => loaded ? (
