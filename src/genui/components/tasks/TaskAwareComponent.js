@@ -55,6 +55,18 @@ class TaskAwareComponent extends React.Component {
     this.fetchTasks();
   }
 
+  tasksChanged(newTasks) {
+    return !(
+        (this.state.tasks.completed.length === newTasks.completed.length)
+        && (this.state.tasks.running.length === newTasks.running.length)
+        && (this.state.tasks.errors.length === newTasks.errors.length)
+    )
+  }
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return this.tasksChanged(nextState.tasks);
+  }
+
   fetchTasks = () => {
     fetch(this.props.tasksURL, {signal : this.abort.signal, credentials: "include",})
       .then(response => this.props.handleResponseErrors(response, 'Failed to fetch task info from backend.', false))
@@ -80,12 +92,10 @@ class TaskAwareComponent extends React.Component {
       });
     } else {
       this.setState((prevState) => {
-        if (!prevState.tasksUpToDate) {
-          return {
-            tasksRunning : false,
-            tasksUpToDate : true,
-            tasks : groupedTasks
-          }
+        return {
+          tasksRunning : false,
+          tasksUpToDate : true,
+          tasks : groupedTasks
         }
       });
     }
