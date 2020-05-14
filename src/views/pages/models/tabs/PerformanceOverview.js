@@ -83,10 +83,11 @@ class QSARPerformanceOverview extends React.Component {
         <h5>Independent Validation Set</h5>
         {
           validSetPerf[0] !== null ? (
-            <Table size="sm">
+            <Table size="sm" hover>
               <TableDataFromItems
                 items={validSetPerf}
                 dataProps={['value']}
+                conversion={(item) => typeof item === 'number' ? item.toPrecision(4) : item.toString()}
                 rowHeaderProp="metric.name"
               />
             </Table>
