@@ -23,7 +23,7 @@ export function DrugeExNetGrid(props) {
             <DrugExModelList
                 {...props}
                 cardSetup={{
-                    h: {"md": 12, "sm": 12},
+                    h: {"md": 13, "sm": 13},
                     w: {"md": 1, "sm": 1},
                     minH: {"md": 3, "sm": 3},
                 }}
