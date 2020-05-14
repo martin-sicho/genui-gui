@@ -71,16 +71,12 @@ class QSARPerformanceOverview extends React.Component {
 
     return (
       <React.Fragment>
-        <h4>
-          Training Summary
-        </h4>
-
-        <h5>Cross-Validation</h5>
+        <h4>Cross-Validation</h4>
         <Table size="sm" hover>
           <TableFromItems items={this.parseCVData(cvPerf)}/>
         </Table>
 
-        <h5>Independent Validation Set</h5>
+        <h4>Independent Validation Set</h4>
         {
           validSetPerf[0] !== null ? (
             <Table size="sm" hover>
