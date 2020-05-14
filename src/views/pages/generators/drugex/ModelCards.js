@@ -10,7 +10,7 @@ function DrugExAgentPerformanceTab (props) {
 function DrExLossPlot(props) {
   const losses = groupBy(props.losses, 'extraArgs.isOnValidationSet');
   if (losses.length === 0) {
-    return <div>No loss data available.</div>
+    return <div>No data available.</div>
   }
   const datasets = losses.map(lossGroup => {
     if (lossGroup[0].extraArgs.isOnValidationSet) {
@@ -68,8 +68,53 @@ function DrExLossPlot(props) {
 }
 
 function DrExSMILESErrorPlot(props) {
-  // TODO: finish this
-  return null;
+  if (props.errors.length === 0) {
+    return <div>No data available.</div>
+  }
+
+  const datasets = [
+    {
+      label: "SMILES Error Rate",
+      fill: false,
+      data: props.errors.map(err => err.value),
+      backgroundColor: '#36a2eb',
+      borderColor: '#36a2eb'
+    }
+  ];
+  const data = {
+    labels: props.errors.map(err => err.extraArgs.step),
+    datasets: datasets
+  };
+  return (
+      <div className="drugex-net-smierror-chart">
+        <h4>DrugEx SMILES Error Rate</h4>
+        <Line
+            data={data}
+            options={{
+              scales: {
+                xAxes: [{
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Step'
+                  }
+                }],
+                yAxes: [
+                  {
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Error Value'
+                    }
+                  }
+                ]
+              },
+              title: {
+                display: true,
+                text: 'Error Rate'
+              }}
+            }
+        />
+      </div>
+  );
 }
 
 function DrugExNetworkPerformanceTab(props) {
