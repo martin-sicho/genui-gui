@@ -2,6 +2,8 @@ import key from 'weak-key';
 import React from 'react';
 import { resolve } from '../../utils';
 
+// FIXME: this should be only one component that merges all of the functionality below to one
+
 export function TableHeaderFromItems (props) {
   const items = props.items;
 
