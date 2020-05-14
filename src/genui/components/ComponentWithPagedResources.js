@@ -85,7 +85,7 @@ class ComponentWithPagedResources extends React.Component {
           .then(response => response.json())
           .then(data => {
             // if (true) {
-            if (data.count > this.state.data[key].items) {
+            if (data.count > this.state.data[key].items.length) {
               this.setState(prevState => {
                 if (!prevState.data[key].finished) {
                   return;
@@ -161,6 +161,7 @@ class ComponentWithPagedResources extends React.Component {
     Object.keys(data).forEach(key => {
       ret[key] = data[key].items;
     });
+    // console.log(this.props.definition.performance.toString(), ret, !this.state.isUpdating, this.state.revision);
     return this.props.children(ret, !this.state.isUpdating, this.state.revision);
   }
 }
