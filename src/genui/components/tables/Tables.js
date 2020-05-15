@@ -25,7 +25,7 @@ export function TableDataFromItems (props) {
     <tbody>
     {items.map(item => (
       <tr key={key(item)}>
-        <th scope="row">{resolve(rowHeaderProp, item)}</th>
+        <th scope="row">{props.parseRowHeader ? props.parseRowHeader(resolve(rowHeaderProp, item)) : resolve(rowHeaderProp, item)}</th>
         {
           dataProps.map(dprop => {
             const resolved = resolve(dprop, item);
@@ -50,7 +50,7 @@ export function TableFromItems(props) {
       <React.Fragment>
         <thead>
         <tr>
-          {header.map(item => (<th key={item}>{item}</th>))}
+          {header.map(item => (<th key={item}>{props.parseHeaderItem ? props.parseHeaderItem(item) : item}</th>))}
         </tr>
         </thead>
         <tbody>
