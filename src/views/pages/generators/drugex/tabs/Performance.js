@@ -1,9 +1,16 @@
 import React from "react";
-import {DrExLossPlot, DrExSMILESErrorPlot} from "./Plots";
+import {DrExAgentScoresPlot, DrExAgentSMILESErrorPlot, DrExLossPlot, DrExSMILESErrorPlot} from "./Plots";
 
 export function DrugExAgentPerformanceTab(props) {
-    // TODO: finish this
-    return <div>Performance here...</div>
+    const errors = props.getPerfValuesForMetric(props.performance, "ModelPerformanceDrugExAgent", props.metrics.find(metric => metric.name === 'SMILES_ER'));
+    const errors_uq = props.getPerfValuesForMetric(props.performance, "ModelPerformanceDrugExAgent", props.metrics.find(metric => metric.name === 'SMILES_UQR'));
+    const scores = props.getPerfValuesForMetric(props.performance, "ModelPerformanceDrugExAgent", props.metrics.find(metric => metric.name === 'DrExActivity'));
+    return (
+        <div className="drugex-agent-performance-plots">
+            <DrExAgentSMILESErrorPlot errors={errors} errorsUnique={errors_uq}/>
+            <DrExAgentScoresPlot scores={scores}/>
+        </div>
+    )
 }
 
 export function DrugExNetworkPerformanceTab(props) {
@@ -12,7 +19,7 @@ export function DrugExNetworkPerformanceTab(props) {
     const errors = props.getPerfValuesForMetric(props.performance, "ModelPerformanceDrugEx", props.metrics.find(metric => metric.name === 'SMILES_ER'));
 
     return (
-        <div className="drugex-performance-plots">
+        <div className="drugex-net-performance-plots">
             <DrExLossPlot losses={losses}/>
             <DrExSMILESErrorPlot errors={errors}/>
         </div>

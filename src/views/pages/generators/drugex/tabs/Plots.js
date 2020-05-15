@@ -32,7 +32,7 @@ export function DrExLossPlot(props) {
     };
     return (
         <div className="drugex-net-loss-chart">
-            <h4>DrugEx Loss</h4>
+            <h4>Loss Function</h4>
             <Line
                 data={data}
                 options={{
@@ -54,7 +54,7 @@ export function DrExLossPlot(props) {
                     },
                     title: {
                         display: true,
-                        text: 'DrugEx Loss'
+                        text: 'DrugEx Network Loss'
                     }
                 }
                 }
@@ -83,7 +83,7 @@ export function DrExSMILESErrorPlot(props) {
     };
     return (
         <div className="drugex-net-smierror-chart">
-            <h4>DrugEx SMILES Error Rate</h4>
+            <h4>SMILES Error Rate</h4>
             <Line
                 data={data}
                 options={{
@@ -105,7 +105,116 @@ export function DrExSMILESErrorPlot(props) {
                     },
                     title: {
                         display: true,
-                        text: 'Error Rate'
+                        text: 'SMILES Error Rate (DrugEx Network)'
+                    }
+                }
+                }
+            />
+        </div>
+    );
+}
+
+export function DrExAgentSMILESErrorPlot(props) {
+    if (props.errors.length === 0) {
+        return <div>No data available.</div>
+    }
+
+    const datasets = [
+        {
+            label: "SMILES Error Rate",
+            fill: false,
+            data: props.errors.map(err => err.value),
+            backgroundColor: '#36a2eb',
+            borderColor: '#36a2eb'
+        },
+        {
+            label: "SMILES Error Rate (Unique)",
+            fill: false,
+            data: props.errorsUnique.map(err => 1 - err.value),
+            backgroundColor: '#ff6384',
+            borderColor: '#ff6384'
+        }
+    ];
+    const data = {
+        labels: props.errors.map(err => err.extraArgs.step),
+        datasets: datasets
+    };
+    return (
+        <div className="drugex-agent-smierror-chart">
+            <h4>SMILES Error Rate</h4>
+            <Line
+                data={data}
+                options={{
+                    scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Step'
+                            }
+                        }],
+                        yAxes: [
+                            {
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Error Value'
+                                }
+                            }
+                        ]
+                    },
+                    title: {
+                        display: true,
+                        text: 'SMILES Error Rate (DrugEx Agent)'
+                    }
+                }
+                }
+            />
+        </div>
+    );
+}
+
+export function DrExAgentScoresPlot(props) {
+    if (props.scores.length === 0) {
+        return <div>No data available.</div>
+    }
+
+    const datasets = [
+        {
+            label: "Model Scores",
+            fill: false,
+            data: props.scores.map(score => score.value),
+            backgroundColor: '#36a2eb',
+            borderColor: '#36a2eb'
+        }
+    ];
+    const data = {
+        labels: props.scores.map(score => score.extraArgs.step),
+        datasets: datasets
+    };
+    return (
+        <div className="drugex-agent-scores-chart">
+            <h4>Environment Model Scores</h4>
+            <Line
+                data={data}
+                options={{
+                    scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Step'
+                            }
+                        }],
+                        yAxes: [
+                            {
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Score Value'
+                                }
+                            }
+                        ]
+                    },
+                    title: {
+                        display: true,
+                        text: 'DrugEx Agent Environment Model Scores'
                     }
                 }
                 }
