@@ -92,7 +92,10 @@ function CVOverview(props) {
 
                 <h5>Metrics Summary</h5>
                 <Table size="sm" hover>
-                  <TableFromItems items={parseCVData(cvPerf)}/>
+                  <TableFromItems
+                      items={parseCVData(cvPerf)}
+                      parseHeaderItem={item => item === "ROC" ? "ROC (AUC)" : item}
+                  />
                 </Table>
               </React.Fragment>
           ) : <div>No cross-validation data available.</div>
@@ -105,6 +108,11 @@ function IndpendentTestSetOverview(props) {
   const metrics = props.model.validationStrategy.metrics;
   let validSetPerf = props.getPerfMatrix(props.performance, 'ModelPerformance', metrics);
   validSetPerf = Object.keys(validSetPerf).map((x) => validSetPerf[x].length > 0 ? validSetPerf[x][0] : null);
+
+  if (validSetPerf.length === 0 || validSetPerf[0] === null) {
+    return <div>No data.</div>
+  }
+
   const roc_curve_data = props.getPerfValuesForMetric(props.performance, "ROCCurvePoint", metrics.find(metric => metric.name === "ROC"));
   const auc = validSetPerf.find(item => item ? item.metric.name === "ROC" : false);
   const roc_curve = [];
@@ -141,6 +149,7 @@ function IndpendentTestSetOverview(props) {
                       dataProps={['value']}
                       conversion={(item) => typeof item === 'number' ? item.toPrecision(4) : item.toString()}
                       rowHeaderProp="metric.name"
+                      parseRowHeader={header => header === "ROC" ? "ROC (AUC)" : header}
                   />
                 </Table>
               </React.Fragment>
