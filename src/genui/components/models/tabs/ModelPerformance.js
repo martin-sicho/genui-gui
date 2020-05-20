@@ -36,6 +36,9 @@ class ModelPerformance extends React.Component {
             performance: new URL('performance', this.props.modelUrl)
           }}
           updateInterval={2000}
+          updateCondition={() => {
+            return this.props.tasks.running.length > 0;
+          }}
         >
           {
             (data, allLoaded, revision) => {

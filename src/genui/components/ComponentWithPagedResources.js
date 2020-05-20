@@ -80,6 +80,11 @@ class ComponentWithPagedResources extends React.Component {
 
   checkForUpdates = (key) => {
     this.intervalIDs[key] = setTimeout(() => this.checkForUpdates(key), this.interval);
+
+    if (this.props.updateCondition && !this.props.updateCondition(this.state)) {
+      return
+    }
+
     if (this.state.data[key].finished) {
       fetch(this.state.data[key].lastPage, {signal : this.abort.signal, credentials: "include"})
           .then(response => response.json())
