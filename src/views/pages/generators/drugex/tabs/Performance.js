@@ -20,8 +20,23 @@ export function DrugExNetworkPerformanceTab(props) {
 
     return (
         <div className="drugex-net-performance-plots">
-            <DrExLossPlot losses={losses}/>
-            <DrExSMILESErrorPlot errors={errors}/>
+            <div className="drugex-net-loss-chart">
+                <h4>Loss Function</h4>
+                {
+                    losses.length > 0 ? (
+                        <DrExLossPlot losses={losses}/>
+                    ) : <div>No data.</div>
+                }
+            </div>
+
+            <div className="drugex-net-smierror-chart">
+                <h4>SMILES Error Rate</h4>
+                {
+                    errors.length > 0 ? (
+                        <DrExSMILESErrorPlot errors={errors}/>
+                    ) : <div>No data.</div>
+                }
+            </div>
         </div>
     )
 }

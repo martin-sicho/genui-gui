@@ -31,35 +31,32 @@ export function DrExLossPlot(props) {
         datasets: datasets
     };
     return (
-        <div className="drugex-net-loss-chart">
-            <h4>Loss Function</h4>
-            <Line
-                data={data}
-                options={{
-                    scales: {
-                        xAxes: [{
+        <Line
+            data={data}
+            options={{
+                scales: {
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Step'
+                        }
+                    }],
+                    yAxes: [
+                        {
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Step'
+                                labelString: 'Loss Value'
                             }
-                        }],
-                        yAxes: [
-                            {
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Loss Value'
-                                }
-                            }
-                        ]
-                    },
-                    title: {
-                        display: true,
-                        text: 'DrugEx Network Loss'
-                    }
+                        }
+                    ]
+                },
+                title: {
+                    display: true,
+                    text: 'DrugEx Network Loss'
                 }
-                }
-            />
-        </div>
+            }
+            }
+        />
     );
 }
 
@@ -82,35 +79,32 @@ export function DrExSMILESErrorPlot(props) {
         datasets: datasets
     };
     return (
-        <div className="drugex-net-smierror-chart">
-            <h4>SMILES Error Rate</h4>
-            <Line
-                data={data}
-                options={{
-                    scales: {
-                        xAxes: [{
+        <Line
+            data={data}
+            options={{
+                scales: {
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Step'
+                        }
+                    }],
+                    yAxes: [
+                        {
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Step'
+                                labelString: 'Error Value'
                             }
-                        }],
-                        yAxes: [
-                            {
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Error Value'
-                                }
-                            }
-                        ]
-                    },
-                    title: {
-                        display: true,
-                        text: 'SMILES Error Rate (DrugEx Network)'
-                    }
+                        }
+                    ]
+                },
+                title: {
+                    display: true,
+                    text: 'SMILES Error Rate (DrugEx Network)'
                 }
-                }
-            />
-        </div>
+            }
+            }
+        />
     );
 }
 
