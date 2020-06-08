@@ -1,10 +1,9 @@
 import { Col, Row } from 'reactstrap';
-import { LiveObject, MolSetTasks } from '../../../../../genui';
+import {ComponentWithResources, MolSetTasks} from '../../../../../genui';
 import React from 'react';
 
 function MolSetInfo(props) {
   const molset = props.molset;
-  const molecules = props.molecules;
 
   return (
     <React.Fragment>
@@ -12,42 +11,42 @@ function MolSetInfo(props) {
       <p>{molset.description}</p>
 
       <h4>Compounds</h4>
-      <p>Unique in Total: {molecules.count}</p>
+      <p>Unique in Total: {props.moleculesCount}</p>
     </React.Fragment>
   )
 }
 
-function LiveMolSetInfo(props) {
-
-  return (
-    <LiveObject
-      {...props}
-      url={props.moleculesURL}
-    >
-      {
-        molecules => {
-          return <MolSetInfo {...props} molecules={molecules}/>
-        }
-      }
-    </LiveObject>
-  )
-}
-
 function GeneratedInfo(props) {
-
-  return (
-    <Row>
-      <Col sm="12">
-        <LiveMolSetInfo
-          {...props}
-        />
-        <MolSetTasks
-          {...props}
-          progressURL={props.apiUrls.celeryProgress}
-        />
-      </Col>
-    </Row>
-  )
+    console.log(props.tasksRunning);
+    return (
+        <Row>
+            <Col sm="12">
+                <ComponentWithResources
+                    definition={{
+                        molecules: props.moleculesURL
+                    }}
+                    updateCondition={(prevProps, currentProps) => prevProps.tasksRunning !== currentProps.tasksRunning}
+                    updateInterval={5000}
+                    fetchCondition={() => props.tasksRunning}
+                >
+                    {
+                        (allLoaded, data) => {
+                            return allLoaded ? (
+                                <MolSetInfo
+                                    molset={props.molset}
+                                    moleculesCount={data.molecules.count}
+                                />
+                            ) : null
+                        }
+                    }
+                </ComponentWithResources>
+                <MolSetTasks
+                    {...props}
+                    progressURL={props.apiUrls.celeryProgress}
+                />
+            </Col>
+        </Row>
+    )
 }
 
 export default GeneratedInfo;
