@@ -65,15 +65,17 @@ function FileList(props) {
 
 function ModelFiles(props) {
   return (
-    <ComponentWithResources definition={{
-      files : new URL(`${props.model.id}/files/`, props.listURL)
-    }}>
-      {
-        (filesLoaded, files) => {
-          return filesLoaded ? <FileList files={files.files}/> : null
+      <ComponentWithResources
+          definition={{files : new URL(`${props.model.id}/files/`, props.listURL)}}
+          updateInterval={5000}
+          fetchCondition={() => props.tasksRunning}
+      >
+        {
+          (filesLoaded, files) => {
+            return filesLoaded ? <FileList files={files.files}/> : null
+          }
         }
-      }
-    </ComponentWithResources>
+      </ComponentWithResources>
   )
 }
 
