@@ -56,6 +56,8 @@ export function MolsetActivitiesSummary(props) {
       {...props}
       definition={definition_summary}
       updateCondition={updateCond}
+      updateInterval={5000}
+      fetchCondition={(props) => props.tasksRunning}
     >
       {
         (summaryLoaded, summaries) => {
