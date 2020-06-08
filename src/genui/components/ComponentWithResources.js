@@ -8,6 +8,8 @@ class ComponentWithResources extends React.Component {
   constructor(props) {
     super(props);
 
+    this.interval = this.props.updateInterval ? this.props.updateInterval: null;
+    this.intervalIDs = {};
     this.state = {
       allLoaded : false,
       data : {}
@@ -28,12 +30,26 @@ class ComponentWithResources extends React.Component {
     this.setState({allLoaded: false, data: {}});
     for (let [name, url] of Object.entries(this.props.definition)) {
       this.fetchResource(name, url);
+      if (this.interval) {
+        clearTimeout(this.intervalIDs[name]);
+        this.intervalIDs[name] = null;
+        this.checkForUpdates(name);
+      }
     }
   };
 
   componentWillUnmount() {
+    Object.keys(this.intervalIDs).forEach(ID => clearTimeout(this.intervalIDs[ID]));
     this.abort.abort();
   }
+
+  checkForUpdates = (name) => {
+    this.intervalIDs[name] = setTimeout(() => this.checkForUpdates(name), this.interval);
+    if (this.state.allLoaded && this.props.fetchCondition && this.props.fetchCondition(this.props)) {
+      console.log(name, "fetching");
+      this.fetchResource(name, this.props.definition[name]);
+    }
+  };
 
   fetchResource = (name, url) => {
     fetch(url, {signal : this.abort.signal, credentials: "include",})
