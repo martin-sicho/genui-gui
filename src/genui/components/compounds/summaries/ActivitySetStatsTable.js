@@ -96,7 +96,7 @@ export function MolsetActivitiesSummary(props) {
                     </React.Fragment>
                   )
                 } else {
-                  return <p>Fetching data...</p>
+                  return <p>No activity data in this compound set.</p>
                 }
               }}
             </ComponentWithResources>
