@@ -20,7 +20,7 @@ function TaskBadge(props) {
   return (
     <React.Fragment>
       <Badge {...props} onClick={toggle}>{props.tasks.length} {props.children}</Badge>
-      <Modal isOpen={open} toggle={toggle} size="lg" scrollable="true">
+      <Modal isOpen={open} toggle={toggle} size="lg" scrollable="true" className="unDraggable">
         <ModalHeader toggle={toggle}>Tasks</ModalHeader>
         <ModalBody>
           {
