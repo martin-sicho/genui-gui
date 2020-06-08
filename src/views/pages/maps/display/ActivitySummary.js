@@ -56,6 +56,12 @@ export default function ActivitySummary(props) {
       revision: 0,
       mols: []
   });
+  const uniqueMols = [];
+  moleculeSelectionInOverview.mols.forEach(mol => {
+     if (!uniqueMols.find(item => mol.id === item.id)) {
+         uniqueMols.push(mol);
+     }
+  });
 
   return (
     <React.Fragment>
@@ -73,7 +79,10 @@ export default function ActivitySummary(props) {
       <hr/>
       <SelectedListPage
         {...props}
-        moleculeSelection={moleculeSelectionInOverview}
+        moleculeSelection={{
+            mols: uniqueMols,
+            revision: moleculeSelectionInOverview.revision
+        }}
         emptyMessage="Select points in the plot above to see the list of compounds associated with those activities."
       />
     </React.Fragment>
