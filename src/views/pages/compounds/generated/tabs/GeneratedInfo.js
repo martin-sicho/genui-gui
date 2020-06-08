@@ -17,7 +17,6 @@ function MolSetInfo(props) {
 }
 
 function GeneratedInfo(props) {
-    console.log(props.tasksRunning);
     return (
         <Row>
             <Col sm="12">
