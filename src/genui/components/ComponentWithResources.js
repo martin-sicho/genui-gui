@@ -46,7 +46,7 @@ class ComponentWithResources extends React.Component {
   checkForUpdates = (name) => {
     this.intervalIDs[name] = setTimeout(() => this.checkForUpdates(name), this.interval);
     if (this.state.allLoaded && this.props.fetchCondition && this.props.fetchCondition(this.props)) {
-      console.log(name, "fetching");
+      // console.log(name, "fetching");
       this.fetchResource(name, this.props.definition[name]);
     }
   };
