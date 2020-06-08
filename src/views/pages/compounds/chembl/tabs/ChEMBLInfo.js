@@ -48,12 +48,12 @@ class ChEMBLInfo extends React.Component {
           >
             {
               (allLoaded, data) => {
-                  return (
+                  return allLoaded ? (
                     <MolsStats
                         molset={this.props.molset}
-                        moleculesCount={allLoaded ? data.molecules.count : 0}
+                        moleculesCount={data.molecules.count}
                     />
-                )
+                ) : null
               }
             }
           </ComponentWithResources>
