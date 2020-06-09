@@ -94,6 +94,33 @@ export function ActivitiesByTypeTabView(props) {
   )
 }
 
+function getActivityExtras(extraActivityFields, activities) {
+  const extraComponents = [];
+  extraActivityFields.forEach(definition => {
+    const classNames = activities.map(activity => activity.className);
+    if (!classNames.includes(definition.className)) {
+      return;
+    }
+
+    extraComponents.push({
+      header: definition.displayName,
+      components: activities.map(activity => {
+        // TODO: check if data items and prop names have the same length
+        const data = definition.dataItems.map(dataItem => resolve(dataItem, activity));
+        const sentProps = {};
+        definition.propNames.forEach((propName, index) => sentProps[propName] = data[index]);
+        return {
+          component: definition.component,
+          props: sentProps,
+          className: definition.className
+        }
+      })
+    })
+  });
+
+  return extraComponents;
+}
+
 export function ActivitiesByTypeFlatView(props) {
   let activities = [];
   Object.keys(props.activities).forEach(key => activities = activities.concat(props.activities[key]));
@@ -102,6 +129,29 @@ export function ActivitiesByTypeFlatView(props) {
     return <div>No activity data found.</div>
   }
 
+  // generate tab with all activities
+  const all_tab = [];
+  const extraData = [
+    {
+      header: "Source",
+      data: activities.map(activity => activitySets[activity.source].name)
+    }
+  ];
+  all_tab.push({
+    title: "All",
+    renderedComponent: (props) => (
+        <ActivitiesTable
+            {...props}
+            activities={activities}
+            extraComponents={props.extraActivityFields ? getActivityExtras(props.extraActivityFields, activities) : []}
+            extraComponentsAppend={true}
+            extraData={extraData}
+            extraDataAppend={true}
+        />
+    )
+  });
+
+  // generate tab for each activity type group
   const activitiesGrouped = groupBy(activities, 'type.id');
   const tabs =  activitiesGrouped.map(group => {
     const extraData = [
@@ -110,37 +160,13 @@ export function ActivitiesByTypeFlatView(props) {
         data: group.map(activity => activitySets[activity.source].name)
       }
     ];
-    const extraComponents = [];
-    if (props.extraActivityFields) {
-      props.extraActivityFields.forEach(definition => {
-        const classNames = group.map(activity => activity.className);
-        if (!classNames.includes(definition.className)) {
-          return;
-        }
-
-        extraComponents.push({
-          header: definition.displayName,
-          components: group.map(activity => {
-            // TODO: check if data items and prop names have the same length
-            const data = definition.dataItems.map(dataItem => resolve(dataItem, activity));
-            const sentProps = {};
-            definition.propNames.forEach((propName, index) => sentProps[propName] = data[index]);
-            return {
-              component: definition.component,
-              props: sentProps,
-              className: definition.className
-            }
-          })
-        })
-      });
-    }
     return {
       title: group[0].type.value,
       renderedComponent: (props) => (
         <ActivitiesTable
           {...props}
           activities={group}
-          extraComponents={extraComponents}
+          extraComponents={props.extraActivityFields ? getActivityExtras(props.extraActivityFields, group) : []}
           extraComponentsAppend={true}
           extraData={extraData}
           extraDataAppend={true}
@@ -150,7 +176,7 @@ export function ActivitiesByTypeFlatView(props) {
   });
 
   return (
-    <TabWidget {...props} tabs={tabs}/>
+    <TabWidget {...props} tabs={all_tab.concat(tabs)}/>
   )
 }
 
