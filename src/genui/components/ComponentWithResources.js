@@ -72,7 +72,10 @@ class ComponentWithResources extends React.Component {
           return prevState;
         });
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        // TODO: do something useful
+        // console.log(e)
+      })
     ;
   };
 
