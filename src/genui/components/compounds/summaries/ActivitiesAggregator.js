@@ -36,6 +36,7 @@ export default function ActivitiesAggregator(props) {
             >
               {
                 (data, finished, revision) => {
+                  // console.log(finished, data, revision);
                   if (finished) {
                     // console.log(finished);
                     // console.log(revision);
