@@ -17,12 +17,15 @@ class ComponentWithPagedResources extends React.Component {
     const definition = this.props.definition;
     const data = {};
     Object.keys(definition).forEach(key => {
+      const url = new URL(definition[key]);
+      const search = url.search;
       data[key] = {
         items : [],
         lastPage : null,
         lastPageItems: [],
-        nextPage : definition[key],
+        nextPage : url,
         finished : false,
+        originalUrlQuery: search
       }
     });
     return {
@@ -91,6 +94,8 @@ class ComponentWithPagedResources extends React.Component {
           .then(data => {
             // if (true) {
             if (data.count > this.state.data[key].items.length) {
+              // if there is more data on the server, remove the items from the last page and begin fetching from there again
+
               this.setState(prevState => {
                 if (!prevState.data[key].finished) {
                   return;
@@ -124,7 +129,7 @@ class ComponentWithPagedResources extends React.Component {
         let nextPage = null;
         let finished = false;
         if (data.next) {
-          nextPage = new URL(data.next);
+          nextPage = data.next + this.state.data[key].originalUrlQuery.replace('?', '&');
         } else {
           finished = true;
           if (this.interval) {
@@ -166,7 +171,6 @@ class ComponentWithPagedResources extends React.Component {
     Object.keys(data).forEach(key => {
       ret[key] = data[key].items;
     });
-    // console.log(this.props.definition.performance.toString(), ret, !this.state.isUpdating, this.state.revision);
     return this.props.children(ret, !this.state.isUpdating, this.state.revision);
   }
 }
