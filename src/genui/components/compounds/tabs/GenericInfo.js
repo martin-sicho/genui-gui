@@ -24,6 +24,10 @@ class GenericInfo extends React.Component {
         return (
             <Row>
                 <Col sm="12">
+                    <MolSetTasks
+                        {...this.props}
+                        progressURL={this.props.apiUrls.celeryProgress}
+                    />
                     {
                         this.molset.description ? (
                             <React.Fragment>
@@ -44,18 +48,15 @@ class GenericInfo extends React.Component {
                         {
                             (allLoaded, data) => {
                                 return allLoaded ? (
-                                    <MolsStats
+                                    this.props.customMolStats ? <this.props.customMolStats molset={this.props.molset} moleculesCount={data.molecules.count}/> : (
+                                        <MolsStats
                                         molset={this.props.molset}
                                         moleculesCount={data.molecules.count}
-                                    />
+                                    />)
                                 ) : null
                             }
                         }
                     </ComponentWithResources>
-                    <MolSetTasks
-                        {...this.props}
-                        progressURL={this.props.apiUrls.celeryProgress}
-                    />
                 </Col>
             </Row>
         );
