@@ -27,7 +27,11 @@ class GenericNewMolSetForm extends React.Component {
               </FormGroup>
               <FieldErrorMessage name="description"/>
 
-              <AdditionalFields {...this.props} formik={formik}/>
+              {
+                AdditionalFields ? (
+                    <AdditionalFields {...this.props} formik={formik}/>
+                ) : null
+              }
             </Form>
           )
         }
