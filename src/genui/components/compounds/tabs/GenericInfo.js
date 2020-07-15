@@ -28,6 +28,9 @@ class GenericInfo extends React.Component {
                         {...this.props}
                         progressURL={this.props.apiUrls.celeryProgress}
                     />
+
+                    <br/>
+
                     {
                         this.molset.description ? (
                             <React.Fragment>
