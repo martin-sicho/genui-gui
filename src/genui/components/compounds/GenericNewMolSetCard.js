@@ -20,7 +20,7 @@ class GenericNewMolSetCard extends React.Component {
                 multipartData.append(item, itemData);
             }
         }
-        multipartData.forEach((item, name) => console.log(name, item));
+        // multipartData.forEach((item, name) => console.log(name, item));
 
         fetch(
           this.props.molsetListUrl
@@ -36,7 +36,7 @@ class GenericNewMolSetCard extends React.Component {
           }
         ).then(response => response.json())
         .then(data => {
-            console.log(data);
+            // console.log(data);
             this.props.handleCreateNew(this.props.currentMolsetClass, data)
           }
         ).catch(
