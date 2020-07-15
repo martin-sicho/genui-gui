@@ -1,12 +1,11 @@
 import React from 'react';
-import { GenericMolSetCard, MolsetActivitiesSummary, MolsInMolSetList } from '../../../../genui';
-import GeneratedInfo from './tabs/GeneratedInfo';
+import { GenericMolSetCard, MolsetActivitiesSummary, MolsInMolSetList, GenericInfo } from '../../../../genui';
 
 function GeneratedCard(props) {
   const tabs = [
     {
       title : "Info",
-      renderedComponent : GeneratedInfo,
+      renderedComponent : GenericInfo,
     },
     {
       title : "Structures",
