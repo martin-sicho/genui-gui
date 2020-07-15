@@ -36,6 +36,7 @@ import CompoundList from './components/compounds/summaries/CompoundList';
 import ApiResourcePaginator from './components/ApiResourcePaginator';
 import CompoundListFromAPI from './components/compounds/summaries/CompoundListFromAPI';
 import MolsInMolSetList from './components/compounds/tabs/MolsInMolSetList';
+import GenericInfo from './components/compounds/tabs/GenericInfo';
 import ModelPreds from './components/models/tabs/predictions/ModelPreds';
 import GroupedViolinPlot from './components/GroupedViolinPlot';
 import ActivitiesAggregator from './components/compounds/summaries/ActivitiesAggregator';
@@ -47,6 +48,7 @@ import {ActivitySetStatsTable, MolsetActivitiesSummary} from './components/compo
 
 // TODO: structure this list in a more sensible way
 export {
+  PLOTLY_COLORS,
   RoutedPage,
   ResponsiveGrid,
   TabWidget,
@@ -107,5 +109,6 @@ export {
   ActivitySetStatsTable,
   MolsetActivitiesSummary,
   scrollTo,
-  TableFromItems, PLOTLY_COLORS
+  TableFromItems,
+  GenericInfo,
 }
