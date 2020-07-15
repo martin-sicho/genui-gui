@@ -84,7 +84,7 @@ function LoginForm(props) {
               </FormGroup>
               <FieldErrorMessage name="password"/>
 
-              <Button type="submit" color="primary" disabled={formik.isSubmitting}>Login</Button>
+              <Button type="submit" color="primary" disabled={props.submittingLoginRequest}>Login</Button>
             </Form>
           )
         }
