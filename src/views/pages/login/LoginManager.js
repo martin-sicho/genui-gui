@@ -8,7 +8,8 @@ class LogInManager extends React.Component {
 
     this.state = {
       errors: [],
-      loginSuccess: false
+      loginSuccess: false,
+      submittingLoginRequest: false,
     }
   }
 
@@ -23,6 +24,7 @@ class LogInManager extends React.Component {
   }
 
   sendLogInRequest = (credentials) => {
+    this.setState({submittingLoginRequest: true});
     fetch(new URL('login/', this.props.apiUrls.accountsRoot), {
       credentials: "include",
       "headers": {
@@ -33,6 +35,7 @@ class LogInManager extends React.Component {
       "method": "POST"
     }).then(response => response.json())
       .then(data => {
+        this.setState({submittingLoginRequest: false});
         if (data.hasOwnProperty('non_field_errors')) {
           this.setState(prevState => ({errors: prevState.errors.concat(data['non_field_errors'])}));
           return null;
@@ -77,6 +80,7 @@ class LogInManager extends React.Component {
           logoutUser={this.sendLogOutRequest}
           apiErrors={this.state.errors}
           loginSuccess={this.state.loginSuccess}
+          submittingLoginRequest={this.state.submittingLoginRequest}
         />
       )
     } else {
