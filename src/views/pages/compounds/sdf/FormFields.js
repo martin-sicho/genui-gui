@@ -6,7 +6,7 @@ import {FieldErrorMessage, FileUpload} from "../../../../genui";
 export default function FormFields(props) {
     return (
         <React.Fragment>
-            <h4>File Upload and Processing</h4>
+            <h4>SDF File Upload and Processing</h4>
 
             <FormGroup>
                 <Label htmlFor="file">SDF File</Label>
