@@ -3,12 +3,14 @@ import { ComponentWithObjects, CompoundsPage } from '../../../genui';
 import ChEMBLGrid from './chembl/ChEMBLGrid';
 import GeneratedGrid from './generated/GeneratedGrid';
 import SDFGrid from './sdf/SDFGrid';
+import CSVGrid from "./csv/CSVGrid";
 
 class Compounds extends React.Component {
   CLASS_TO_COMPONENT = {
     ChEMBLCompounds : ChEMBLGrid,
     GeneratedMolSet : GeneratedGrid,
-    SDFCompounds : SDFGrid
+    SDFCompounds : SDFGrid,
+    CSVCompounds : CSVGrid
   };
 
   render() {
