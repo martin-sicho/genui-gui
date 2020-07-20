@@ -21,14 +21,14 @@ class GenericMolSetGrid extends React.Component {
 
     const existing_cards = molsets.map(molset => ({
       id : molset.id,
-      h : {"md" : 9, "sm" : 8},
+      h : {"md" : 9, "sm" : 6},
       w : {"md" : 1, "sm" : 1},
       minH : {"md" : 3, "sm" : 3},
       data : molset
     }));
     const new_card = {
       id : "new-mol-set",
-      h : {"md" : 7, "sm" : 6},
+      h : {"md" : 9, "sm" : 6},
       w : {"md" : 1, "sm" : 1},
       minH : {"md" : 3, "sm" : 3},
       data : {}
