@@ -34,7 +34,7 @@ class QSARModelCard extends React.Component {
       },
       {
         name : "Activity Threshold",
-        value : trainingStrategy.activityThreshold
+        value : trainingStrategy.activityThreshold ? trainingStrategy.activityType.value : ""
       },
       {
         name : "Descriptor Sets",
