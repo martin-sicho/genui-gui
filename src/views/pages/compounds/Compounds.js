@@ -12,6 +12,12 @@ class Compounds extends React.Component {
     SDFCompounds : SDFGrid,
     CSVCompounds : CSVGrid
   };
+  CLASS_TO_NAME = {
+      ChEMBLCompounds : 'ChEMBL Set',
+      GeneratedMolSet : 'Generated Set',
+      SDFCompounds : 'SDF File',
+      CSVCompounds : 'CSV File'
+  };
 
   render() {
     const defaultClass = "MolSet";
@@ -30,6 +36,7 @@ class Compounds extends React.Component {
             return (<CompoundsPage
               {...this.props}
               classToComponentMap={this.CLASS_TO_COMPONENT}
+              classToNameMap={this.CLASS_TO_NAME}
               compoundSets={compoundSets}
               defaultClass={defaultClass}
               ignoreDefault={true}

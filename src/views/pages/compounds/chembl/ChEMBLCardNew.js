@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, FormGroup, Input, Label, Row, UncontrolledAlert } from 'reactstrap';
+import {Button, Col, FormGroup, FormText, Input, Label, Row, UncontrolledAlert} from 'reactstrap';
 import * as Yup from 'yup';
 import { Field, FieldArray } from 'formik';
 import { FieldErrorMessage, GenericNewMolSetCard } from '../../../../genui';
@@ -55,8 +55,12 @@ function ExtraFormFields(props) {
         )}
       />
       <FormGroup>
-        <Label htmlFor="maxPerTarget">Maximum number of unique compounds per target</Label>
+        <Label htmlFor="maxPerTarget">Compounds Max</Label>
         <Field name="maxPerTarget" as={Input} type="text"/>
+          <FormText color="muted">
+              Maximum number of unique compounds allowed per target
+              in the resulting set.
+          </FormText>
       </FormGroup>
       <FieldErrorMessage name="maxPerTarget"/>
     </React.Fragment>

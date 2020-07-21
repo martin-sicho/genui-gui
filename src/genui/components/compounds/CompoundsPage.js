@@ -4,25 +4,18 @@ import {scrollTo} from '../../utils';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
-    <DropdownToggle nav caret>
-      Actions
-    </DropdownToggle>
-    <DropdownMenu right>
-      <UncontrolledDropdown>
-        <DropdownToggle nav>Add New...</DropdownToggle>
-        <DropdownMenu>
-          {
-            props.molSetChoices.map(choice =>
-              (<DropdownItem
+    <DropdownToggle nav>Add New...</DropdownToggle>
+    <DropdownMenu>
+      {
+        props.molSetChoices.map(choice =>
+            (<DropdownItem
                 key={choice}
                 onClick={() => {props.onMolSetChoice(choice, [])}}
-              >
-                {choice}
-              </DropdownItem>)
-            )
-          }
-        </DropdownMenu>
-      </UncontrolledDropdown>
+            >
+              {props.classToNameMap[choice] ? props.classToNameMap[choice] : choice}
+            </DropdownItem>)
+        )
+      }
     </DropdownMenu>
   </UncontrolledDropdown>)
 }
