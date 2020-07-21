@@ -22,13 +22,13 @@ class ProjectOverview extends React.Component {
                         A short guide that explains the most important features of the GenUI application.
                     </p>
 
-                    <h2>Importing Compounds</h2>
+                    <h2>Compounds</h2>
 
                     <p>
                         Probably the first thing you will want to do in GenUI is to import some compounds and look at them.
-                        You can create and manage your compound sets in the <Link target='_blank' to="./compounds">Compounds</Link> menu.
-                        You can import data from CSV and SDF files, but you can also
-                        download all currently published data related to a target in the <a href='https://www.ebi.ac.uk/chembl/'>ChEMBL database</a>.
+                        You can create and manage your compound sets in the <Link target='_blank' to="./compounds">Compounds</Link> interface.
+                        You can import from CSV and SDF files, but you can also
+                        easily integrate data from the <a href='https://www.ebi.ac.uk/chembl/'>ChEMBL database</a>.
                         You will also use this page when you want to generate new compounds with a trained generator, but more on that later.
                     </p>
 
@@ -38,7 +38,7 @@ class ProjectOverview extends React.Component {
                         description field when creating a compound set).
                     </p>
 
-                    <h2>Building QSAR Models</h2>
+                    <h2>QSAR Models</h2>
 
                     <p>
                         A lot of molecular generators use QSAR model predictions to optimize generated compounds against a certain target,
@@ -54,17 +54,17 @@ class ProjectOverview extends React.Component {
                         or make them available along with publications.
                     </p>
 
-                    <h2>Molecular Generators</h2>
+                    <h2>Generators</h2>
 
                     <p>
                         <Link to='./generators/drugex' target='_blank'>DrugEx</Link> is the first generator integrated
                         in the GenUI framework, but more generators will be added to the app in the future. The user
                         interface will likely wary a lot between generators, but one common feature is that each created
                         generator is also accessible from the  <Link to='./compounds/' target='_blank'>Compounds</Link> page
-                        where it can be used to create generated sets of compounds.
+                        where it can be used to generate sets of new compounds.
                     </p>
 
-                    <h2>Mapping Chemical Space</h2>
+                    <h2>Maps</h2>
 
                     <p>
                         Under Maps, you will find visual interactive tools which should help you make
