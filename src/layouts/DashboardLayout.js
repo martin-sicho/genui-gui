@@ -273,7 +273,7 @@ function HeaderNav(props) {
       <Injected/>
       <UncontrolledDropdown nav inNavbar>
         <DropdownToggle nav>
-          <Avatar size="small" color="blue" initials="JS" />
+          <Avatar size="small" color="blue" initials={props.user.username[0]} />
         </DropdownToggle>
         <DropdownMenu right>
           {/*<DropdownItem>Settings</DropdownItem>*/}
