@@ -12,11 +12,11 @@ import QSARModelCreateFromFileCard from './QSARModelCreateFromFileCard';
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
     <DropdownToggle nav caret>
-      Create QSAR Model
+      Create New
     </DropdownToggle>
     <DropdownMenu right>
       <UncontrolledDropdown>
-        <DropdownToggle nav>Train...</DropdownToggle>
+        <DropdownToggle nav>Train Model...</DropdownToggle>
         <DropdownMenu>
           {
             props.addChoices.map(choice =>
@@ -35,7 +35,7 @@ function HeaderNav(props) {
         </DropdownMenu>
       </UncontrolledDropdown>
       <UncontrolledDropdown>
-        <DropdownToggle nav>From File...</DropdownToggle>
+        <DropdownToggle nav>Import Model...</DropdownToggle>
         <DropdownMenu>
           {
             props.addChoices.map(choice =>

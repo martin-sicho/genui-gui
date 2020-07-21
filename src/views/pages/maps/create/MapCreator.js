@@ -6,33 +6,26 @@ import MapCard from './MapCard';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
-    <DropdownToggle nav caret>
-      Actions
-    </DropdownToggle>
-    <DropdownMenu right>
-      <UncontrolledDropdown>
-        <DropdownToggle nav>Create...</DropdownToggle>
-        <DropdownMenu>
-          {
-            props.addChoices.map(choice =>
-              (<DropdownItem
+    <DropdownToggle nav>Create New...</DropdownToggle>
+    <DropdownMenu>
+      {
+        props.addChoices.map(choice =>
+            (<DropdownItem
                 key={choice.id}
                 onClick={() => {props.onModelAdd(
-                  choice
-                  , MapCreateCard
-                  , {
+                    choice
+                    , MapCreateCard
+                    , {
                       h : {"md" : 13, "sm" : 13},
                       w : {"md" : 1, "sm" : 1},
                       minH : {"md" : 3, "sm" : 3},
-                  }
+                    }
                 )}}
-              >
-                {choice.name}
-              </DropdownItem>)
-            )
-          }
-        </DropdownMenu>
-      </UncontrolledDropdown>
+            >
+              {choice.name}
+            </DropdownItem>)
+        )
+      }
     </DropdownMenu>
   </UncontrolledDropdown>)
 }
