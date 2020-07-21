@@ -8,8 +8,12 @@ import LoginPage from './views/pages/login/LoginPage';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 let BACKEND_URL = new URL('http://localhost:8000');
+let GENUI_DEPLOY_VERSION = 'dev';
 if (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL) {
   BACKEND_URL = (process.env.REACT_APP_GENUI_BACKEND_ROOT_URL);
+}
+if (process.env.GENUI_DEPLOY_VERSION) {
+  GENUI_DEPLOY_VERSION = (process.env.GENUI_DEPLOY_VERSION);
 }
 const REMOTE_API_ROOT = new URL('api/', BACKEND_URL);
 console.log(`API root: ${REMOTE_API_ROOT}`);
@@ -50,6 +54,7 @@ const fetchUserInfo = (callback) => {
 export default function App() {
   const [user, setUser] = React.useState(null);
   const appPath = PUBLIC_URL ? PUBLIC_URL : '';
+  const devMode = GENUI_DEPLOY_VERSION === 'dev';
   const loginPath = '/login/';
 
   return (
@@ -62,6 +67,7 @@ export default function App() {
             (props) => (
               <LoginPage
                 {...props}
+                devMode={devMode}
                 apiUrls={URL_ROOTS}
                 fetchUserInfo={fetchUserInfo}
                 setUser={setUser}
@@ -75,6 +81,7 @@ export default function App() {
           (props) => (
             <DashboardLayout
               {...props}
+              devMode={devMode}
               apiUrls={URL_ROOTS}
               user={user}
               setUser={setUser}
