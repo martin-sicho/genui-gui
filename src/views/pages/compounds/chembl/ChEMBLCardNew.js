@@ -56,10 +56,11 @@ function ExtraFormFields(props) {
       />
       <FormGroup>
         <Label htmlFor="maxPerTarget">Compounds Max</Label>
-        <Field name="maxPerTarget" as={Input} type="text"/>
+        <Field name="maxPerTarget" as={Input} type="number"/>
           <FormText color="muted">
               Maximum number of unique compounds allowed per target
-              in the resulting set.
+              in the resulting set. This is useful for testing.
+              Leave this empty to get all available molecules.
           </FormText>
       </FormGroup>
       <FieldErrorMessage name="maxPerTarget"/>
@@ -87,6 +88,12 @@ class ChEMBLCardNew extends React.Component {
         extraFormInitVals={extraInitVals}
         extraFormValidSchemas={extraValidSchemas}
         additionalFieldsComponent={ExtraFormFields}
+        prePOST={data => {
+            if (!data.maxPerTarget) {
+                delete data.maxPerTarget;
+            }
+            return data;
+        }}
       />
     )
   }
