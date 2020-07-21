@@ -6,6 +6,10 @@ class GenericNewMolSetCard extends React.Component {
 
     createMolSetFromFormData = (data) => {
         data.project = this.props.currentProject.id;
+        if (this.props.prePOST) {
+            data = this.props.prePOST(data);
+        }
+        // console.log(data);
 
         // find out if we have a file in the form data
         // if yes, send a multipart request instead of plain json
