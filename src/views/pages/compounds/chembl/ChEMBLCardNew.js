@@ -13,7 +13,7 @@ function ExtraFormFields(props) {
         render={(arrayHelpers) => (
           <React.Fragment>
             <FormGroup>
-              <Label htmlFor="Targets">Targets</Label>
+              <Label htmlFor="Targets">Target IDs</Label>
               {formik.values.targets && formik.values.targets.length > 0 ? (
                 formik.values.targets.map((target, index) => (
                   <React.Fragment key={index}>
@@ -44,9 +44,12 @@ function ExtraFormFields(props) {
               ) : (
                 <Button type="button" onClick={() => arrayHelpers.push("")}>
                   {/* show this when user has removed all targets from the list */}
-                  Add a ChEMBL Target
+                  Add ChEMBL Target ID
                 </Button>
               )}
+                <FormText color="muted">
+                    ChEMBL IDs of the targets for which compounds and activity data should be fetched.
+                </FormText>
             </FormGroup>
             {typeof formik.errors.targets === 'string' ?
               <UncontrolledAlert color="danger">{formik.errors.targets}</UncontrolledAlert>
