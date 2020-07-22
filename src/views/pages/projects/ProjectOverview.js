@@ -28,7 +28,7 @@ class ProjectOverview extends React.Component {
                         Probably the first thing you will want to do in GenUI is to import some compounds and look at them.
                         You can create and manage your compound sets in the <Link target='_blank' to="./compounds">Compounds</Link> interface.
                         You can import from CSV and SDF files, but you can also
-                        easily integrate data from the <a href='https://www.ebi.ac.uk/chembl/'>ChEMBL database</a>.
+                        easily integrate data from the <a target="_blank" rel="noopener noreferrer" href='https://www.ebi.ac.uk/chembl/'>ChEMBL database</a>.
                         You will also use this page when you want to generate new compounds with a trained generator, but more on that later.
                     </p>
 
