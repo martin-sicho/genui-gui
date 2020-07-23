@@ -35,6 +35,7 @@ export function MoleculeMetadata(props) {
   return (
     <React.Fragment>
       <DataPair title="SMILES" data={mol.smiles}/>
+      <DataPair title="InChi" data={mol.inchi}/>
       <DataPair title="InChiKey" data={mol.inchiKey}/>
       {
         extraData.map(data => (
