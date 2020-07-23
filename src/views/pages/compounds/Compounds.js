@@ -32,6 +32,7 @@ class Compounds extends React.Component {
             handleAddMolSetList,
             handleAddMolSet,
             handleMolSetDelete,
+            requestMolSetsUpdate,
           ) => {
             return (<CompoundsPage
               {...this.props}
@@ -43,6 +44,7 @@ class Compounds extends React.Component {
               handleAddMolSetList={handleAddMolSetList}
               handleAddMolSet={handleAddMolSet}
               handleMolSetDelete={handleMolSetDelete}
+              requestMolSetsUpdate={requestMolSetsUpdate}
             />)
           }
         }
