@@ -131,7 +131,7 @@ class ComponentWithObjects extends React.Component {
     }
   };
 
-  requestObjectUpdate = () => {
+  requestObjectsUpdate = () => {
     this.setState({fetchUpdates: true})
   };
 
@@ -142,7 +142,7 @@ class ComponentWithObjects extends React.Component {
 
     return (
       <React.Fragment>
-        {this.props.render(this.state.objects, this.handleAddObjectList, this.handleAddObject, this.handleObjectDelete, this.requestObjectUpdate)}
+        {this.props.render(this.state.objects, this.handleAddObjectList, this.handleAddObject, this.handleObjectDelete, this.requestObjectsUpdate)}
       </React.Fragment>
     )
   }
