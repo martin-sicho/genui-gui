@@ -15,34 +15,39 @@ class GenericMolSetCard extends React.Component {
     this.state = {
       molset : null
       , isUpdating : false
+      , revision: 0
+      , deleteInProgress: false
     }
   }
 
   handleDeleteSignal(deletedMolSet) {
-    this.setState({isUpdating : true});
+    this.setState({deleteInProgress : true});
     if (this.props.hasOwnProperty("onMolsetDelete")) {
       this.props.onMolsetDelete(this.props.currentMolsetClass, deletedMolSet);
     }
   }
 
   componentDidMount() {
+    this.fetchMolSet();
+  }
+
+  fetchMolSet() {
     fetch(this.molsetURL, {signal : this.abort.signal, credentials: "include",})
-      .then(response => this.props.handleResponseErrors(response))
-      .then(this.getMolSet)
-      .catch(
-        (error) => console.log(error)
-      )
+        .then(response => this.props.handleResponseErrors(response))
+        .then(data => {
+          this.setState(prevState => ({
+            molset : data,
+            revision: prevState.revision + 1
+          }))
+        })
+        .catch(
+            (error) => console.log(error)
+        )
   }
 
   componentWillUnmount() {
     this.abort.abort();
   }
-
-  getMolSet = (data) => {
-    this.setState({
-      molset : data
-    })
-  };
 
   updateMolSet = (data) => {
     const error_msg = 'Failed to update compound set from backend.';
@@ -79,8 +84,14 @@ class GenericMolSetCard extends React.Component {
     }
   };
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.molset && this.state.molset && (this.state.revision === prevState.revision)) {
+      this.fetchMolSet();
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return !this.state.molset || this.state.isUpdating !== nextState.isUpdating;
+    return !this.state.molset || this.state.isUpdating !== nextState.isUpdating || this.state.revision !== nextState.revision;
   }
 
   render() {
@@ -122,7 +133,7 @@ class GenericMolSetCard extends React.Component {
         <CardFooter>
           {/*TODO: transfer the update functionality to a separate Edit tab and use a form to do the update*/}
           {/*<Button color="primary" disabled={isUpdating} onClick={() => this.updateMolSet({})}>{isUpdating ? 'Updating...' : 'Update Data'}</Button>*/}
-          <Button color="danger" onClick={() => {this.handleDeleteSignal(molset)}}>Delete</Button>
+          <Button color="danger" onClick={() => {this.handleDeleteSignal(molset)}} disabled={this.state.deleteInProgress}>Delete</Button>
         </CardFooter>
       </React.Fragment>
     )
