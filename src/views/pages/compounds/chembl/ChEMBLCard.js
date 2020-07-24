@@ -1,6 +1,7 @@
 import React from 'react';
 import { GenericMolSetCard, MolsetActivitiesSummary, MolsInMolSetList, GenericInfo } from '../../../../genui';
 import { AssayName, ChEMBLID, Relation, TargetName } from './ActivityFields';
+import key from "weak-key";
 
 function MolsStats(props) {
   return (
@@ -24,10 +25,21 @@ function MolsStats(props) {
 }
 
 function ChEMBLCard(props) {
+  const taskErrorClassToComponent = {
+    "<class 'genui.compounds.initializers.exceptions.InconsistentIdentifiersException'>" : props => {
+      console.log(props.error.data);
+      return (
+          <React.Fragment>
+            {props.error.messages.original.map(message => <span key={key({dummy: message})}>{message}</span>)}
+          </React.Fragment>
+      )
+    }
+  };
+
   const tabs = [
     {
       title : "Info",
-      renderedComponent : (props) => <GenericInfo {...props} customMolStats={MolsStats}/>,
+      renderedComponent : (props) => <GenericInfo {...props} customMolStats={MolsStats} taskErrorClassToComponent={taskErrorClassToComponent}/>,
     },
     {
       title: "Compounds",

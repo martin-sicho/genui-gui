@@ -5,7 +5,7 @@ function TaskBadgeGroup(props) {
   const tasks = props.tasks;
   return (
     <React.Fragment>
-      <TaskBadge href="#" color="primary" tasks={tasks.running}>Running</TaskBadge> <TaskBadge href="#" color="success" tasks={tasks.completed}>Completed</TaskBadge> <TaskBadge href="#" color="danger" tasks={tasks.errors}>Failed</TaskBadge>
+      <TaskBadge color="primary" {...props} tasks={tasks.running}>Running</TaskBadge> <TaskBadge color="success" {...props} tasks={tasks.completed}>Completed</TaskBadge> <TaskBadge color="danger" {...props} tasks={tasks.errors}>Failed</TaskBadge>
     </React.Fragment>
   )
 }

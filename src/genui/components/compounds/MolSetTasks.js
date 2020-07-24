@@ -11,10 +11,16 @@ class MolSetTasks extends React.Component {
         onTaskUpdate={this.props.onTaskUpdate}
         render={
           taskInfo => {
+            const taskBadgeProps = {
+                tasks: taskInfo.tasks,
+                resultComponent : this.props.taskResultComponent,
+                errorClassToComponent : this.props.taskErrorClassToComponent,
+                errorsGroupFunction: this.props.taskErrorsGroupFunction,
+            };
             return (
               <React.Fragment>
                 <h4>
-                  Tasks <TaskBadgeGroup tasks={taskInfo.tasks}/>
+                  Tasks <TaskBadgeGroup {...taskBadgeProps} />
                 </h4>
                 <TaskProgressBar
                   progressURL={this.props.progressURL}

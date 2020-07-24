@@ -10,6 +10,7 @@ import {
   UncontrolledCollapse,
 } from 'reactstrap';
 import React from 'react';
+import TaskResult from "./TaskResult";
 
 function TaskBadge(props) {
   const [open, setOpen] = React.useState(false);
@@ -19,7 +20,7 @@ function TaskBadge(props) {
 
   return (
     <React.Fragment>
-      <Badge {...props} onClick={toggle}>{props.tasks.length} {props.children}</Badge>
+      <Badge href="#" color={props.color} onClick={toggle}>{props.tasks.length} {props.children}</Badge>
       <Modal isOpen={open} toggle={toggle} size="lg" scrollable="true" className="unDraggable">
         <ModalHeader toggle={toggle}>Tasks</ModalHeader>
         <ModalBody>
@@ -41,7 +42,8 @@ function TaskBadge(props) {
                             <strong>Status:</strong> {task.status}
                           </li>
                           <li>
-                            <strong>Result:</strong> {task.result}
+                            <strong>Result:</strong>
+                            <TaskResult {...props} result={task.result}/>
                           </li>
                           {task.traceback ? (
                             <li>
