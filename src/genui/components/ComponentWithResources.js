@@ -24,6 +24,11 @@ class ComponentWithResources extends React.Component {
     if (this.props.updateCondition && this.props.updateCondition(prevProps, this.props, prevState, this.state, snapshot)) {
       this.updateResources();
     }
+
+    if (Object.keys(prevProps.definition).length !==  Object.keys(this.props.definition).length) {
+      // TODO: add a more sophisticated comparison
+      this.updateResources();
+    }
   }
 
   updateResources = () => {
