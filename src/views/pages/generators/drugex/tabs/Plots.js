@@ -130,7 +130,7 @@ export function DrExAgentSMILESErrorPlot(props) {
         }
     ];
     const data = {
-        labels: props.errors.map(err => err.extraArgs.step),
+        labels: props.errors.map(err => err.extraArgs.epoch),
         datasets: datasets
     };
     return (
@@ -143,7 +143,7 @@ export function DrExAgentSMILESErrorPlot(props) {
                         xAxes: [{
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Step'
+                                labelString: 'Epoch'
                             }
                         }],
                         yAxes: [
@@ -181,7 +181,7 @@ export function DrExAgentScoresPlot(props) {
         }
     ];
     const data = {
-        labels: props.scores.map(score => score.extraArgs.step),
+        labels: props.scores.map(score => score.extraArgs.epoch),
         datasets: datasets
     };
     return (
@@ -194,7 +194,7 @@ export function DrExAgentScoresPlot(props) {
                         xAxes: [{
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Step'
+                                labelString: 'Epoch'
                             }
                         }],
                         yAxes: [
