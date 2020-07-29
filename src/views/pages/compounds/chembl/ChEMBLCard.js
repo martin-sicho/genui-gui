@@ -1,5 +1,5 @@
 import React from 'react';
-import { GenericMolSetCard, MolsetActivitiesSummary, MolsInMolSetList, GenericInfo } from '../../../../genui';
+import { GenericMolSetCard, MolsetActivitiesSummary, MolsInMolSetList, GenericInfo, EditMolSet } from '../../../../genui';
 import { AssayName, ChEMBLID, Relation, TargetName } from './ActivityFields';
 import key from "weak-key";
 
@@ -88,6 +88,10 @@ function ChEMBLCard(props) {
     {
       title: "Activities",
       renderedComponent: props => <MolsetActivitiesSummary {...props} selectable={false}/>
+    },
+    {
+      title: "Edit",
+      renderedComponent: props => <EditMolSet {...props}/>
     }
   ];
 

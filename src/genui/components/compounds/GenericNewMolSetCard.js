@@ -4,33 +4,12 @@ import NewMolSetFormRenderer from './NewMolSetFormRenderer';
 
 class GenericNewMolSetCard extends React.Component {
 
-    createMolSetFromFormData = (data) => {
-        data.project = this.props.currentProject.id;
-        if (this.props.prePOST) {
-            data = this.props.prePOST(data);
-        }
-        // console.log(data);
-
-        // find out if we have a file in the form data
-        // if yes, send a multipart request instead of plain json
-        let isMultiPart = false;
-        const multipartData = new FormData();
-        for (let item in data) {
-            if (data.hasOwnProperty(item)) {
-                const itemData = data[item];
-                if (itemData instanceof File) {
-                    isMultiPart = true;
-                }
-                multipartData.append(item, itemData);
-            }
-        }
-        // multipartData.forEach((item, name) => console.log(name, item));
-
+    postFormData = (data, isMultiPart) => {
         fetch(
           this.props.molsetListUrl
           , {
             method: 'POST'
-            , body: isMultiPart ? multipartData : JSON.stringify(data)
+            , body: isMultiPart ? data : JSON.stringify(data)
             , headers: isMultiPart ?
                     undefined :
                     {
@@ -52,7 +31,7 @@ class GenericNewMolSetCard extends React.Component {
     return (
       <React.Fragment>
         <CardHeader>{this.props.cardHeader}</CardHeader>
-        <NewMolSetFormRenderer {...this.props} handleCreate={this.createMolSetFromFormData}/>
+        <NewMolSetFormRenderer {...this.props} handleCreate={this.postFormData}/>
       </React.Fragment>
     )
   }

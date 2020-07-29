@@ -13,13 +13,6 @@ function MolsStats(props) {
 }
 
 class GenericInfo extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.molset = this.props.molset;
-    }
-
     render() {
         return (
             <Row>
@@ -32,10 +25,10 @@ class GenericInfo extends React.Component {
                     <br/>
 
                     {
-                        this.molset.description ? (
+                        this.props.molset.description ? (
                             <React.Fragment>
                                 <h4>Description</h4>
-                                <p>{this.molset.description}</p>
+                                <p>{this.props.molset.description}</p>
                             </React.Fragment>
                         ) : null
                     }

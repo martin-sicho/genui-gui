@@ -7,10 +7,6 @@ class GenericMolSetCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.created = new Date(this.props.molset.created);
-    this.updated = new Date(this.props.molset.updated);
-    this.molsetURL = new URL(`${this.props.molset.id}/`, this.props.molsetListUrl);
-    this.moleculesURL = new URL(`${this.props.molset.id}/molecules/`, this.props.apiUrls.compoundSetsRoot);
 
     this.state = {
       molset : null
@@ -32,7 +28,8 @@ class GenericMolSetCard extends React.Component {
   }
 
   fetchMolSet() {
-    fetch(this.molsetURL, {signal : this.abort.signal, credentials: "include",})
+    const molsetURL = new URL(`${this.props.molset.id}/`, this.props.molsetListUrl);
+    fetch(molsetURL, {signal : this.abort.signal, credentials: "include",})
         .then(response => this.props.handleResponseErrors(response))
         .then(data => {
           this.setState(prevState => ({
@@ -50,30 +47,7 @@ class GenericMolSetCard extends React.Component {
   }
 
   updateMolSet = (data) => {
-    const error_msg = 'Failed to update compound set from backend.';
-    fetch(
-      this.molsetURL
-      , {
-        method: 'PATCH'
-        , body: JSON.stringify(data)
-        , headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: "include",
-      }
-    )
-      .then(response => this.props.handleResponseErrors(response, error_msg))
-      .then(
-        data => {
-          this.setState({
-            molset : data,
-            isUpdating : true
-          })
-        }
-      )
-      .catch(
-        (error) => console.log(error)
-      );
+    this.fetchMolSet();
   };
 
   handleTaskUpdate = (tasks) => {
@@ -102,6 +76,10 @@ class GenericMolSetCard extends React.Component {
       return <div>Fetching...</div>
     }
 
+    const created = new Date(this.state.molset.created);
+    const updated = new Date(this.state.molset.updated);
+    const molsetURL = new URL(`${this.state.molset.id}/`, this.props.molsetListUrl);
+    const moleculesURL = new URL(`${this.state.molset.id}/molecules/`, this.props.apiUrls.compoundSetsRoot);
     return (
       <React.Fragment>
         <CardHeader>{molset.name}</CardHeader>
@@ -110,29 +88,29 @@ class GenericMolSetCard extends React.Component {
           <CardSubtitle>
             <p>
               Created: {
-              this.created.toLocaleDateString()
-              + ' – ' + this.created.toLocaleTimeString()
+              created.toLocaleDateString()
+              + ' – ' + created.toLocaleTimeString()
             }
               <br/>
               Last Update: {
-              this.updated.toLocaleDateString()
-              + ' – ' + this.updated.toLocaleTimeString()
+              updated.toLocaleDateString()
+              + ' – ' + updated.toLocaleTimeString()
             }
             </p>
           </CardSubtitle>
           <TabWidget
             {...this.props}
             molsetIsUpdating={isUpdating}
-            moleculesURL={this.moleculesURL}
+            moleculesURL={moleculesURL}
+            molsetUURL={molsetURL}
             molset={molset}
+            updateMolSet={this.updateMolSet}
             tasksRunning={isUpdating}
             onTaskUpdate={this.handleTaskUpdate}
           />
         </CardBody>
 
         <CardFooter>
-          {/*TODO: transfer the update functionality to a separate Edit tab and use a form to do the update*/}
-          {/*<Button color="primary" disabled={isUpdating} onClick={() => this.updateMolSet({})}>{isUpdating ? 'Updating...' : 'Update Data'}</Button>*/}
           <Button color="danger" onClick={() => {this.handleDeleteSignal(molset)}} disabled={this.state.deleteInProgress}>Delete</Button>
         </CardFooter>
       </React.Fragment>

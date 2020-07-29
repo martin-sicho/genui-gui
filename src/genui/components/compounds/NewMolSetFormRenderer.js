@@ -1,44 +1,7 @@
 import React from "react";
-import { Field, Formik } from 'formik';
-import { Button, CardBody, CardFooter, Form, FormGroup, Input, Label } from 'reactstrap';
-import { FieldErrorMessage } from '../../index';
+import {Button, CardBody, CardFooter} from 'reactstrap';
 import * as Yup from 'yup';
-
-class GenericNewMolSetForm extends React.Component {
-  render() {
-    const AdditionalFields = this.props.additionalFieldsComponent;
-    return (
-      <Formik
-        initialValues={this.props.initialValues}
-        validationSchema={this.props.validationSchema}
-        onSubmit={this.props.onSubmit}
-      >
-        {
-          formik => (
-            <Form id={this.props.formID} onSubmit={formik.handleSubmit} className="unDraggable">
-              <FormGroup>
-                <Label htmlFor="name">Name</Label>
-                <Field name="name" as={Input} type="text"/>
-              </FormGroup>
-              <FieldErrorMessage name="name"/>
-              <FormGroup>
-                <Label htmlFor="description">Description</Label>
-                <Field name="description" as={Input} type="textarea"/>
-              </FormGroup>
-              <FieldErrorMessage name="description"/>
-
-              {
-                AdditionalFields ? (
-                    <AdditionalFields {...this.props} formik={formik}/>
-                ) : null
-              }
-            </Form>
-          )
-        }
-      </Formik>
-    )
-  }
-}
+import GenericNewMolSetForm from "./GenericNewMolSetForm";
 
 export function NewMolSetFormRenderer(props) {
   const [formIsSubmitting, setFormIsSubmitting] = React.useState(false);
@@ -57,26 +20,51 @@ export function NewMolSetFormRenderer(props) {
     }, props.extraFormValidSchemas)
   );
 
-  const id = `${props.currentMolsetClass}-create-form`;
+  const submitButtonText = props.submitButtonText ? props.submitButtonText : 'Create';
+  const id = props.formID ? props.formID : `${props.currentMolsetClass}-create-form`;
+  const FormWrapper = props.formWrapper ? props.formWrapper : CardBody;
+  const ButtonWrapper = props.buttonWrapper ? props.buttonWrapper : CardFooter;
   return (
     <React.Fragment>
-      <CardBody className="scrollable">
+      <FormWrapper className="scrollable">
         <GenericNewMolSetForm
           {...props}
           formID={id}
-          initialValues={initialValues}
-          validationSchema={validationSchema}
+          initialValues={props.initialValues ? props.initialValues : initialValues}
+          validationSchema={props.validationSchema ? props.validationSchema : validationSchema}
           onSubmit={
             (values) => {
               setFormIsSubmitting(true);
-              props.handleCreate(values);
+
+                values.project = props.currentProject.id;
+                if (props.prePOST) {
+                    values = props.prePOST(values);
+                }
+                // console.log(data);
+
+                // find out if we have a file in the form data
+                // if yes, send a multipart request instead of plain json
+                let isMultiPart = false;
+                const multipartData = new FormData();
+                for (let item in values) {
+                    if (values.hasOwnProperty(item)) {
+                        const itemData = values[item];
+                        if (itemData instanceof File) {
+                            isMultiPart = true;
+                        }
+                        multipartData.append(item, itemData);
+                    }
+                }
+                // multipartData.forEach((item, name) => console.log(name, item));
+
+              props.handleCreate(isMultiPart ? multipartData : values, isMultiPart, setFormIsSubmitting);
             }
           }
         />
-      </CardBody>
-      <CardFooter>
-        <Button block form={id} type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? "Creating..." : "Create"}</Button>
-      </CardFooter>
+      </FormWrapper>
+      <ButtonWrapper>
+        <Button block form={id} type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? `${submitButtonText}...` : submitButtonText}</Button>
+      </ButtonWrapper>
     </React.Fragment>
   );
 }
