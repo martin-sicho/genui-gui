@@ -110,7 +110,7 @@ function IndpendentTestSetOverview(props) {
   validSetPerf = Object.keys(validSetPerf).map((x) => validSetPerf[x].length > 0 ? validSetPerf[x][0] : null);
 
   if (validSetPerf.length === 0 || validSetPerf[0] === null) {
-    return <div>No data.</div>
+    return null
   }
 
   const roc_curve_data = props.getPerfValuesForMetric(props.performance, "ROCCurvePoint", metrics.find(metric => metric.name === "ROC"));
