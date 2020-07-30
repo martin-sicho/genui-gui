@@ -11,30 +11,30 @@ class QSARModelCard extends React.Component {
     const modelData = [
       {
         name : "Compound Set",
-        value : model.molset ? model.molset.name : ""
+        value : model.molset ? model.molset.name : "--"
       },
       {
         name : "Predictions Activity Type",
-        value : model.predictionsType ? model.predictionsType.value : ""
+        value : model.predictionsType ? model.predictionsType.value : "--"
       },
       {
         name : "Predictions Activity Units",
-        value : model.predictionsUnits ? model.predictionsUnits.value : ""
+        value : model.predictionsUnits ? model.predictionsUnits.value : "--"
       },
     ];
 
     const trainingParams = [
       {
         name : "Activity Set",
-        value : trainingStrategy.activitySet ? trainingStrategy.activitySet.name : ""
+        value : trainingStrategy.activitySet ? trainingStrategy.activitySet.name : "--"
       },
       {
         name : "Activity Type",
-        value : trainingStrategy.activityType ? trainingStrategy.activityType.value : ""
+        value : trainingStrategy.activityType ? trainingStrategy.activityType.value : "--"
       },
       {
         name : "Activity Threshold",
-        value : trainingStrategy.activityThreshold ? trainingStrategy.activityThreshold : ""
+        value : trainingStrategy.activityThreshold && trainingStrategy.mode.name === 'classification'  ? trainingStrategy.activityThreshold : "--"
       },
       {
         name : "Descriptor Sets",
