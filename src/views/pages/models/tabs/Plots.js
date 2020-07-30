@@ -7,7 +7,22 @@ export function ROCCurvePlot(props) {
         return null
     }
 
-    const datasets = props.curves.map((curve, index) => {
+    const datasets = [{
+        label: 'Baseline',
+        showLine: true,
+        fill: false,
+        pointRadius: 0,
+        data: [
+            {
+                x: 0,
+                y: 0,
+            },
+            {
+                x: 1,
+                y: 1,
+            }
+        ]
+    }].concat(props.curves.map((curve, index) => {
         if (index >= PLOTLY_COLORS.length) {
             index = index % PLOTLY_COLORS.length;
         }
@@ -26,25 +41,7 @@ export function ROCCurvePlot(props) {
             backgroundColor: color,
             borderColor: color
         }
-    });
-    datasets.push(
-        {
-            label: '',
-            showLine: true,
-            fill: false,
-            pointRadius: 0,
-            data: [
-                {
-                    x: 0,
-                    y: 0,
-                },
-                {
-                    x: 1,
-                    y: 1,
-                }
-            ]
-        }
-    );
+    }));
     const data = {
         datasets: datasets
     };
