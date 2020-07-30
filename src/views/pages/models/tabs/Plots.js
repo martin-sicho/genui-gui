@@ -4,7 +4,7 @@ import React from "react";
 
 export function ROCCurvePlot(props) {
     if (props.curves.length === 0) {
-        return <div>No data.</div>
+        return null
     }
 
     const datasets = props.curves.map((curve, index) => {
@@ -16,16 +16,35 @@ export function ROCCurvePlot(props) {
         return {
             label: curve.label,
             showLine: true,
-            lineTension: 0,
+            lineTension: 0.5,
             fill: false,
             data: curve.tpr.map((tpr, index) => ({
                 x: curve.fpr[index],
                 y: tpr
             })),
+            pointRadius: 0,
             backgroundColor: color,
             borderColor: color
         }
     });
+    datasets.push(
+        {
+            label: '',
+            showLine: true,
+            fill: false,
+            pointRadius: 0,
+            data: [
+                {
+                    x: 0,
+                    y: 0,
+                },
+                {
+                    x: 1,
+                    y: 1,
+                }
+            ]
+        }
+    );
     const data = {
         datasets: datasets
     };
@@ -53,7 +72,8 @@ export function ROCCurvePlot(props) {
                 title: {
                     display: true,
                     text: 'ROC Curve (Independent Test Set)'
-                }
+                },
+                apsectRatio: 1
             }
             }
         />
