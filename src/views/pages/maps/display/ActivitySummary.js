@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardTitle, Col, Row } from 'reactstrap';
 import { MoleculeImage, MoleculePropsProvider, PropertiesTable } from '../../../../genui';
 import ActivitySummaryPlotter from './ActivitySummaryPlotter';
-import SelectedListPage from './SelectedListPage';
+import SelectedList from "./SelectedList";
 
 function ActivitySummaryPlot(props) {
   const [hoverMol, setHoverMol] = React.useState(null);
@@ -77,14 +77,16 @@ export default function ActivitySummary(props) {
         }))}
       />
       <hr/>
-      <SelectedListPage
-        {...props}
-        moleculeSelection={{
-            mols: uniqueMols,
-            revision: moleculeSelectionInOverview.revision
-        }}
-        emptyMessage="Select points in the plot above to see the list of compounds associated with those activities."
-      />
+
+    <Row>
+        <Col sm={12}>
+            {
+                uniqueMols.length > 0 ? (
+                    <SelectedList {...props} mols={uniqueMols}/>
+                ) : <p>Select points in the plot above to see the list of compounds associated with those activities.</p>
+            }
+        </Col>
+    </Row>
     </React.Fragment>
   )
 }

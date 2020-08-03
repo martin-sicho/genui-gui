@@ -1,6 +1,7 @@
 import { Col, Row } from 'reactstrap';
 import SelectedList from './SelectedList';
 import React from 'react';
+import {MoleculeListProvider} from "../../../../genui";
 
 class SelectedListPage extends React.Component {
 
@@ -14,7 +15,16 @@ class SelectedListPage extends React.Component {
                 <Row>
                     <Col sm={12}>
                         {
-                            this.props.moleculeSelection.mols.length > 0 ? <SelectedList {...this.props}/> : <p>{this.props.emptyMessage ? this.props.emptyMessage : "No compounds selected."}</p>
+                            this.props.moleculeSelection.molIDs.length > 0 ? (
+                                <MoleculeListProvider
+                                    {...this.props}
+                                    molIDs={this.props.moleculeSelection.molIDs}
+                                >
+                                    {
+                                        mols => <SelectedList {...this.props} mols={mols}/>
+                                    }
+                                </MoleculeListProvider>
+                            ) : <p>{this.props.emptyMessage ? this.props.emptyMessage : "No compounds selected."}</p>
                         }
                     </Col>
                 </Row>

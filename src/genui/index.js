@@ -47,6 +47,7 @@ import SimpleDropDownToggle from './components/SimpleDropDownToggle';
 import {ActivitySetStatsTable} from './components/compounds/summaries/ActivitySetStatsTable';
 import MolsetActivitiesSummary from './components/compounds/tabs/MolsetActivitiesSummary';
 import EditMolSet from "./components/compounds/tabs/EditMolSet";
+import {MoleculeProvider, MoleculeListProvider} from "./components/compounds/MoleculeProviders";
 
 // TODO: structure this list in a more sensible way
 export {
@@ -113,5 +114,7 @@ export {
   scrollTo,
   TableFromItems,
   GenericInfo,
-  EditMolSet
+  EditMolSet,
+  MoleculeProvider,
+  MoleculeListProvider
 }

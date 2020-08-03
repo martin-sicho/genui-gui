@@ -1,13 +1,13 @@
 import React from 'react';
 import MapPage from './MapPage';
-import { TabWidget} from '../../../../genui';
+import { TabWidget } from '../../../../genui';
 import SelectedActivitiesPage from './SelectedActivitiesPage';
 import SelectedListPage from './SelectedListPage';
 
 export default function MapTabs(props) {
   const [moleculeSelectionInMap, setMoleculeSelectionInMap] =  React.useState({
     revision: 0,
-    mols: []
+    molIDs: []
   });
 
   const tabs = [
@@ -31,13 +31,13 @@ export default function MapTabs(props) {
       tabs={tabs}
       activeTab={tabs[0].title}
       moleculeSelection={moleculeSelectionInMap}
-      onMolsSelect={mols => setMoleculeSelectionInMap(prevState => ({
+      onMolsSelect={molIDs => setMoleculeSelectionInMap(prevState => ({
         revision: prevState.revision + 1,
-        mols: mols
+        molIDs: molIDs
       }))}
       onMolsDeselect={() => setMoleculeSelectionInMap(prevState => ({
         revision: prevState.revision + 1,
-        mols: []
+        molIDs: []
       }))}
     />
   );

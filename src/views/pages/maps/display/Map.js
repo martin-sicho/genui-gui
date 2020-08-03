@@ -48,7 +48,7 @@ class Map extends React.Component {
           result => {
             const providers = [];
             this.props.molsets.forEach(molset => {
-              if (result.molecule.providers.includes(molset.id)) {
+              if (result.compoundSets.includes(molset.id)) {
                 providers.push(molset);
               }
             });

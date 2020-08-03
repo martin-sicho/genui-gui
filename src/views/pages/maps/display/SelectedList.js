@@ -48,7 +48,7 @@ export default function SelectedList(props) {
   return (
     <MolsToMolSetGroups
       {...props}
-      mols={props.moleculeSelection.mols}
+      mols={props.mols}
     >
       {
         (groups) => {
@@ -56,7 +56,7 @@ export default function SelectedList(props) {
             <MolSetsTabs
               {...props}
               groupedMols={groups}
-              mols={props.moleculeSelection.mols}
+              mols={props.mols}
               molsetClassToExtraActivityFields={molsetClassToExtraActivityFields}
               molsetClassToExtraInfoFields={molsetClassToExtraInfoFields}
               molsetClassToURLs={molsetClassToURLs}
