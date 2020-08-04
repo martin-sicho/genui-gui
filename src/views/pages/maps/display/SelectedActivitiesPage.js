@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'reactstrap';
-import {ActivitiesAggregator, groupBy, MoleculeListProvider, TabWidget} from '../../../../genui';
+import {ActivitiesAggregator, groupBy, TabWidget} from '../../../../genui';
 import ActivitySummary from './ActivitySummary';
 
 class SelectedActivitiesPage extends React.Component {
@@ -14,7 +14,7 @@ class SelectedActivitiesPage extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.moleculeSelection.revision !== this.props.moleculeSelection.revision) {
+    if (prevProps.moleculeSelection.revision !== this.props.moleculeSelection.revision || prevProps.selectedMolsInMap.length !== this.props.selectedMolsInMap.length) {
       if (this.props.moleculeSelection.molIDs.length === 0) {
         this.setState({aggregator: null})
       } else {
@@ -28,15 +28,12 @@ class SelectedActivitiesPage extends React.Component {
 
   render() {
     return this.state.aggregator ? (
-        <MoleculeListProvider {...this.props} molIDs={this.props.moleculeSelection.molIDs}>
-          {
-            (mols) => (
                 <React.Fragment>
                   <Row>
                     <Col sm={12}>
                       <this.state.aggregator
                           {...this.props}
-                          mols={mols}
+                          mols={this.props.selectedMolsInMap}
                       >
                         {
                           (activities) => {
@@ -49,7 +46,7 @@ class SelectedActivitiesPage extends React.Component {
                                 renderedComponent: (props) => (
                                     <ActivitySummary
                                         {...props}
-                                        mols={mols}
+                                        mols={props.selectedMolsInMap}
                                         type={group[0].type}
                                         activities={group}
                                     />
@@ -71,9 +68,6 @@ class SelectedActivitiesPage extends React.Component {
                     </Col>
                   </Row>
                 </React.Fragment>
-            )
-          }
-        </MoleculeListProvider>
     ) : <p>No compounds selected in the map.</p>
   }
 }

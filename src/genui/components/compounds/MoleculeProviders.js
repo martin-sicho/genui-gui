@@ -28,7 +28,7 @@ export function MoleculeListProvider (props) {
         >
             {
                 (allLoaded, data) => {
-                    return allLoaded ? props.children(Object.keys(data).map(molID => data[molID])) : <div>Loading molecule data...</div>;
+                    return props.children(Object.keys(data).map(molID => data[molID]), allLoaded);
                 }
             }
         </ComponentWithResources>
