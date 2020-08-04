@@ -18,14 +18,12 @@ class ComponentWithPagedResources extends React.Component {
     const data = {};
     Object.keys(definition).forEach(key => {
       const url = new URL(definition[key]);
-      const search = url.search;
       data[key] = {
         items : [],
         lastPage : null,
         lastPageItems: [],
         nextPage : url,
         finished : false,
-        originalUrlQuery: search
       }
     });
     return {
@@ -129,7 +127,7 @@ class ComponentWithPagedResources extends React.Component {
         let nextPage = null;
         let finished = false;
         if (data.next) {
-          nextPage = data.next + this.state.data[key].originalUrlQuery.replace('?', '&');
+          nextPage = data.next;
         } else {
           finished = true;
           if (this.interval) {
