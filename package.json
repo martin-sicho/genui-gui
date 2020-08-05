@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Frontend application of the GenUI project.",
   "author": "Martin Šícho",
-  "copyright": "Copyright 2020 Martin Šícho",
+  "copyright": "Copyright © 2019 Nice Dash, 2019-2020 Martin Šícho. All rights reserved.",
   "private": true,
   "dependencies": {
     "@ishawnwang/withunmounted": "^1.0.1",
