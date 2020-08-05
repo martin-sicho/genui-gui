@@ -1,7 +1,8 @@
 import React from 'react';
 import './plot-styles.css';
 import withUnmounted from '@ishawnwang/withunmounted';
-import MapPlot from './MapPlot';
+// import MapPlot from './MapPlot';
+import ChemSpacePlot from "./ChemSpacePlot";
 
 class Map extends React.Component {
   abort = new AbortController();
@@ -95,9 +96,10 @@ class Map extends React.Component {
 
   render() {
     return (
-      <MapPlot
+      <ChemSpacePlot
         {...this.props}
         points={this.state.points}
+        pointsLoaded={!this.state.nextPage}
       />
     )
   }
