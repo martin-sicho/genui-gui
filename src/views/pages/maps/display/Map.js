@@ -18,6 +18,9 @@ class Map extends React.Component {
     const pointsUrl = new URL(`${this.props.map.id}/points/`, this.props.apiUrls.mapsRoot);
     return {
       points : {},
+      molecules: {},
+      pointsTotal: 0,
+      pointsLoaded: 0,
       lastPage : null,
       nextPage : pointsUrl,
     }
@@ -75,6 +78,7 @@ class Map extends React.Component {
         this.setState(prevState => {
           const points = prevState.points;
           Object.keys(pagePoints).forEach(providerID => {
+            pagePoints[providerID].forEach(point => this.fetchMoleculeData(point.id, point.molecule));
             if (points[providerID]) {
               pagePoints[providerID].forEach(result =>
                 points[providerID].push(result)
@@ -88,18 +92,77 @@ class Map extends React.Component {
             points : points,
             lastPage: page,
             nextPage: nextPage,
+            pointsTotal: data.count,
+            pointsLoaded: prevState.pointsLoaded + data.results.length
           }
         })
       })
       .catch(e => console.log(e))
   };
 
+  fetchMoleculeData(pointID, molID) {
+      const propsList = [
+          "AMW",
+          "NUMHEAVYATOMS",
+          "NUMAROMATICRINGS",
+          "HBA",
+          "HBD",
+          "LOGP",
+          "TPSA",
+      ];
+      fetch(new URL(`${molID}/?properties=${propsList.join(',')}`, this.props.apiUrls.compoundsRoot), {signal : this.abort.signal, credentials: "include",})
+          .then(response => response.json())
+          .then(
+              data => {
+                  this.setState(prevState => {
+                      prevState.molecules[pointID] = data;
+                      prevState.molecules[pointID].activities = {};
+                      return prevState;
+                  }, () => {
+                      this.fetchMolActivities(pointID, molID);
+                  })
+              }
+          )
+          .catch(
+              (error) => console.log(error)
+          );
+  }
+
+  fetchMolActivities(pointID, molID) {
+      Object.keys(this.props.activitySets).forEach(actsetID => {
+          const molset = this.props.molsets.find(molset => molset.activities.includes(Number(actsetID)));
+          if (!molset) {
+              return
+          }
+          fetch(new URL(`${molID}/activities/?activity_set=${actsetID}`, this.props.apiUrls.compoundsRoot), {signal : this.abort.signal, credentials: "include",})
+              .then(response => response.json())
+              .then(
+                  data => {
+                      this.setState(prevState => {
+                          if (prevState.molecules[pointID].activities[actsetID]) {
+                              data.forEach(activity => prevState.molecules[pointID].activities[actsetID].push(activity))
+                          } else {
+                              prevState.molecules[pointID].activities[actsetID] = data;
+                          }
+                          return prevState;
+                      })
+                  }
+              )
+              .catch(
+                  (error) => console.log(error)
+              );
+      });
+  }
+
   render() {
     return (
       <ChemSpacePlot
         {...this.props}
         points={this.state.points}
-        pointsLoaded={!this.state.nextPage}
+        pointsToMolecules={this.state.molecules}
+        pointsTotal={this.state.pointsTotal}
+        pointsLoaded={this.state.pointsTotal !== 0 && this.state.pointsLoaded === this.state.pointsTotal}
+        moleculesLoaded={Object.keys(this.state.molecules).length === this.state.pointsTotal}
       />
     )
   }
