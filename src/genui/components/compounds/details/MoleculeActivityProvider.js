@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentWithPagedResources } from '../../../index';
+import { ComponentWithResources } from '../../../index';
 
 function MoleculeActivityProvider(props) {
     const mol = props.mol;
@@ -14,7 +14,7 @@ function MoleculeActivityProvider(props) {
     return (
         <React.Fragment>
             {/*<h4>Activity Data</h4>*/}
-            <ComponentWithPagedResources
+            <ComponentWithResources
                 {...props}
                 definition={definition}
                 // mol={mol}
@@ -23,11 +23,13 @@ function MoleculeActivityProvider(props) {
                 // }}
             >
                 {
-                    (activities) => (
-                        <ListComp {...props} activities={activities}/>
-                    )
+                    (dataLoaded, activities) => {
+                        return dataLoaded ? (
+                            <ListComp {...props} activities={activities}/>
+                        ) : <div>Fetching activity data...</div>
+                    }
                 }
-            </ComponentWithPagedResources>
+            </ComponentWithResources>
         </React.Fragment>
     )
 }
