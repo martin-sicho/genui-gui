@@ -13,17 +13,17 @@ class MapPage extends React.Component {
     super(props);
 
     this.state = {
-      hoverMolID: null,
+      hoverMol: null,
       hoverOverview: null
     }
   }
 
   handleMolHover = (mol, point) => {
-    mol = !(this.props.moleculeSelection.mols.length === 1) ? mol : this.props.moleculeSelection.mols[0].id;
-    if (!this.state.hoverMolID || (mol !== this.state.hoverMolID)) {
+    mol = !(this.props.moleculeSelection.mols.length === 1) ? mol : this.props.moleculeSelection.mols[0];
+    if (!this.state.hoverMol || (mol !== this.state.hoverMol)) {
       this.setState({
-        hoverMolID : mol,
-        hoverOverview: (props) => <CompoundOverview {...props} molID={mol} showImage={true} />
+        hoverMol : mol,
+        hoverOverview: (props) => <CompoundOverview {...props} mol={mol} showImage={true} />
       })
     }
   };

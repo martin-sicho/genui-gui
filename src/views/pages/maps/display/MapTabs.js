@@ -1,6 +1,6 @@
 import React from 'react';
 import MapPage from './MapPage';
-import {MoleculeListProvider, TabWidget} from '../../../../genui';
+import { TabWidget } from '../../../../genui';
 import SelectedActivitiesPage from './SelectedActivitiesPage';
 import SelectedListPage from './SelectedListPage';
 
