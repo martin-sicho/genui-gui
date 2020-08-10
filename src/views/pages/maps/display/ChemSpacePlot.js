@@ -198,7 +198,7 @@ class ChemSpacePlot extends React.Component {
             return window.chemspace._get_point_tooltip(evt);
         };
         window.chemspace.events.points_selection = (point_ids) => {
-            this.props.onMolsSelect(point_ids.map(point_id => this.state.data.points[point_id].molID));
+            this.props.onMolsSelect(point_ids.map(point_id => this.props.pointsToMolecules[point_id]));
         }
     }
 

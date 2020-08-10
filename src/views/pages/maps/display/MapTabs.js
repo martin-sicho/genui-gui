@@ -7,7 +7,7 @@ import SelectedListPage from './SelectedListPage';
 export default function MapTabs(props) {
   const [moleculeSelectionInMap, setMoleculeSelectionInMap] =  React.useState({
     revision: 0,
-    molIDs: []
+    mols: []
   });
 
   const tabs = [
@@ -26,27 +26,20 @@ export default function MapTabs(props) {
   ];
 
   return (
-      <MoleculeListProvider {...props} molIDs={moleculeSelectionInMap.molIDs}>
-        {
-          (selectedMols) => {
-            return (
-              <TabWidget
-                  {...props}
-                  tabs={tabs}
-                  activeTab={tabs[0].title}
-                  selectedMolsInMap={selectedMols}
-                  moleculeSelection={moleculeSelectionInMap}
-                  onMolsSelect={molIDs => setMoleculeSelectionInMap(prevState => ({
-                    revision: prevState.revision + 1,
-                    molIDs: molIDs
-                  }))}
-                  onMolsDeselect={() => setMoleculeSelectionInMap(prevState => ({
-                    revision: prevState.revision + 1,
-                    molIDs: []
-                  }))}
-              />
-          )}
-        }
-      </MoleculeListProvider>
-  );
+      <TabWidget
+          {...props}
+          tabs={tabs}
+          activeTab={tabs[0].title}
+          selectedMolsInMap={moleculeSelectionInMap.mols}
+          moleculeSelection={moleculeSelectionInMap}
+          onMolsSelect={mols => setMoleculeSelectionInMap(prevState => ({
+            revision: prevState.revision + 1,
+            mols: mols
+          }))}
+          onMolsDeselect={() => setMoleculeSelectionInMap(prevState => ({
+            revision: prevState.revision + 1,
+            mols: []
+          }))}
+      />
+  )
 }

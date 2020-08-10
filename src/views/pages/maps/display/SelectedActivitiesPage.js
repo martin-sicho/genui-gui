@@ -15,7 +15,7 @@ class SelectedActivitiesPage extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.moleculeSelection.revision !== this.props.moleculeSelection.revision || prevProps.selectedMolsInMap.length !== this.props.selectedMolsInMap.length) {
-      if (this.props.moleculeSelection.molIDs.length === 0) {
+      if (this.props.moleculeSelection.mols.length === 0) {
         this.setState({aggregator: null})
       } else {
         this.setState({

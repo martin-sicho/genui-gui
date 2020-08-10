@@ -15,7 +15,7 @@ class SelectedListPage extends React.Component {
                 <Row>
                     <Col sm={12}>
                         {
-                            this.props.moleculeSelection.molIDs.length > 0 ? (
+                            this.props.moleculeSelection.mols.length > 0 ? (
                                 <SelectedList {...this.props} mols={this.props.selectedMolsInMap}/>
                             ) : <p>No compounds selected in the map.</p>
                         }
