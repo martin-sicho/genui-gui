@@ -23,6 +23,10 @@ class ActivitySummaryPlotter extends React.Component {
     bySource.forEach(group => {
       const actset = actsets[group[0].source];
       const molset = molsets.find(item => item.id === actset.molecules);
+      if (!molset) {
+        console.error(`Cannot find molecule set ${actset.molecules} for activity set: ${actset.id}`);
+        return;
+      }
 
       if (!plotTraces.hasOwnProperty(molset.id)) {
         plotTraces[molset.id] = {};
