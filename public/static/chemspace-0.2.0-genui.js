@@ -2716,6 +2716,9 @@ var _date = new Date();
     var dimensions = $("<div></div>");
 
     for(var i = 0, len=self.data.feature_names.length; i<len; i++){
+        if (i > 8) {
+            continue;
+        }
       row = $("<div></div>")
         .css({"margin-top": 5});
 
