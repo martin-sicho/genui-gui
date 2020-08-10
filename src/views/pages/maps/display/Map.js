@@ -75,10 +75,13 @@ class Map extends React.Component {
           this.fetchData(new URL(data.next));
         }
 
+        Object.keys(pagePoints).forEach(providerID => {
+            pagePoints[providerID].forEach(point => this.fetchMoleculeData(point.id, point.molecule));
+        });
+
         this.setState(prevState => {
           const points = prevState.points;
           Object.keys(pagePoints).forEach(providerID => {
-            pagePoints[providerID].forEach(point => this.fetchMoleculeData(point.id, point.molecule));
             if (points[providerID]) {
               pagePoints[providerID].forEach(result =>
                 points[providerID].push(result)
@@ -114,13 +117,19 @@ class Map extends React.Component {
           .then(response => response.json())
           .then(
               data => {
-                  this.setState(prevState => {
-                      prevState.molecules[pointID] = data;
-                      prevState.molecules[pointID].activities = {};
-                      return prevState;
-                  }, () => {
-                      this.fetchMolActivities(pointID, molID);
-                  })
+                  const molecules = this.state.molecules;
+                  molecules[pointID] = data;
+                  molecules[pointID].activities = {};
+                  this.setState({
+                      molecules: molecules
+                  }, () => this.fetchMolActivities(pointID, molID));
+                  // this.setState(prevState => {
+                  //     prevState.molecules[pointID] = data;
+                  //     prevState.molecules[pointID].activities = {};
+                  //     return prevState;
+                  // }, () => {
+                  //     this.fetchMolActivities(pointID, molID);
+                  // })
               }
           )
           .catch(
@@ -138,14 +147,25 @@ class Map extends React.Component {
               .then(response => response.json())
               .then(
                   data => {
-                      this.setState(prevState => {
-                          if (prevState.molecules[pointID].activities[actsetID]) {
-                              data.forEach(activity => prevState.molecules[pointID].activities[actsetID].push(activity))
-                          } else {
-                              prevState.molecules[pointID].activities[actsetID] = data;
-                          }
-                          return prevState;
+                      const molecules = this.state.molecules;
+                      let activities = molecules[pointID].activities[actsetID];
+                      if (activities) {
+                          data.forEach(activity => activities.push(activity));
+                      } else {
+                          activities = data;
+                      }
+                      molecules[pointID].activities[actsetID] = activities;
+                      this.setState({
+                          molecules: molecules
                       })
+                      // this.setState(prevState => {
+                      //     if (prevState.molecules[pointID].activities[actsetID]) {
+                      //         data.forEach(activity => prevState.molecules[pointID].activities[actsetID].push(activity))
+                      //     } else {
+                      //         prevState.molecules[pointID].activities[actsetID] = data;
+                      //     }
+                      //     return prevState;
+                      // })
                   }
               )
               .catch(
