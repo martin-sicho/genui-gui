@@ -161,8 +161,8 @@ class Map extends React.Component {
         points={this.state.points}
         pointsToMolecules={this.state.molecules}
         pointsTotal={this.state.pointsTotal}
-        pointsLoaded={this.state.pointsTotal !== 0 && this.state.pointsLoaded === this.state.pointsTotal}
-        moleculesLoaded={Object.keys(this.state.molecules).length === this.state.pointsTotal}
+        pointsFinishedLoading={this.state.pointsTotal !== 0 && this.state.pointsLoaded === this.state.pointsTotal}
+        moleculesFinishedLoading={Object.keys(this.state.molecules).length === this.state.pointsTotal}
       />
     )
   }

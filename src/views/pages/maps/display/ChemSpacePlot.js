@@ -1,5 +1,6 @@
 import React from 'react';
 import {PLOTLY_COLORS} from "../../../../genui";
+import {Progress} from "reactstrap";
 
 class ChemSpacePlot extends React.Component {
 
@@ -39,7 +40,7 @@ class ChemSpacePlot extends React.Component {
         if (this.countPropsPoints(this.props.points) > Object.keys(this.state.data.points).length) {
             this.updatePoints();
         }
-        if (!this.state.molsParsed && !this.state.parsingMols && this.props.pointsLoaded && this.props.moleculesLoaded) {
+        if (!this.state.molsParsed && !this.state.parsingMols && this.props.pointsFinishedLoading && this.props.moleculesFinishedLoading) {
             this.parseMoleculeData();
         }
 
@@ -205,13 +206,27 @@ class ChemSpacePlot extends React.Component {
 
 
     render() {
-        if (!this.props.pointsLoaded) {
-            return <div>Loading points: {this.countPropsPoints(this.props.points)}/{this.props.pointsTotal}</div>
+        // if (!this.props.pointsFinishedLoading) {
+        //     return (
+        //         <React.Fragment>
+        //             <div><p>Loading map data...</p></div>
+        //             <Progress color="info" value={100 * this.countPropsPoints(this.props.points) / this.props.pointsTotal} />
+        //         </React.Fragment>
+        //     );
+        // }
+
+        if (!this.state.molsParsed) {
+            return (
+                <React.Fragment>
+                    <div><p>Fetching molecules... ({Object.keys(this.props.pointsToMolecules).length}/{this.props.pointsTotal})</p></div>
+                    <Progress color="info" value={100 * Object.keys(this.props.pointsToMolecules).length / this.props.pointsTotal} />
+                </React.Fragment>
+            )
         }
 
         return (
             <div id="chemspace" ref="chemspace">
-                <div>Attaching molecule data: {this.state.parsedMols}/{this.countPropsPoints(this.props.points)}</div>
+                <div>Attaching molecule data: {Object.keys(this.props.pointsToMolecules).length}/{this.props.pointsTotal}</div>
             </div>
         )
     }
