@@ -60,7 +60,7 @@ class MapSelect extends React.Component {
           selected={selected}
           definition={resourcesDef}
           updateCondition={
-            (prevProps, nextProps) => prevProps.selected !== nextProps.selected
+            (prevProps, nextProps) => prevProps.selected.id !== nextProps.selected.id
           }
         >
           {
