@@ -6,7 +6,7 @@ import {
 } from 'reactstrap';
 import React from 'react';
 import Map from './Map';
-// import { CompoundOverview } from '../../../../genui';
+import { CompoundOverview } from '../../../../genui';
 
 class MapPage extends React.Component {
   constructor(props) {
@@ -18,43 +18,43 @@ class MapPage extends React.Component {
     }
   }
 
-  // handleMolHover = (mol, point) => {
-  //   mol = !(this.props.moleculeSelection.molIDs.length === 1) ? mol : this.props.moleculeSelection.molIDs[0];
-  //   if (!this.state.hoverMolID || (mol !== this.state.hoverMolID)) {
-  //     this.setState({
-  //       hoverMolID : mol,
-  //       hoverOverview: (props) => <CompoundOverview {...props} molID={mol} showImage={false} />
-  //     })
-  //   }
-  // };
+  handleMolHover = (mol, point) => {
+    mol = !(this.props.moleculeSelection.molIDs.length === 1) ? mol : this.props.moleculeSelection.molIDs[0];
+    if (!this.state.hoverMolID || (mol !== this.state.hoverMolID)) {
+      this.setState({
+        hoverMolID : mol,
+        hoverOverview: (props) => <CompoundOverview {...props} molID={mol} showImage={true} />
+      })
+    }
+  };
 
   render() {
     const selectedMap = this.props.selectedMap;
     return (
       selectedMap ? (
         <Row>
-          <Col md={12} sm={12}>
+          <Col md={8} sm={8}>
             <Card>
               <CardBody>
                 <Map
                   {...this.props}
                   map={selectedMap}
-                  // onMolHover={this.handleMolHover}
+                  onMolHover={this.handleMolHover}
                 />
               </CardBody>
             </Card>
           </Col>
 
-          {/*<Col md={3} sm={2}>*/}
-          {/*  {*/}
-          {/*    this.state.hoverOverview ? (*/}
-          {/*      <this.state.hoverOverview*/}
-          {/*        {...this.props}*/}
-          {/*        map={selectedMap}*/}
-          {/*      />*/}
-          {/*    ) : <div><p>Hover over a point in the map to see more.</p></div>*/}
-          {/*  }*/}
-          {/*</Col>*/}
+          <Col md={4} sm={4}>
+            {
+              this.state.hoverOverview ? (
+                <this.state.hoverOverview
+                  {...this.props}
+                  map={selectedMap}
+                />
+              ) : <div><p>Hover over a point in the map to see more. If there is only one molecule in your selection, it will also be shown here.</p></div>
+            }
+          </Col>
         </Row>
       ) : <div>Select a map to display from the menu.</div>
     )

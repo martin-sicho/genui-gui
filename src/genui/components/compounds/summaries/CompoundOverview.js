@@ -16,19 +16,20 @@ export default function CompoundOverview(props) {
             mol => {
                 return (
                     <React.Fragment>
-                        <Row>
-                            <Col sm={12}>
-                                <MoleculeImage
-                                    {...props}
-                                    mol={mol}
-                                />
-                            </Col>
-                        </Row>
+                        {props.showImage ? (
+                            <Row>
+                                <Col sm={12}>
+                                    <MoleculeImage
+                                        {...props}
+                                        mol={mol}
+                                    />
+                                </Col>
+                            </Row>
+                        ) : null}
 
-                        <hr/>
-                        <h3>Activities</h3>
                         <Row>
                             <Col sm={12}>
+                                <h3>Activities</h3>
                                 <MoleculeActivityProvider
                                     {...props}
                                     mol={mol}
@@ -40,10 +41,9 @@ export default function CompoundOverview(props) {
                             </Col>
                         </Row>
 
-                        <hr/>
-                        <h3>Properties</h3>
                         <Row>
                             <Col sm={12}>
+                                <h3>Properties</h3>
                                 <MoleculePropsProvider
                                     {...props}
                                     mol={mol}

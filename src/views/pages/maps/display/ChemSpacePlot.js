@@ -192,13 +192,11 @@ class ChemSpacePlot extends React.Component {
         window.chemspace.draw(); //draw chemical space
         this.setState({mapDrawn: true});
 
-        // uncomment to catch point hover events
-        // window.chemspace.events.point_tooltip = (point_ids, color, evt) => {
-        //     console.log(this);
-        //     this.props.onMolHover(this.state.data.points[point_ids[0]].molID);
-        //     return window.chemspace._get_point_tooltip(evt);
-        // }
-
+        // register events
+        window.chemspace.events.point_tooltip = (point_ids, color, evt) => {
+            this.props.onMolHover(this.state.data.points[point_ids[0]].molID);
+            return window.chemspace._get_point_tooltip(evt);
+        };
         window.chemspace.events.points_selection = (point_ids) => {
             this.props.onMolsSelect(point_ids.map(point_id => this.state.data.points[point_id].molID));
         }
