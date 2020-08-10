@@ -206,18 +206,17 @@ class ChemSpacePlot extends React.Component {
 
 
     render() {
-        // if (!this.props.pointsFinishedLoading) {
-        //     return (
-        //         <React.Fragment>
-        //             <div><p>Loading map data...</p></div>
-        //             <Progress color="info" value={100 * this.countPropsPoints(this.props.points) / this.props.pointsTotal} />
-        //         </React.Fragment>
-        //     );
-        // }
-
         if (!this.state.molsParsed) {
             return (
                 <React.Fragment>
+                    {
+                        !this.props.pointsFinishedLoading ? (
+                            <React.Fragment>
+                                <div><p>Loading map data...</p></div>
+                                <Progress color="info" value={100 * this.countPropsPoints(this.props.points) / this.props.pointsTotal} />
+                            </React.Fragment>
+                        ) : null
+                    }
                     <div><p>Fetching molecules... ({Object.keys(this.props.pointsToMolecules).length}/{this.props.pointsTotal})</p></div>
                     <Progress color="info" value={100 * Object.keys(this.props.pointsToMolecules).length / this.props.pointsTotal} />
                 </React.Fragment>
