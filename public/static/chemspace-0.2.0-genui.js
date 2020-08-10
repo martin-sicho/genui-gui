@@ -576,7 +576,7 @@ var _date = new Date();
 
       self.html_ref = {
         "tooltip": $("<div class='point_tooltip'>\
-            <!-- <div class='compound_img'><canvas id='tooltip_compound_img'></canvas></div> -->\
+            <div class='compound_img'><canvas id='tooltip_compound_img'></canvas></div>\
             <div class='point_id'></div>\
             <div class='dimensions'></div>\
           </div>")
