@@ -6,7 +6,7 @@ export default function MoleculePropsProvider(props) {
   const Component = props.component;
   const propsList = props.propsList;
 
-  if (mol.properties) {
+  if (Object.keys(mol.properties).length > 0) {
       return <Component {...props} molWithProperties={mol}/>
   } else {
       return (
