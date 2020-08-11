@@ -94,7 +94,7 @@ class GroupedViolinPlot extends React.Component {
     };
 
     return (
-      <div className="genui-activity-summary-violin-plot">
+      <div className="genui-activity-summary-violin-plot" style={{height: '100vh'}}>
         <Plot
           ref={plotlyRef => {
             this.plotlyRef = plotlyRef;
