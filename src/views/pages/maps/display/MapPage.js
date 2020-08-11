@@ -60,7 +60,7 @@ class MapPage extends React.Component {
                   {...this.props}
                   map={selectedMap}
                 />
-              ) : <div><p>Hover over a point in the map to see more. If there is only one molecule in your selection, it will also be shown here.</p></div>
+              ) : <div><p>Hover over a point in the map to see compound details. If there is only one molecule in your selection, it will also be shown here.</p></div>
             }
           </Col>
         </Row>

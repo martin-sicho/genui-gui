@@ -12,15 +12,15 @@ export default function MapTabs(props) {
 
   const tabs = [
     {
-      title: "Map",
+      title: props.selectedMap.name,
       renderedComponent: MapPage
     },
     {
-      title: "Selected (List)",
+      title: "Selection List",
       renderedComponent: SelectedListPage
     },
     {
-      title: "Selected (Activities)",
+      title: "Selection Activities",
       renderedComponent: SelectedActivitiesPage
     },
   ];

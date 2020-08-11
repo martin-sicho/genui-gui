@@ -41,7 +41,7 @@ class ChemSpacePlotFromFile extends React.Component {
 
         if (!this.props.selectedMap.chemspaceJSON) {
             this.setState({
-                error: 'Fatal error while rendering the map. No ChemSpace.js JSON file found for this map instance.'
+                error: `Fatal error while rendering the map. No ChemSpace.js JSON file found for "${this.props.selectedMap.name}".`
             });
             return
         }
