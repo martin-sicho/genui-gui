@@ -2,7 +2,7 @@ import { ComponentWithPagedResources, MolsToMolSetGroups } from '../../../../gen
 import React from 'react';
 
 export default function ActivitiesAggregator(props) {
-  if (props.mols[0].activities) {
+  if (props.mols.length > 0 && props.mols[0].activities) {
     const activitiesAll = [];
     props.mols.forEach(mol => {
       Object.keys(mol.activities).forEach(actSetID => {
