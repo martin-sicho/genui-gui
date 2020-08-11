@@ -24,6 +24,7 @@ class ComponentWithPagedResources extends React.Component {
         lastPageItems: [],
         nextPage : url,
         finished : false,
+        itemsTotal: 0
       }
     });
     return {
@@ -145,6 +146,7 @@ class ComponentWithPagedResources extends React.Component {
           prevState.data[key].lastPageItems = data.results;
           prevState.data[key].nextPage = nextPage;
           prevState.data[key].finished = finished;
+          prevState.data[key].itemsTotal = data.count;
 
           if (this.allFinished(prevState)) {
             prevState.isUpdating = false;
@@ -166,10 +168,12 @@ class ComponentWithPagedResources extends React.Component {
   render() {
     const ret = {};
     const data = this.state.data;
+    const totals = {};
     Object.keys(data).forEach(key => {
       ret[key] = data[key].items;
+      totals[key] = data[key].itemsTotal;
     });
-    return this.props.children(ret, !this.state.isUpdating, this.state.revision);
+    return this.props.children(ret, !this.state.isUpdating, this.state.revision, totals);
   }
 }
 
