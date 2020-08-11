@@ -5,8 +5,8 @@ import {
   Row,
 } from 'reactstrap';
 import React from 'react';
-import Map from './Map';
-import { CompoundOverview } from '../../../../genui';
+import {CompoundOverview, MoleculeProvider} from '../../../../genui';
+import ChemSpacePlotFromFile from "./ChemSpacePlotFromFile";
 
 class MapPage extends React.Component {
   constructor(props) {
@@ -23,7 +23,15 @@ class MapPage extends React.Component {
     if (!this.state.hoverMol || (mol !== this.state.hoverMol)) {
       this.setState({
         hoverMol : mol,
-        hoverOverview: (props) => <CompoundOverview {...props} mol={mol} showImage={true} />
+        hoverOverview: (props) => {
+          return (
+              <MoleculeProvider {...props} molID={mol}>
+                {
+                  (mol) => <CompoundOverview {...props} mol={mol} showImage={true} />
+                }
+              </MoleculeProvider>
+          )
+        }
       })
     }
   };
@@ -36,7 +44,7 @@ class MapPage extends React.Component {
           <Col md={8} sm={8}>
             <Card>
               <CardBody>
-                <Map
+                <ChemSpacePlotFromFile
                   {...this.props}
                   map={selectedMap}
                   onMolHover={this.handleMolHover}

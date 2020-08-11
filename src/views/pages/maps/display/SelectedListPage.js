@@ -1,4 +1,4 @@
-import { Col, Row } from 'reactstrap';
+import {Col, Progress, Row} from 'reactstrap';
 import SelectedList from './SelectedList';
 import React from 'react';
 
@@ -16,7 +16,14 @@ class SelectedListPage extends React.Component {
                     <Col sm={12}>
                         {
                             this.props.moleculeSelection.mols.length > 0 ? (
-                                <SelectedList {...this.props} mols={this.props.selectedMolsInMap}/>
+                                this.props.selectedMolsInMapLoaded ? (
+                                    <SelectedList {...this.props} mols={this.props.selectedMolsInMap}/>
+                                ) : (
+                                    <React.Fragment>
+                                        <div>Fetching selected compounds: {this.props.selectedMolsInMap.length}/{this.props.moleculeSelection.molsCount}</div>
+                                        <Progress color="info" value={100 * this.props.selectedMolsInMap.length / this.props.moleculeSelection.molsCount}/>
+                                    </React.Fragment>
+                                )
                             ) : <p>No compounds selected in the map.</p>
                         }
                     </Col>

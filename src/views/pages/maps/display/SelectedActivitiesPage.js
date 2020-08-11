@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'reactstrap';
+import {Col, Progress, Row} from 'reactstrap';
 import {ActivitiesAggregator, groupBy, TabWidget} from '../../../../genui';
 import ActivitySummary from './ActivitySummary';
 
@@ -15,12 +15,22 @@ class SelectedActivitiesPage extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.moleculeSelection.revision !== this.props.moleculeSelection.revision || prevProps.selectedMolsInMap.length !== this.props.selectedMolsInMap.length) {
-      if (this.props.moleculeSelection.mols.length === 0) {
+      if (this.props.moleculeSelection.molsCount === 0) {
         this.setState({aggregator: null})
       } else {
         this.setState({
-          // currentSelectionRev: this.props.selectedMolsRevision,
-          aggregator: (props) => <ActivitiesAggregator {...props}/>,
+          aggregator: (props) => {
+            if (props.selectedMolsInMapLoaded) {
+              return <ActivitiesAggregator {...props}/>
+            } else {
+              return (
+                  <React.Fragment>
+                    <div>Fetching selected compounds: {props.selectedMolsInMap.length}/{props.moleculeSelection.molsCount}</div>
+                    <Progress color="info" value={100 * props.selectedMolsInMap.length / props.moleculeSelection.molsCount}/>
+                  </React.Fragment>
+              )
+            }
+          },
         })
       }
     }
@@ -36,8 +46,8 @@ class SelectedActivitiesPage extends React.Component {
                           mols={this.props.selectedMolsInMap}
                       >
                         {
-                          (activities) => {
-                            if (activities) {
+                          (activities, finished, progress) => {
+                            if (finished) {
                               const groupedActivities = groupBy(activities, 'type.id');
                               // console.log(groupedActivities);
 
@@ -60,7 +70,17 @@ class SelectedActivitiesPage extends React.Component {
                                   />
                               )
                             } else {
-                              return <div>Loading activity data...</div>;
+                              progress = Object.keys(progress).map(key => progress[key]);
+                              if (progress.length === 0) {
+                                return <div><p>Loading activity data...</p></div>
+                              }
+                              const avgProgress = progress.reduce((a, b) => a + b) / progress.length
+                              return (
+                                  <React.Fragment>
+                                    <div><p>Loading activity data...</p></div>
+                                    <Progress color="info" value={avgProgress}/>
+                                  </React.Fragment>
+                              );
                             }
                           }
                         }
