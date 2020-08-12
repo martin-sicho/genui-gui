@@ -19,7 +19,6 @@ class MapPage extends React.Component {
   }
 
   handleMolHover = (mol, point) => {
-    mol = !(this.props.moleculeSelection.mols.length === 1) ? mol : this.props.moleculeSelection.mols[0].id;
     if (!this.state.hoverMol || (mol !== this.state.hoverMol)) {
       this.setState({
         hoverMol : mol,
