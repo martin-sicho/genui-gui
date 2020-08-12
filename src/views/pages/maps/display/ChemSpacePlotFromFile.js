@@ -61,11 +61,18 @@ class ChemSpacePlotFromFile extends React.Component {
 
     render() {
         return (
-            <div id="chemspace" ref="chemspace">
+            <React.Fragment>
+                {
+                    !this.state.mapDrawn ? <div>Fetching map data...</div> : null
+                }
+                <div id="chemspace" ref="chemspace" />
                 {
                     this.state.error ? <div>{this.state.error}</div> : null
                 }
-            </div>
+                <div>
+                    <p className="text-muted">Powered By <a target='_blank' rel="noopener noreferrer" href='https://openscreen.cz/software/chemspace/home/'>ChemSpace.js</a></p>
+                </div>
+            </React.Fragment>
         )
     }
 }
