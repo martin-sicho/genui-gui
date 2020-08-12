@@ -29,7 +29,7 @@ class ChemSpacePlotFromFile extends React.Component {
             compounds: {
                 draw: true,
                 size: 1,
-                tooltip_compound_size: 400,
+                tooltip_compound_size: 250,
             },
             color: {
                 index: "category"
