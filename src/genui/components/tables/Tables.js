@@ -24,7 +24,7 @@ export function TableDataFromItems (props) {
   return (
     <tbody>
     {items.map(item => (
-      <tr key={key(item)}>
+      <tr key={key({dummy : item})}>
         <th scope="row">{props.parseRowHeader ? props.parseRowHeader(resolve(rowHeaderProp, item)) : resolve(rowHeaderProp, item)}</th>
         {
           dataProps.map(dprop => {
