@@ -2,28 +2,42 @@
     <img src="assets/preview.png"/>
 </p>
 
-Vibe is a beautiful React.js dashboard build with Bootstrap 4 and
-comes with lots of custom templates and components. It's built with Sass
-which allows you to quickly change global colors and styles.
+# About
 
-### Quick Start
+This is the GenUI frontend application. It is based on [Vibe](https://github.com/NiceDash/Vibe) (v1.0.2),
+a neat [React.js](https://reactjs.org/) dashboard built with [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/). It provides
+a GUI to the [GenUI REST API web services](https://github.com/martin-sicho/genui/).
+
+## Quick Start
 
 - Install dependencies by running `yarn` or `npm install`.
 - Run `yarn start` or `npm run start` to start the local dev server.
 
-### Reporting Issues
-
-Report any issues you may find with Vibe on the github
-issues tab. I will get an update to you as soon as possible. Feel free
-to open a pull request and I will review and merge.
+The development server will look for the GenUI backend service running
+at `http://localhost:8000` and it will use REST API endpoints found under 
+`http://localhost:8000/api/`.
 
 ## Documentation
 
-Vibe is based on [Create React App](https://create-react-app.dev/). Follow the documentation there for an introduction of the development environment.
+The GenUI/Vibe dashboard is based on [Create React App](https://create-react-app.dev/). 
+Follow the documentation there for an introduction of the development environment.
 
-### Modifying the layout
+## Custom GenUI Components
 
-The basic dashboard layout is defined in `./src/views/layouts/DashboardLayout.js`. You can modify parts of the layout with the following code:
+The original library of components defined in the Vibe dashboard was extended with 
+custom reusable components designated to be used in GenUI. You can import
+those components from the package located in `./src/genui/`. You can find 
+the package with the original Vibe components in `./src/vibe`. 
+
+If you want to expand the GUI using these components, 
+you should take a look at the currently defined pages 
+of the dashboard in `./src/views/pages` for example use 
+of these components.
+
+## The Layout
+
+The basic dashboard layout is defined in `./src/views/layouts/DashboardLayout.js`. 
+You can modify parts of the Vibe layout with the following code:
 
 Part | Modification
 --- | ---
@@ -39,22 +53,15 @@ Menu | See below.
 
 1. Create your page as component in the folder `./src/views/pages`. (You can actually create these components anywhere you wish, this is just a recommendation.)
 1. Add your component to the `pageList` array in `./src/views/index.js`.
-1. Call it by opening the route you've chosen.
-
-Key | Value
---- | ---
-`component` | Your component name
-`name` | The display name in the top bar (`Header`) of the dashboard
-`route` | Route of this page, using the [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) syntax
-`exact` | (Optional) Set to true if you want to match this route exactly. See [Routes documentation](https://reacttraining.com/react-router/web/api/Route/exact-bool) for details.
-
-See below for how to use Bootstrap components to design your page content.
+1. Call it by opening the route you've chosen. You can use the `Route` component
+(see [Routes documentation](https://reacttraining.com/react-router/web/api/Route/exact-bool))  
+of [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start).
 
 ### Creating a menu entry
 
-All pages are accessible by their routes, but only pages manually added to `./src/_nav.js` show up on the sidebar menu.
-
-There are two menus available to fill: `top` and `bottom`.
+All pages are accessible by their routes, but only pages added to 
+the `nav` state property of `DashboardLayout` or manually defined in `./src/_nav.js` 
+show up on the sidebar menu. There are two menus available to fill: `top` and `bottom`.
 
 Every top level menu entry can either be a top level button or a folder with a single level of child entries.
 
@@ -72,7 +79,9 @@ Key | Value
 
 ### Using Bootstrap / reactstrap
 
-Vibe is using the Bootstrap-for-React library [reactstrap](https://reactstrap.github.io/). Follow the [components documentation](https://reactstrap.github.io/components/) for using them in a Vibe Dashboard.
+Vibe is using the Bootstrap-for-React library [reactstrap](https://reactstrap.github.io/). 
+Follow the [components documentation](https://reactstrap.github.io/components/) for using them 
+in a Vibe Dashboard.
 
 Note that Vibe overwrites the default Bootstrap styles in `./src/vibe/scss/components/`.
 
