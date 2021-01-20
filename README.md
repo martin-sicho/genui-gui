@@ -23,18 +23,6 @@ at `http://localhost:8000` and it will use REST API endpoints found under
 The GenUI/Vibe dashboard is based on [Create React App](https://create-react-app.dev/). 
 Follow the documentation there for an introduction of the development environment.
 
-## Custom GenUI Components
-
-The original library of components defined in the Vibe dashboard was extended with 
-custom reusable components designated to be used in GenUI. You can import
-those components from the package located in `./src/genui/`. You can find 
-the package with the original Vibe components in `./src/vibe`. 
-
-If you want to expand the GUI using these components, 
-you should take a look at the currently defined pages 
-of the dashboard in `./src/views/pages` for example use 
-of these components.
-
 ## The Layout
 
 The basic dashboard layout is defined in `./src/views/layouts/DashboardLayout.js`. 
@@ -95,3 +83,19 @@ Vibe is using [react-feather](https://www.npmjs.com/package/react-feather) for i
 A nice overview over all available icons can be found on <https://feathericons.com/>.
 
 *Note:* In order to use a Feather icon in react, convert the name to camel case. (I.e. `alert-circle` becomes `AlertCircle`).
+
+## Custom GenUI Components
+
+The original library of components defined in the Vibe dashboard was extended with 
+custom reusable components designated to be used in GenUI. You can import
+those components from the package located in `./src/genui/`. You can find 
+the package with the original Vibe components in `./src/vibe`. 
+
+If you want to expand the GUI using these components, 
+you should take a look at the currently defined pages 
+of the dashboard in `./src/views/pages` for example use 
+of these components.
+
+# License
+
+All source code available here is distributed under [MIT license](LICENSE).
