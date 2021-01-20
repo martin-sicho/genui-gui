@@ -1,9 +1,11 @@
 {
-  "name": "genui-frontend",
-  "version": "0.0.0",
-  "description": "Frontend application of the GenUI project.",
+  "name": "genui-gui",
+  "version": "0.0.0-alpha.1",
+  "description": "Frontend application of the GenUI project. It provides a GUI to the GenUI REST API web services.",
   "author": "Martin Šícho",
-  "copyright": "Copyright © 2019 Nice Dash, 2019-2020 Martin Šícho. All rights reserved.",
+  "copyright": "Copyright © 2019 Nice Dash, 2019-2021 Martin Šícho. All rights reserved.",
+  "homepage": "https://github.com/martin-sicho/genui-gui/",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@ishawnwang/withunmounted": "^1.0.1",
