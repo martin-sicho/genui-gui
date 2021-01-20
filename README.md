@@ -4,9 +4,10 @@
 
 # About
 
-This is the GenUI frontend application. It is based on [Vibe](https://github.com/NiceDash/Vibe) (v1.0.2),
-a neat [React.js](https://reactjs.org/) dashboard built with [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/). It provides
+This is the GenUI frontend application. It provides
 a GUI to the [GenUI REST API web services](https://github.com/martin-sicho/genui/).
+It is based on [Vibe](https://github.com/NiceDash/Vibe) (v1.0.2),
+a neat [React.js](https://reactjs.org/) dashboard built with [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/).
 
 ## Quick Start
 
