@@ -5,6 +5,7 @@ import './vibe/scss/styles.scss';
 import '../node_modules/react-grid-layout/css/styles.css'
 import '../node_modules/react-resizable/css/styles.css'
 import LoginPage from './views/pages/login/LoginPage';
+import packageInfo from './package.json';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 let BACKEND_URL = new URL('http://localhost:8000');
@@ -88,6 +89,7 @@ export default function App() {
               fetchUserInfo={fetchUserInfo}
               loginPagePath={loginPath}
               appPath={appPath}
+              packageInfo={packageInfo}
             />
           )
         } />

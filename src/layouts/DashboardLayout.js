@@ -221,7 +221,7 @@ class DashboardLayout extends Component {
             </Page>
           </div>
           <Footer>
-            <span>Copyright © 2019 Nice Dash, 2019-2020 Martin Šícho. All rights reserved.</span>
+            <span>Copyright © 2019 Nice Dash, 2019-{new Date().getFullYear()} Martin Šícho. All rights reserved. Frontend version: <strong>{this.props.packageInfo.version}</strong></span>
             {/*<span>*/}
             {/*  <a href="#!">Terms</a> | <a href="#!">Privacy Policy</a>*/}
             {/*</span>*/}
