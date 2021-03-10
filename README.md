@@ -94,7 +94,7 @@ the package with the original Vibe components in [`./src/vibe`](./src/vibe).
 
 If you want to expand the GUI, 
 you should take a look at the currently defined pages 
-of the dashboard in `./src/views/pages`. You should define 
+of the dashboard in [`./src/views/pages`](./src/views/pages). You should define 
 your pages there and import the required components from [`./src/genui/`](./src/genui/) or [`./src/vibe`](./src/vibe).
 
 # License
