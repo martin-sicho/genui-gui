@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, CardBody, CardFooter, CardHeader, CardSubtitle } from 'reactstrap';
-import { TabWidget } from '../../index';
+import {ExportMolSet, TabWidget} from '../../index';
 
 class GenericMolSetCard extends React.Component {
   abort = new AbortController();
@@ -100,6 +100,10 @@ class GenericMolSetCard extends React.Component {
           </CardSubtitle>
           <TabWidget
             {...this.props}
+            tabs={this.props.tabs.concat([{
+              title: "Export",
+              renderedComponent: props => <ExportMolSet {...props}/>
+            }])}
             molsetIsUpdating={isUpdating}
             moleculesURL={moleculesURL}
             molsetUURL={molsetURL}

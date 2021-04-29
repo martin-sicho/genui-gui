@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentWithObjects, CompoundsPage } from '../../../genui';
+import {ComponentWithObjects, ComponentWithResources, CompoundsPage} from '../../../genui';
 import ChEMBLGrid from './chembl/ChEMBLGrid';
 import GeneratedGrid from './generated/GeneratedGrid';
 import SDFGrid from './sdf/SDFGrid';
@@ -22,33 +22,43 @@ class Compounds extends React.Component {
   render() {
     const defaultClass = "MolSet";
     return (
-      <ComponentWithObjects
-        {...this.props}
-        objectListURL={new URL('all/', this.props.apiUrls.compoundSetsRoot)}
-        emptyClassName={defaultClass}
-        render={
-          (
-            compoundSets,
-            handleAddMolSetList,
-            handleAddMolSet,
-            handleMolSetDelete,
-            requestMolSetsUpdate,
-          ) => {
-            return (<CompoundsPage
-              {...this.props}
-              classToComponentMap={this.CLASS_TO_COMPONENT}
-              classToNameMap={this.CLASS_TO_NAME}
-              compoundSets={compoundSets}
-              defaultClass={defaultClass}
-              ignoreDefault={true}
-              handleAddMolSetList={handleAddMolSetList}
-              handleAddMolSet={handleAddMolSet}
-              handleMolSetDelete={handleMolSetDelete}
-              requestMolSetsUpdate={requestMolSetsUpdate}
-            />)
-          }
-        }
-      />
+        <ComponentWithResources
+            {...this.props}
+            definition={{
+                exporters: new URL(`exporters/`, this.props.apiUrls.compoundSetsRoot)
+            }}
+        >
+            {
+                (loaded, data) => loaded ? <ComponentWithObjects
+                    {...this.props}
+                    objectListURL={new URL('all/', this.props.apiUrls.compoundSetsRoot)}
+                    emptyClassName={defaultClass}
+                    render={
+                        (
+                            compoundSets,
+                            handleAddMolSetList,
+                            handleAddMolSet,
+                            handleMolSetDelete,
+                            requestMolSetsUpdate,
+                        ) => {
+                            return (<CompoundsPage
+                                {...this.props}
+                                {...data}
+                                classToComponentMap={this.CLASS_TO_COMPONENT}
+                                classToNameMap={this.CLASS_TO_NAME}
+                                compoundSets={compoundSets}
+                                defaultClass={defaultClass}
+                                ignoreDefault={true}
+                                handleAddMolSetList={handleAddMolSetList}
+                                handleAddMolSet={handleAddMolSet}
+                                handleMolSetDelete={handleMolSetDelete}
+                                requestMolSetsUpdate={requestMolSetsUpdate}
+                            />)
+                        }
+                    }
+                /> : <div>Loading Resources...</div>
+            }
+        </ComponentWithResources>
     )
   }
 }
