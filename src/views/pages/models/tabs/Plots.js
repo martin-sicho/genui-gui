@@ -31,7 +31,7 @@ export function ROCCurvePlot(props) {
         return {
             label: curve.label,
             showLine: true,
-            lineTension: 0.5,
+            lineTension: 0,
             fill: false,
             data: curve.tpr.map((tpr, index) => ({
                 x: curve.fpr[index],
@@ -68,7 +68,7 @@ export function ROCCurvePlot(props) {
                 },
                 title: {
                     display: true,
-                    text: 'ROC Curve (Independent Test Set)'
+                    text: props.title
                 },
                 apsectRatio: 1
             }

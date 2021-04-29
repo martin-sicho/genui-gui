@@ -86,7 +86,7 @@ function CVOverview(props) {
               <React.Fragment>
                 {
                   curves_list.length > 0 ? (
-                      <ROCCurvePlot curves={curves_list}/>
+                      <ROCCurvePlot curves={curves_list} title="Cross-Validation ROC Curves"/>
                   ) : null
                 }
 
@@ -138,7 +138,7 @@ function IndpendentTestSetOverview(props) {
                           fpr: roc_curve.map(point => point.extraArgs.fpr),
                           label: "Independent Set"
                         }
-                      ]}/>
+                      ]} title="ROC Curve (Independent Test Set)" />
                   ) : null
                 }
 
