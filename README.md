@@ -89,13 +89,13 @@ A nice overview over all available icons can be found on <https://feathericons.c
 
 The original library of components defined in the Vibe dashboard was extended with 
 custom reusable components designated to be used in GenUI. You can import
-those components from the package located in `./src/genui/`. You can find 
-the package with the original Vibe components in `./src/vibe`. 
+those components from the package located in [`./src/genui/`](./src/genui/). You can find 
+the package with the original Vibe components in [`./src/vibe`](./src/vibe). 
 
-If you want to expand the GUI using these components, 
+If you want to expand the GUI, 
 you should take a look at the currently defined pages 
-of the dashboard in `./src/views/pages` for example use 
-of these components.
+of the dashboard in [`./src/views/pages`](./src/views/pages). You should define 
+your pages there and import the required components from [`./src/genui/`](./src/genui/) or [`./src/vibe`](./src/vibe).
 
 # License
 
