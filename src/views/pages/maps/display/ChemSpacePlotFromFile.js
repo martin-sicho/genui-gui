@@ -49,6 +49,9 @@ class ChemSpacePlotFromFile extends React.Component {
             return
         }
         window.chemspace.read_data_from_file(this.props.selectedMap.chemspaceJSON.file); // read data
+        const disabled_feature = "--- Disabled ---";
+        window.chemspace.add_feature({name : disabled_feature, point2value : {}});
+        window.chemspace.update_settings({point_size: {index: window.chemspace.data.feature_names.indexOf("--- Disabled ---")}})
         window.chemspace.draw(); //draw chemical space
         this.setState({mapDrawn: true});
 
