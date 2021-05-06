@@ -95,8 +95,28 @@ function ChEMBLCard(props) {
     }
   ];
 
+  const [assayMap, setAssayMap] = React.useState({});
+  const [targetMap, setTargetMap] = React.useState({});
+
   return (
-    <GenericMolSetCard {...props} tabs={tabs}/>
+      <GenericMolSetCard
+          {...props}
+          tabs={tabs}
+          assayMap={assayMap}
+          targetMap={targetMap}
+          addToAssayMap={(id, chemblID) => {
+            if (!assayMap.hasOwnProperty(id)) {
+              assayMap[id] = chemblID;
+              setAssayMap(assayMap)
+            }
+          }}
+          addToTargetMap={(id, chemblID) => {
+            if (!targetMap.hasOwnProperty(id)) {
+              targetMap[id] = chemblID;
+              setTargetMap(targetMap)
+            }
+          }}
+      />
   )
 }
 
