@@ -65,16 +65,16 @@ class MapSelect extends React.Component {
         >
           {
             (allLoaded, activitySets) => {
-              return allLoaded ? (
-                <MapTabs
-                  {...this.props}
-                  selectedMap={selected}
-                  maps={maps}
-                  molsets={molsets}
-                  molsetsToColor={molsetsToColor}
-                  activitySets={activitySets}
-                />
-              ) : <div>Loading...</div>
+              return (
+                  <MapTabs
+                      {...this.props}
+                      selectedMap={selected}
+                      maps={maps}
+                      molsets={molsets}
+                      molsetsToColor={molsetsToColor}
+                      activitySets={activitySets}
+                  />
+              )
             }
           }
         </ComponentWithResources>

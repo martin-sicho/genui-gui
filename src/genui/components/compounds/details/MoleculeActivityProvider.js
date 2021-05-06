@@ -31,7 +31,7 @@ function MoleculeActivityProvider(props) {
                         (dataLoaded, activities) => {
                             return dataLoaded ? (
                                 <ListComp {...props} activities={activities}/>
-                            ) : <div>Fetching activity data...</div>
+                            ) : <div>No data.</div>
                         }
                     }
                 </ComponentWithResources>
