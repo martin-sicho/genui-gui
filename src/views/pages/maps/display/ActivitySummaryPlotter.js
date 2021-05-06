@@ -22,9 +22,13 @@ class ActivitySummaryPlotter extends React.Component {
     const bySource = groupBy(activities, 'source');
     bySource.forEach(group => {
       const actset = actsets[group[0].source];
+      if (!actset) {
+        // console.error(`Cannot find activity set: ${group[0].source}.`);
+        return;
+      }
       const molset = molsets.find(item => item.id === actset.molecules);
       if (!molset) {
-        console.error(`Cannot find molecule set ${actset.molecules} for activity set: ${actset.id}`);
+        // console.error(`Cannot find molecule set ${actset.molecules} for activity set: ${actset.id}`);
         return;
       }
 
