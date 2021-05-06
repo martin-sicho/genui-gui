@@ -72,7 +72,7 @@ class SelectedActivitiesPage extends React.Component {
                             } else {
                               progress = Object.keys(progress).map(key => progress[key]);
                               if (progress.length === 0) {
-                                return <div><p>Loading activity data...</p></div>
+                                return <div><p>No data to show.</p></div>
                               }
                               const avgProgress = progress.reduce((a, b) => a + b) / progress.length
                               return (
