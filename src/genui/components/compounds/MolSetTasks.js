@@ -17,7 +17,7 @@ class MolSetTasks extends React.Component {
                 errorClassToComponent : this.props.taskErrorClassToComponent,
                 errorsGroupFunction: this.props.taskErrorsGroupFunction,
             };
-            return (
+            return taskInfo.tasksExist ? (
               <React.Fragment>
                 <h4>
                   Tasks <TaskBadgeGroup {...taskBadgeProps} />
@@ -27,7 +27,7 @@ class MolSetTasks extends React.Component {
                   tasks={taskInfo.tasks.running}
                 />
               </React.Fragment>
-            )
+            ) : null
           }
         }
       />

@@ -18,9 +18,10 @@ function TaskBadge(props) {
 
   if (props.tasks.length === 0) return null;
 
+  const color = props.color;
   return (
     <React.Fragment>
-      <Badge href="#" color={props.color} onClick={toggle}>{props.tasks.length} {props.children}</Badge>
+      <Badge href="#" color={color} onClick={toggle}>{props.tasks.length} {props.children}</Badge>
       <Modal isOpen={open} toggle={toggle} size="lg" scrollable="true" className="unDraggable">
         <ModalHeader toggle={toggle}>Tasks</ModalHeader>
         <ModalBody>
@@ -28,8 +29,8 @@ function TaskBadge(props) {
             props.tasks.map((task, index) => {
               return (
                 <div key={task.task_id}>
-                  <Button color="primary" id={`toggler-${index}`} style={{ marginBottom: '1rem' }}>
-                    {task.task_name}
+                  <Button color={color} id={`toggler-${index}`} style={{ marginBottom: '1rem' }}>
+                    {task.task_name === '' ? 'Unknown' : task.task_name}
                   </Button>
                   <UncontrolledCollapse toggler={`#toggler-${index}`}>
                     <Card>
@@ -43,7 +44,7 @@ function TaskBadge(props) {
                           </li>
                           <li>
                             <strong>Result:</strong>
-                            <TaskResult {...props} result={task.result}/>
+                            <span>{task.result === null ? 'Unavailable' : <TaskResult {...props} result={task.result}/>}</span>
                           </li>
                           {task.traceback ? (
                             <li>

@@ -15,10 +15,18 @@ class TaskAwareComponent extends React.Component {
       tasks : {
         completed : [],
         running : [],
-        errors : []
+        errors : [],
+        pending: []
       }
       , tasksRunning : false
       , tasksUpToDate : false
+      , tasksExist : false
+      , tasksColorMap : {
+        running : 'primary',
+        pending : 'secondary',
+        errors : 'danger',
+        completed : 'success',
+      }
     }
   }
 
@@ -27,15 +35,18 @@ class TaskAwareComponent extends React.Component {
     const completed = [];
     const running = [];
     const errors = [];
+    const pending = [];
     Object.keys(tasks).forEach(task_name => {
       tasks[task_name].forEach(task => {
         task.task_name = task_name;
         if (task.status === 'SUCCESS') {
           completed.push(task)
-        } else if (['STARTED', 'RECEIVED', 'PENDING', 'RETRY', 'PROGRESS'].includes(task.status)) {
+        } else if (['STARTED', 'PROGRESS'].includes(task.status)) {
           running.push(task)
         } else if (['FAILURE', 'REVOKED'].includes(task.status)) {
           errors.push(task)
+        } else if (['RECEIVED', 'PENDING', 'RETRY'].includes(task.status)) {
+          pending.push(task);
         }
       });
     });
@@ -43,7 +54,8 @@ class TaskAwareComponent extends React.Component {
     return {
       completed : completed,
       running : running,
-      errors : errors
+      errors : errors,
+      pending : pending
     }
   };
 
@@ -60,6 +72,7 @@ class TaskAwareComponent extends React.Component {
         (this.state.tasks.completed.length === newTasks.completed.length)
         && (this.state.tasks.running.length === newTasks.running.length)
         && (this.state.tasks.errors.length === newTasks.errors.length)
+        && (this.state.tasks.pending.length === newTasks.pending.length)
     )
   }
 
@@ -72,6 +85,9 @@ class TaskAwareComponent extends React.Component {
       .then(response => this.props.handleResponseErrors(response, 'Failed to fetch task info from backend.', false))
       .then(data => {
         const tasks = this.groupTasks(data);
+        if (Object.keys(tasks).length > 0) {
+          this.setState({tasksExist: true})
+        }
         this.updateTasks(tasks);
         this.intervalID = setTimeout(this.fetchTasks, 5000);
       }).catch(

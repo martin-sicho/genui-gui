@@ -132,7 +132,7 @@ class ModelInfo extends React.Component {
           }
 
           {
-            (tasks.completed.length + tasks.running.length + tasks.errors.length) > 0 ? (
+            this.props.tasksExist ? (
               <React.Fragment>
                 <h4>
                   Tasks <TaskBadgeGroup tasks={tasks}/>
