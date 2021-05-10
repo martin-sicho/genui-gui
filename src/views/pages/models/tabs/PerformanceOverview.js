@@ -109,7 +109,7 @@ function IndpendentTestSetOverview(props) {
   let validSetPerf = props.getPerfMatrix(props.performance, 'ModelPerformance', metrics);
   validSetPerf = Object.keys(validSetPerf).map((x) => validSetPerf[x].length > 0 ? validSetPerf[x][0] : null);
 
-  if (validSetPerf.length === 0 || validSetPerf[0] === null) {
+  if (validSetPerf.length === 0 || validSetPerf[0] === null || validSetPerf.includes(null)) {
     return null
   }
 
