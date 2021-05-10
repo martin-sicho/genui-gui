@@ -49,6 +49,15 @@ class ChemSpacePlotFromFile extends React.Component {
             return
         }
         window.chemspace.read_data_from_file(this.props.selectedMap.chemspaceJSON.file); // read data
+        if (!window.chemspace.data) {
+            this.setState({
+                error: `Could not load any structures from the supplied ChemSpace.js 
+                JSON file for "${this.props.selectedMap.name}". This
+                map is probably not completed, yet. Check the creator 
+                progress or come back later and refresh the page.`
+            });
+            return
+        }
         const disabled_feature = "--- Disabled ---";
         window.chemspace.add_feature({name : disabled_feature, point2value : {}});
         window.chemspace.update_settings({point_size: {index: window.chemspace.data.feature_names.indexOf("--- Disabled ---")}})
