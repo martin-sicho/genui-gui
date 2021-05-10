@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, CardBody, CardFooter, CardHeader, CardSubtitle } from 'reactstrap';
 import {ExportMolSet, TabWidget} from '../../index';
+import MolSetTasks from "./MolSetTasks";
 
 class GenericMolSetCard extends React.Component {
   abort = new AbortController();
@@ -97,6 +98,10 @@ class GenericMolSetCard extends React.Component {
               + ' – ' + updated.toLocaleTimeString()
             }
             </p>
+            <MolSetTasks
+                {...this.props}
+                progressURL={this.props.apiUrls.celeryProgress}
+            /><br/>
           </CardSubtitle>
           <TabWidget
             {...this.props}

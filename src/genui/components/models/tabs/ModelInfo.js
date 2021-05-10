@@ -3,8 +3,6 @@ import { Col, ListGroup, ListGroupItem, Row, Table } from 'reactstrap';
 import {
   TableDataFromItems,
   TableHeaderFromItems,
-  TaskBadgeGroup,
-  TaskProgressBar,
   DownloadFile,
   ComponentWithResources,
 } from '../../../index';
@@ -117,7 +115,6 @@ class ModelInfo extends React.Component {
 
   render() {
     const model = this.model;
-    const tasks = this.props.tasks;
 
     return (
       (<Row>
@@ -127,21 +124,6 @@ class ModelInfo extends React.Component {
               <React.Fragment>
                 <h4>Description</h4>
                 <p>{model.description}</p>
-              </React.Fragment>
-            ) : null
-          }
-
-          {
-            this.props.tasksExist ? (
-              <React.Fragment>
-                <h4>
-                  Tasks <TaskBadgeGroup tasks={tasks}/>
-                </h4>
-                <TaskProgressBar
-                  progressURL={this.props.apiUrls.celeryProgress}
-                  tasks={tasks.running}
-                />
-                <br/>
               </React.Fragment>
             ) : null
           }

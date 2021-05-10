@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, CardBody, CardFooter, CardHeader } from 'reactstrap';
-import { ProjectItemSubTitle, TabWidget } from '../../index';
+import {ProjectItemSubTitle, TabWidget} from '../../index';
 
 class ModelCard extends React.Component {
 
@@ -20,7 +20,7 @@ class ModelCard extends React.Component {
         <CardHeader>{model.name}</CardHeader>
 
         <CardBody className="scrollable">
-          <ProjectItemSubTitle item={model}/>
+          <ProjectItemSubTitle {...this.props} item={model}/>
           <TabWidget {...this.props} tabs={this.props.tabs}/>
         </CardBody>
 

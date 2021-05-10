@@ -1,7 +1,6 @@
 import React from 'react';
 import {Col, Row} from "reactstrap";
 import ComponentWithResources from "../../ComponentWithResources";
-import MolSetTasks from "../MolSetTasks";
 
 function MolsStats(props) {
     return (
@@ -17,13 +16,6 @@ class GenericInfo extends React.Component {
         return (
             <Row>
                 <Col sm="12">
-                    <MolSetTasks
-                        {...this.props}
-                        progressURL={this.props.apiUrls.celeryProgress}
-                    />
-
-                    <br/>
-
                     {
                         this.props.molset.description ? (
                             <React.Fragment>
