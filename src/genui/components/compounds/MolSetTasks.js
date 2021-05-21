@@ -19,9 +19,7 @@ class MolSetTasks extends React.Component {
             };
             return taskInfo.tasksExist ? (
               <React.Fragment>
-                <h5>
-                  Tasks <TaskBadgeGroup {...taskBadgeProps} />
-                </h5>
+                <span style={{fontSize: "large"}}>Tasks <TaskBadgeGroup {...taskBadgeProps}/></span> <br/>
                 <TaskProgressBar
                   progressURL={this.props.progressURL}
                   tasks={taskInfo.tasks.running}

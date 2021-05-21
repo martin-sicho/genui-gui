@@ -22,9 +22,7 @@ function ProjectItemSubTitle(props) {
         {
           props.tasksExist ? (
               <React.Fragment>
-                <h5>
-                  Tasks <TaskBadgeGroup tasks={tasks}/>
-                </h5>
+                <span style={{fontSize: "large"}}>Tasks <TaskBadgeGroup tasks={tasks}/></span> <br/>
                 <TaskProgressBar
                     progressURL={props.apiUrls.celeryProgress}
                     tasks={tasks.running}
