@@ -1,6 +1,7 @@
 import React from "react";
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import {scrollTo} from '../../utils';
+import CompoundSetsGrids from "./CompoundSetGrids";
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -69,35 +70,12 @@ class CompoundsPage extends React.Component {
       return <div><p>There are currently no compound sets. Start by adding one from the actions menu in the top right.</p></div>;
     }
 
-    const classToComponent = this.classToComponentNoIgnore ? this.classToComponentNoIgnore : this.classToComponent;
-    const tabs = [];
-    Object.keys(molsets).forEach(MolSetClass => {
-      if (classToComponent.hasOwnProperty(MolSetClass)) {
-        const MolsetComponent = classToComponent[MolSetClass];
-        tabs.push({
-          title: MolSetClass,
-          renderedComponent: (props) => (
-            <div className={MolSetClass} id={MolSetClass}>
-              <MolsetComponent
-                {...props}
-                molsets={molsets[MolSetClass]}
-                currentMolsetClass={MolSetClass}
-              />
-            </div>
-          )
-        });
-      } else {
-        console.log(`Ignored class without a component: ${MolSetClass}`);
-      }
-    });
+
     return (
-      <div className="compound-set-grids">
-        {
-          tabs.map(tab => <tab.renderedComponent key={tab.title} {...this.props}/>)
-        }
-        {/*<TabWidget {...this.props} tabs={tabs} activeTab={this.state.selected}/>*/}
-      </div>
-    );
+        <React.Fragment>
+          <CompoundSetsGrids {...this.props} classToComponentNoIgnore={this.classToComponentNoIgnore} classToComponent={this.classToComponent}/>
+        </React.Fragment>
+    )
   }
 }
 
