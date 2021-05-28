@@ -137,6 +137,7 @@ class CompoundsPage extends React.Component {
             groupNameProp='currentMolsetClass'
             urlProp='molsetListUrl'
             ignoreGroups={['MolSet']}
+            tasksUrlRoot={this.props.apiUrls.compoundSetsRoot}
             groupDefinitions={this.props.definitions}
             compoundSetsDefinitions={this.props.definitions}
             handleSendToGrid={this.sendToGrid}

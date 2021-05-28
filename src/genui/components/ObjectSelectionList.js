@@ -1,6 +1,31 @@
 import React from "react";
 import {Row, Col, ListGroupItem, ListGroup, Container, Button} from "reactstrap";
 import {Card} from "reactstrap";
+import {TaskAwareComponent, TaskBadgeGroup} from "../index";
+
+function TasksOverview(props) {
+    const tasksURL = new URL(`${props.item.id}/tasks/all/`, props.tasksUrlRoot);
+    return (
+        <TaskAwareComponent
+            handleResponseErrors={props.handleResponseErrors}
+            tasksURL={tasksURL}
+            // onTaskUpdate={props.onTaskUpdate}
+            render={
+                taskInfo => {
+                    return taskInfo.tasksExist ? (
+                        <React.Fragment>
+                            <span style={{fontSize: "large"}}><TaskBadgeGroup tasks={taskInfo.tasks}/></span> <br/>
+                            {/*<TaskProgressBar*/}
+                            {/*    progressURL={this.props.progressURL}*/}
+                            {/*    tasks={taskInfo.tasks.running}*/}
+                            {/*/>*/}
+                        </React.Fragment>
+                    ) : null
+                }
+            }
+        />
+    )
+}
 
 function ListItem(props) {
     const item = props.item;
@@ -25,7 +50,8 @@ function ListItem(props) {
                             setIsOpen(!isOpen);
                         }}
                     >
-                        {item.name}
+                        <strong>{item.name}</strong> |
+                        Tasks <TasksOverview {...props} />
                     </ListGroupItem>
                 </Col>
                 <Col xs="4" lg="2">
@@ -68,6 +94,7 @@ function ObjectList(props) {
                     props.objects.map(item => <ListItem {...props} key={item.id} item={item}/>)
                 }
             </ListGroup>
+            <br/>
         </div>
     ) : null
 }
