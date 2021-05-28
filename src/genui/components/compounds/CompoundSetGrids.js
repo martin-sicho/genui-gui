@@ -2,13 +2,14 @@ import React from "react";
 
 function CompoundSetsGrids(props) {
     const molsets = props.compoundSets;
-    const classToComponentNoIgnore = props.classToComponentNoIgnore
-    const classToComponent = classToComponentNoIgnore ? classToComponentNoIgnore : props.classToComponent;
+    const definitions = props.definitions;
+    // const classToComponentNoIgnore = props.classToComponentNoIgnore
+    // const classToComponent = classToComponentNoIgnore ? classToComponentNoIgnore : props.classToComponent;
 
     const tabs = [];
     Object.keys(molsets).forEach(MolSetClass => {
-        if (classToComponent.hasOwnProperty(MolSetClass)) {
-            const MolsetComponent = classToComponent[MolSetClass];
+        if (definitions.hasOwnProperty(MolSetClass)) {
+            const MolsetComponent = definitions[MolSetClass].gridComponent;
             tabs.push({
                 title: MolSetClass,
                 renderedComponent: (props) => (

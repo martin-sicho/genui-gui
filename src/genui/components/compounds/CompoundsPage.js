@@ -2,6 +2,7 @@ import React from "react";
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import {scrollTo} from '../../utils';
 import CompoundSetsGrids from "./CompoundSetGrids";
+import ObjectGroupsList from "../ObjectSelectionList";
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -13,7 +14,7 @@ function HeaderNav(props) {
                 key={choice}
                 onClick={() => {props.onMolSetChoice(choice, [])}}
             >
-              {props.classToNameMap[choice] ? props.classToNameMap[choice] : choice}
+              {props.definitions[choice].name}
             </DropdownItem>)
         )
       }
@@ -26,17 +27,18 @@ class CompoundsPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.defaultClass = this.props.defaultClass;
-    this.ignoreDefault = this.props.ignoreDefault;
-    this.classToComponent = this.props.classToComponentMap;
-    this.classToComponentNoIgnore = this.ignoreDefault ? Object.keys(this.classToComponent).reduce((object, key) => {
-      if (key !== this.defaultClass) {
-        object[key] = this.classToComponent[key]
-      }
-      return object
-    }, {}) : undefined;
+    // this.defaultClass = this.props.defaultClass;
+    // this.ignoreDefault = this.props.ignoreDefault;
+    // this.classToComponent = this.props.definitions;
+    // this.classToComponentNoIgnore = this.ignoreDefault ? Object.keys(this.classToComponent).reduce((object, key) => {
+    //   if (key !== this.defaultClass) {
+    //     object[key] = this.classToComponent[key]
+    //   }
+    //   return object
+    // }, {}) : undefined;
     this.state = {
-      selected: null
+      selected: null,
+      inGrid: {}
     }
   }
 
@@ -44,12 +46,19 @@ class CompoundsPage extends React.Component {
     this.props.onHeaderChange(
       <HeaderNav
         {...this.props}
-        molSetChoices={Object.keys(this.ignoreDefault ? this.classToComponentNoIgnore : this.classToComponent)}
+        molSetChoices={Object.keys(this.props.definitions)}
         onMolSetChoice={(choice, array) => {
-          this.setState({selected: choice}, () => {
+          this.setState(prevState => {
+              prevState.selected = choice;
+              const prevGrid = prevState.inGrid;
+              if (!prevGrid.hasOwnProperty(choice)) {
+                  prevGrid[choice] = [];
+                  return prevState;
+              }
+          }, () => {
             const elmnt = document.getElementById(choice);
             scrollTo(document.documentElement, elmnt.offsetTop, 300);
-            // elmnt.scrollIntoView();
+            elmnt.scrollIntoView();
           });
           this.props.handleAddMolSetList(choice, array);
         }
@@ -58,14 +67,61 @@ class CompoundsPage extends React.Component {
     );
   }
 
+  handleAdd = (className, molset) => {
+      this.setState({selected: null}, () => {
+          const elmnt = document.getElementById(`${className}-group-list`);
+          scrollTo(document.documentElement, elmnt.offsetTop, 300);
+          elmnt.scrollIntoView();
+          this.props.handleAddMolSet(className, molset);
+      })
+  }
+
+  handleDelete = (name, molset) => {
+      this.setState(prevState => {
+          const group = prevState.inGrid[name];
+          const deletedIndex = group.findIndex((item) => item.id === molset.id);
+          group.splice(deletedIndex, 1);
+          return prevState;
+      });
+      this.props.handleMolSetDelete(name, molset);
+  }
+
+  sendToGrid = (e, item, inGrid) => {
+      if (!inGrid) {
+          this.setState((prevState) => {
+              const previousGrid = prevState.inGrid;
+              if (previousGrid.hasOwnProperty(item.className)) {
+                  previousGrid[item.className].push(item);
+                  prevState.inGrid = previousGrid;
+                  return prevState;
+              } else {
+                  prevState.inGrid[item.className] = [item];
+                  return prevState;
+              }
+          })
+      } else {
+          this.setState((prevState) => {
+              const previousItems = prevState.inGrid[item.className];
+              const index = previousItems.findIndex(inside => inside.id === item.id);
+              previousItems.splice(index, 1);
+              if (previousItems.length === 0) {
+                  delete prevState.inGrid[item.className];
+                  return prevState;
+              } else {
+                  prevState.inGrid[item.className] = previousItems;
+                  return prevState;
+              }
+          })
+      }
+  }
+
   render() {
     const molsets = this.props.compoundSets;
-
     if (molsets === null) {
       return <div>Loading...</div>
     }
 
-    const molsetsEmpty = Object.keys(molsets).length === 1 && molsets[this.props.defaultClass].length === 0 && molsets.constructor === Object;
+    const molsetsEmpty = Object.keys(molsets).length === 0 && molsets.constructor === Object;
     if (molsetsEmpty) {
       return <div><p>There are currently no compound sets. Start by adding one from the actions menu in the top right.</p></div>;
     }
@@ -73,7 +129,29 @@ class CompoundsPage extends React.Component {
 
     return (
         <React.Fragment>
-          <CompoundSetsGrids {...this.props} classToComponentNoIgnore={this.classToComponentNoIgnore} classToComponent={this.classToComponent}/>
+          <ObjectGroupsList
+            {...this.props}
+            id="compound-sets-list"
+            objects={molsets}
+            objectProp='molset'
+            groupNameProp='currentMolsetClass'
+            urlProp='molsetListUrl'
+            ignoreGroups={['MolSet']}
+            groupDefinitions={this.props.definitions}
+            compoundSetsDefinitions={this.props.definitions}
+            handleSendToGrid={this.sendToGrid}
+            handleMolSetDelete={this.handleDelete}
+          />
+          <hr/>
+          <CompoundSetsGrids
+              {...this.props}
+              selectedNewClass={this.state.selected}
+              compoundSets={this.state.inGrid}
+              classToComponentNoIgnore={this.classToComponentNoIgnore}
+              classToComponent={this.classToComponent}
+              handleMolSetDelete={this.handleDelete}
+              handleAddMolSet={this.handleAdd}
+          />
         </React.Fragment>
     )
   }

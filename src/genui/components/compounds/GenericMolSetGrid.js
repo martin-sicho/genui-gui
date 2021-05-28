@@ -19,50 +19,68 @@ class GenericMolSetGrid extends React.Component {
     const molsets = this.props.molsets;
     const headingText = this.props.headingText;
 
-    const existing_cards = molsets.map(molset => ({
+    const existing_cards_settings = molsets.map(molset => ({
       id : molset.id,
       h : {"md" : 9, "sm" : 6},
       w : {"md" : 1, "sm" : 1},
       minH : {"md" : 3, "sm" : 3},
       data : molset
     }));
-    const new_card = {
+    const new_card_settings = {
       id : "new-mol-set",
       h : {"md" : 9, "sm" : 6},
       w : {"md" : 1, "sm" : 1},
       minH : {"md" : 3, "sm" : 3},
       data : {}
     };
+    let card_settings = [];
+    if (this.props.selectedNewClass === this.props.currentMolsetClass) {
+      card_settings.push(new_card_settings);
+    }
+    card_settings = card_settings.concat(existing_cards_settings)
+
 
     const CardComponent = this.cardComponent;
     const NewCardComponent = this.newCardComponent;
+
+    let cards = [];
+    if (this.props.selectedNewClass === this.props.currentMolsetClass) {
+      cards.push(
+          (
+              <Card key={new_card_settings.id} id={new_card_settings.id}>
+                <NewCardComponent {...this.props} handleCreateNew={this.props.handleAddMolSet}/>
+              </Card>
+          )
+      )
+    }
+    cards = cards.concat(existing_cards_settings.map(
+        item => (
+            <Card key={item.id.toString()}>
+              <CardComponent
+                  {...this.props}
+                  molset={item.data}
+              />
+            </Card>
+        )
+    ))
+
+    if (cards.length === 0) {
+      return null;
+    }
+
     return (
       <React.Fragment>
-        <h1>{headingText ? headingText : this.props.currentMolsetClass}</h1>
-        <hr/>
+        <h2>{headingText ? headingText : this.props.currentMolsetClass}</h2>
+        {/*<hr/>*/}
         <ResponsiveGrid
-          items={[new_card].concat(existing_cards)}
+          items={card_settings}
           rowHeight={75}
           mdCols={2}
           smCols={1}
           gridID={`${this.props.currentMolsetClass}-grid-layout`}
         >
           {
-            [(
-              <Card key={new_card.id} id={new_card.id}>
-                <NewCardComponent {...this.props} handleCreateNew={this.props.handleAddMolSet}/>
-              </Card>
-            )].concat(existing_cards.map(
-              item => (
-                <Card key={item.id.toString()}>
-                  <CardComponent
-                    {...this.props}
-                    molset={item.data}
-                    onMolsetDelete={this.props.handleMolSetDelete}
-                  />
-                </Card>
-              )
-            ))
+            cards
           }
         </ResponsiveGrid>
       </React.Fragment>

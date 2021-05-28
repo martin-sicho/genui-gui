@@ -19,8 +19,8 @@ class GenericMolSetCard extends React.Component {
 
   handleDeleteSignal(deletedMolSet) {
     this.setState({deleteInProgress : true});
-    if (this.props.hasOwnProperty("onMolsetDelete")) {
-      this.props.onMolsetDelete(this.props.currentMolsetClass, deletedMolSet);
+    if (this.props.hasOwnProperty("handleMolSetDelete")) {
+      this.props.handleMolSetDelete(this.props.currentMolsetClass, deletedMolSet);
     }
   }
 
@@ -47,7 +47,7 @@ class GenericMolSetCard extends React.Component {
     this.abort.abort();
   }
 
-  updateMolSet = (data) => {
+  updateMolSet = () => {
     this.fetchMolSet();
   };
 

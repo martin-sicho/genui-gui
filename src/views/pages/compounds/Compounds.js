@@ -4,23 +4,44 @@ import ChEMBLGrid from './chembl/ChEMBLGrid';
 import GeneratedGrid from './generated/GeneratedGrid';
 import SDFGrid from './sdf/SDFGrid';
 import CSVGrid from "./csv/CSVGrid";
+import ChEMBLCard from "./chembl/ChEMBLCard";
+import GeneratedCard from "./generated/GeneratedCard";
+import SDFCard from "./sdf/SDFCard";
+import CSVCard from "./csv/CSVCard";
 
 class Compounds extends React.Component {
-  CLASS_TO_COMPONENT = {
-    ChEMBLCompounds : ChEMBLGrid,
-    GeneratedMolSet : GeneratedGrid,
-    SDFCompounds : SDFGrid,
-    CSVCompounds : CSVGrid
-  };
-  CLASS_TO_NAME = {
-      ChEMBLCompounds : 'ChEMBL Set',
-      GeneratedMolSet : 'Generated Set',
-      SDFCompounds : 'SDF File',
-      CSVCompounds : 'CSV File'
-  };
 
   render() {
-    const defaultClass = "MolSet";
+    // const defaultClass = "MolSet";
+
+    const definitions = {
+        ChEMBLCompounds: {
+            name: 'ChEMBL Sets',
+            url: new URL( 'chembl/', this.props.apiUrls.compoundSetsRoot),
+            gridComponent: ChEMBLGrid,
+            listComponent: ChEMBLCard,
+        },
+        GeneratedMolSet: {
+            name: 'Generated Sets',
+            url: new URL( 'generated/', this.props.apiUrls.compoundSetsRoot),
+            gridComponent: GeneratedGrid,
+            listComponent: GeneratedCard
+        },
+        SDFCompounds: {
+            name: 'SDF Files',
+            url: new URL( 'sdf/', this.props.apiUrls.compoundSetsRoot),
+            gridComponent: SDFGrid,
+            listComponent: SDFCard,
+        },
+        CSVCompounds: {
+            name: 'CSV Files',
+            url: new URL( 'csv/', this.props.apiUrls.compoundSetsRoot),
+            relativeUrl: 'csv',
+            gridComponent: CSVGrid,
+            listComponent: CSVCard
+        }
+    }
+
     return (
         <ComponentWithResources
             {...this.props}
@@ -32,7 +53,7 @@ class Compounds extends React.Component {
                 (loaded, data) => loaded ? <ComponentWithObjects
                     {...this.props}
                     objectListURL={new URL('all/', this.props.apiUrls.compoundSetsRoot)}
-                    emptyClassName={defaultClass}
+                    emptyClassName={'MolSet'}
                     render={
                         (
                             compoundSets,
@@ -41,14 +62,12 @@ class Compounds extends React.Component {
                             handleMolSetDelete,
                             requestMolSetsUpdate,
                         ) => {
+                            delete compoundSets['MolSet'];
                             return (<CompoundsPage
                                 {...this.props}
                                 {...data}
-                                classToComponentMap={this.CLASS_TO_COMPONENT}
-                                classToNameMap={this.CLASS_TO_NAME}
+                                definitions={definitions}
                                 compoundSets={compoundSets}
-                                defaultClass={defaultClass}
-                                ignoreDefault={true}
                                 handleAddMolSetList={handleAddMolSetList}
                                 handleAddMolSet={handleAddMolSet}
                                 handleMolSetDelete={handleMolSetDelete}
