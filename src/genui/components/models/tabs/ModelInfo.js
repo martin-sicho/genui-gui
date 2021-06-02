@@ -177,6 +177,14 @@ class ModelInfo extends React.Component {
           <ModelFiles
             {...this.props}
           />
+          <br/>
+
+          <h4>Useful API URLs</h4>
+          <a href={this.props.modelUrl.toString()} target="_blank" rel="noopener noreferrer">{this.props.modelUrl.toString()}</a>
+
+          {
+            this.props.extraInfoComponent ? <this.props.extraInfoComponent {...this.props} /> : null
+          }
         </Col>
       </Row>)
     )
