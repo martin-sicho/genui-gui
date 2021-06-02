@@ -13,6 +13,7 @@ function MolsStats(props) {
 
 class GenericInfo extends React.Component {
     render() {
+        const moleculesUrl = `${this.props.apiUrls.compoundsRoot.toString()}sets/${this.props.molset.id}/molecules/`;
         return (
             <Row>
                 <Col sm="12">
@@ -45,6 +46,10 @@ class GenericInfo extends React.Component {
                             }
                         }
                     </ComponentWithResources>
+                    <h4>Useful API URLs</h4>
+                    <a href={this.props.molsetUURL.toString()} target="_blank" rel="noopener noreferrer">{this.props.molsetUURL.toString()}</a>
+                    <br/>
+                    <a href={moleculesUrl} target="_blank" rel="noopener noreferrer">{moleculesUrl}</a>
                 </Col>
             </Row>
         );

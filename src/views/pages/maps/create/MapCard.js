@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModelCard, ModelInfoTab } from '../../../../genui';
+import {Col} from "reactstrap";
 
 export default function MapCard(props) {
   const model =  props.model;
@@ -23,6 +24,16 @@ export default function MapCard(props) {
         <ModelInfoTab
           {...props}
           extraTrainingParams={trainingParams}
+          extraInfoComponent={(props) => {
+            const pointsUrl = `${props.modelUrl.toString()}points/`
+            return (
+                <React.Fragment>
+                  <br/>
+                  <a href={pointsUrl} target="_blank" rel="noopener noreferrer">{pointsUrl}</a>
+                </React.Fragment>
+            )
+          }
+          }
         />
     }
   ];
