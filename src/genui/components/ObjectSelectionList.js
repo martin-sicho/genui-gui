@@ -61,7 +61,7 @@ function ListItem(props) {
                         color="primary"
                         block
                         onClick={(e) => {
-                            props.handleSendToGrid(e, item, inGrid);
+                            props.handleSendToGrid(e, props.groupName, item, inGrid);
                             setInGrid(!inGrid);
                         }}>
                         To Grid
