@@ -69,33 +69,41 @@ class CompoundsPage extends React.Component {
 
   handleAdd = (className, molset) => {
       this.setState({selected: null}, () => {
-          const elmnt = document.getElementById(`${className}-group-list`);
-          scrollTo(document.documentElement, elmnt.offsetTop, 300);
-          elmnt.scrollIntoView();
+          let elmnt = document.getElementById(`${className}-group-list`);
+          if (elmnt) {
+              scrollTo(document.documentElement, elmnt.offsetTop, 300);
+              elmnt.scrollIntoView();
+          } else {
+              elmnt = document.getElementById("compound-sets-list");
+              scrollTo(document.documentElement, elmnt.offsetTop, 300);
+              elmnt.scrollIntoView();
+          }
           this.props.handleAddMolSet(className, molset);
       })
   }
 
   handleDelete = (name, molset) => {
       this.setState(prevState => {
-          const group = prevState.inGrid[name];
-          const deletedIndex = group.findIndex((item) => item.id === molset.id);
-          group.splice(deletedIndex, 1);
-          return prevState;
+          if (prevState.inGrid.hasOwnProperty(name)) {
+              const group = prevState.inGrid[name];
+              const deletedIndex = group.findIndex((item) => item.id === molset.id);
+              group.splice(deletedIndex, 1);
+              return prevState;
+          }
       });
       this.props.handleMolSetDelete(name, molset);
   }
 
-  sendToGrid = (e, item, inGrid) => {
+  sendToGrid = (e, className, item, inGrid) => {
       if (!inGrid) {
           this.setState((prevState) => {
               const previousGrid = prevState.inGrid;
-              if (previousGrid.hasOwnProperty(item.className)) {
-                  previousGrid[item.className].push(item);
+              if (previousGrid.hasOwnProperty(className)) {
+                  previousGrid[className].push(item);
                   prevState.inGrid = previousGrid;
                   return prevState;
               } else {
-                  prevState.inGrid[item.className] = [item];
+                  prevState.inGrid[className] = [item];
                   return prevState;
               }
           })
@@ -125,6 +133,8 @@ class CompoundsPage extends React.Component {
     if (molsetsEmpty) {
       return <div><p>There are currently no compound sets. Start by adding one from the actions menu in the top right.</p></div>;
     }
+
+    console.log(this.state.inGrid);
 
 
     return (
