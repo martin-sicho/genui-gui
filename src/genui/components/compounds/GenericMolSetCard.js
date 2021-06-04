@@ -101,6 +101,7 @@ class GenericMolSetCard extends React.Component {
             <MolSetTasks
                 {...this.props}
                 progressURL={this.props.apiUrls.celeryProgress}
+                onTaskUpdate={this.handleTaskUpdate}
             /><br/>
           </CardSubtitle>
           <TabWidget
@@ -115,7 +116,6 @@ class GenericMolSetCard extends React.Component {
             molset={molset}
             updateMolSet={this.updateMolSet}
             tasksRunning={isUpdating}
-            onTaskUpdate={this.handleTaskUpdate}
           />
         </CardBody>
 
