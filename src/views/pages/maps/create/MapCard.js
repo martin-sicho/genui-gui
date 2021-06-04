@@ -1,6 +1,5 @@
 import React from 'react';
 import { ModelCard, ModelInfoTab } from '../../../../genui';
-import {Col} from "reactstrap";
 
 export default function MapCard(props) {
   const model =  props.model;
