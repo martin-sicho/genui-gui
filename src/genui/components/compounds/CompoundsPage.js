@@ -109,14 +109,14 @@ class CompoundsPage extends React.Component {
           })
       } else {
           this.setState((prevState) => {
-              const previousItems = prevState.inGrid[item.className];
+              const previousItems = prevState.inGrid[className];
               const index = previousItems.findIndex(inside => inside.id === item.id);
               previousItems.splice(index, 1);
               if (previousItems.length === 0) {
-                  delete prevState.inGrid[item.className];
+                  delete prevState.inGrid[className];
                   return prevState;
               } else {
-                  prevState.inGrid[item.className] = previousItems;
+                  prevState.inGrid[className] = previousItems;
                   return prevState;
               }
           })
@@ -133,9 +133,6 @@ class CompoundsPage extends React.Component {
     if (molsetsEmpty) {
       return <div><p>There are currently no compound sets. Start by adding one from the actions menu in the top right.</p></div>;
     }
-
-    console.log(this.state.inGrid);
-
 
     return (
         <React.Fragment>
