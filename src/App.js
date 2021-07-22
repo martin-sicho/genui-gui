@@ -32,7 +32,7 @@ const fetchUserInfo = (accountsRoot, callback) => {
 };
 
 const fetchBackendUrl = (callback) => {
-    fetch('/info/backend/host.json', {
+    fetch('info/backend/host.json', {
         "headers": {
             "Accept": "application/json",
         },
