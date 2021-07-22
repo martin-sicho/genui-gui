@@ -55,8 +55,12 @@ const fetchUserInfo = (callback) => {
 export default function App() {
   const [user, setUser] = React.useState(null);
   const appPath = PUBLIC_URL ? PUBLIC_URL : '';
-  const devMode = GENUI_DEPLOY_VERSION === 'dev';
+  const devMode = GENUI_DEPLOY_VERSION !== 'prod' || GENUI_DEPLOY_VERSION !== 'latest';
   const loginPath = '/login/';
+
+  if (devMode) {
+    console.error("Running in development mode!");
+  }
 
   return (
     <BrowserRouter basename={appPath}>
