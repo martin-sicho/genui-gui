@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Header, SidebarNav, Footer, PageContent, Avatar, PageAlert, Page} from '../vibe';
 import {RoutedPage} from '../genui/'
-import Logo from '../assets/images/vibe-logo.svg';
+// import Logo from '../assets/images/vibe-logo.svg';
 // import avatar1 from '../assets/images/avatar1.png';
 import defaultNav from '../_nav';
 import defaultRoutes from '../views';
@@ -172,7 +172,7 @@ class DashboardLayout extends Component {
           <div className="app-body">
             <SidebarNav
               nav={nav}
-              logo={Logo}
+              // logo={Logo}
               logoText="GenUI"
               isSidebarCollapsed={sidebarCollapsed}
               toggleSidebar={this.toggleSideCollapse}
