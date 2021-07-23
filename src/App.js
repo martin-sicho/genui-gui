@@ -75,7 +75,7 @@ export default function App() {
           console.error("Running in development mode!");
       }
       fetchBackendUrl(setApiRoots);
-      return <div>Loading...</div>;
+      return null;
   }
 
   return (
