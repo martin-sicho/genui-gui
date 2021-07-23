@@ -7,7 +7,7 @@ import '../node_modules/react-resizable/css/styles.css'
 import LoginPage from './views/pages/login/LoginPage';
 import packageInfo from './package.json';
 
-const PUBLIC_URL = process.env.PUBLIC_URL;
+const PUBLIC_URL = process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '';
 let GENUI_DEPLOY_VERSION = 'dev';
 if (process.env.GENUI_DEPLOY_VERSION) {
   GENUI_DEPLOY_VERSION = (process.env.GENUI_DEPLOY_VERSION);
@@ -32,7 +32,7 @@ const fetchUserInfo = (accountsRoot, callback) => {
 };
 
 const fetchBackendUrl = (callback) => {
-    fetch('info/backend/host.json', {
+    fetch(`${PUBLIC_URL}/info/backend/host.json`, {
         "headers": {
             "Accept": "application/json",
         },
