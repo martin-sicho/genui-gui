@@ -13,7 +13,7 @@
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
     "formik": "^2.0.8",
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "plotly.js": "^1.52.2",
     "react": "^16.8.1",
     "react-chartjs-2": "2.6.4",
