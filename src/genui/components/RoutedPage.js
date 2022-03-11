@@ -1,5 +1,5 @@
 import React from "react"
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import PageAlertContext from '../../vibe/components/PageAlert/PageAlertContext';
 import '../styles.css'
 
@@ -109,7 +109,7 @@ class RoutedPage extends React.Component {
    */
   render() {
     if (this.state.notFound) {
-      return <Redirect to='/404' />
+      return <Navigate to='/404' />
     }
     
     const PageComponent = this.props.component;

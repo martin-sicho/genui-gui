@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Header, SidebarNav, Footer, PageContent, Avatar, PageAlert, Page} from '../vibe';
 import {RoutedPage} from '../genui/'
@@ -154,7 +154,7 @@ class DashboardLayout extends Component {
 
   render() {
     if (this.state.failedToLogIn) {
-      return <Redirect to={this.props.loginPagePath}/>
+      return <Navigate to={this.props.loginPagePath}/>
     }
 
     if (!this.props.user) {
@@ -196,7 +196,7 @@ class DashboardLayout extends Component {
                     }}/>
               </Header>
               <PageContent>
-                <Switch>
+                <Routes>
                   {routes.map(page => (
                     <Route
                         exact path={page.path}
@@ -216,7 +216,7 @@ class DashboardLayout extends Component {
                         )}
                     />
                   ))}
-                </Switch>
+                </Routes>
               </PageContent>
             </Page>
           </div>

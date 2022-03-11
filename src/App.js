@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import DashboardLayout from './layouts/DashboardLayout';
 import './vibe/scss/styles.scss';
 import '../node_modules/react-grid-layout/css/styles.css'
@@ -80,7 +80,7 @@ export default function App() {
 
   return (
     <BrowserRouter basename={appPath}>
-      <Switch>
+      <Routes>
         <Route
           exact
           path={loginPath}
@@ -113,10 +113,8 @@ export default function App() {
             />
           )
         } />
-        <Route path="/">
-          <Redirect to='/projects/'/>
-        </Route>
-      </Switch>
+        <Route path="/" render={() => <Navigate to={"/projects/"}/>} />
+      </Routes>
     </BrowserRouter>
   );
 }

@@ -15,7 +15,7 @@ import React from 'react';
 import { Field, Formik } from 'formik';
 import * as Yup from 'yup';
 import { FieldErrorMessage } from '../../../genui';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import LogInManager from './LoginManager';
 
 function UserInfo(props) {
@@ -25,10 +25,10 @@ function UserInfo(props) {
 }
 
 function LoginForm(props) {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   if (props.loginSuccess) {
-    return <Redirect to={props.appPath}/>
+    return <Navigate to={props.appPath}/>
   }
 
   return props.user ? (
@@ -43,7 +43,7 @@ function LoginForm(props) {
               <Button color="primary" onClick={e => {
                 e.preventDefault();
                 const path = props.appPath;
-                history.push(path);
+                navigate(path);
               }}>Go to App</Button> <Button color="danger" onClick={e => {
                 e.preventDefault();
                 props.logoutUser(props.user)
