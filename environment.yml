@@ -1,7 +1,6 @@
 name: genui_frontend
 channels:
   - conda-forge
-  - rdkit
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
@@ -16,4 +15,3 @@ dependencies:
   - nodejs=17.4.0=hb5e7134_0
   - openssl=3.0.0=h7f98852_2
   - zlib=1.2.11=h36c2ea0_1013
-prefix: /home/sichom/software/miniconda/envs/genui_frontend
