@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import DashboardLayout from './layouts/DashboardLayout';
 import './vibe/scss/styles.scss';
 import '../node_modules/react-grid-layout/css/styles.css'
@@ -68,7 +68,8 @@ export default function App() {
   const [user, setUser] = React.useState(null);
   const appPath = PUBLIC_URL ? PUBLIC_URL : '';
   const devMode = GENUI_DEPLOY_VERSION !== 'prod' || GENUI_DEPLOY_VERSION !== 'latest';
-  const loginPath = '/login/';
+  const loginPath = 'login';
+  const projectsPath = 'projects';
 
   if (!apiRoots) {
       if (devMode) {
@@ -82,26 +83,20 @@ export default function App() {
     <BrowserRouter basename={appPath}>
       <Routes>
         <Route
-          exact
           path={loginPath}
-          render={
-            (props) => (
-              <LoginPage
-                {...props}
-                devMode={devMode}
-                apiUrls={apiRoots}
-                fetchUserInfo={callback => fetchUserInfo(apiRoots.accountsRoot, callback)}
-                setUser={setUser}
-                user={user}
-                loginPagePath={loginPath}
-                appPath={appPath}
-              />
-            )
-          }/>
-        <Route path='/projects/' render={
-          (props) => (
+          element={
+            <LoginPage
+                  devMode={devMode}
+                  apiUrls={apiRoots}
+                  fetchUserInfo={callback => fetchUserInfo(apiRoots.accountsRoot, callback)}
+                  setUser={setUser}
+                  user={user}
+                  loginPagePath={loginPath}
+                  appPath={appPath}
+            />}
+        />
+        <Route path='/*' element={
             <DashboardLayout
-              {...props}
               devMode={devMode}
               apiUrls={apiRoots}
               user={user}
@@ -111,9 +106,8 @@ export default function App() {
               appPath={appPath}
               packageInfo={packageInfo}
             />
-          )
         } />
-        <Route path="/" render={() => <Navigate to={"/projects/"}/>} />
+        <Route path="/" element={<Navigate to={projectsPath}/>} />
       </Routes>
     </BrowserRouter>
   );
