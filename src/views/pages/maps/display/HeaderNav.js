@@ -6,7 +6,7 @@ export default function HeaderNav(props) {
     <DropdownToggle nav caret>
       Actions
     </DropdownToggle>
-    <DropdownMenu right>
+    <DropdownMenu>
       <UncontrolledDropdown>
         <DropdownToggle nav>Show Map...</DropdownToggle>
         <DropdownMenu>

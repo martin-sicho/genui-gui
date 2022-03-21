@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import DashboardLayout from './layouts/DashboardLayout';
 import './vibe/scss/styles.scss';
 import '../node_modules/react-grid-layout/css/styles.css'
 import '../node_modules/react-resizable/css/styles.css'
-import LoginPage from './views/pages/login/LoginPage';
 import packageInfo from './package.json';
+import LoginLayout from './layouts/LoginLayout';
+import { fetchUserInfo } from './views/pages/login/LoginManager';
 
 const PUBLIC_URL = process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '';
 let GENUI_DEPLOY_VERSION = 'dev';
@@ -13,25 +14,7 @@ if (process.env.GENUI_DEPLOY_VERSION) {
   GENUI_DEPLOY_VERSION = (process.env.GENUI_DEPLOY_VERSION);
 }
 
-const fetchUserInfo = (accountsRoot, callback) => {
-  fetch(new URL('user/', accountsRoot), {
-    credentials: "include",
-    "headers": {
-      "Accept": "application/json",
-    },
-    "method": "GET"
-  }).then(response => response.json())
-    .then(data => {
-      if (data.username) {
-        callback(data);
-      } else {
-        callback(null)
-      }
-    })
-    .catch(e => console.log(e))
-};
-
-const fetchBackendUrl = (callback) => {
+const fetchBackendRoots = (callback) => {
     fetch(`${PUBLIC_URL}/info/backend/host.json`, {
         "headers": {
             "Accept": "application/json",
@@ -41,7 +24,7 @@ const fetchBackendUrl = (callback) => {
         .then(data => {
             let BACKEND_URL = data.url;
             const REMOTE_API_ROOT = new URL('api/', BACKEND_URL);
-            console.log(`Found API root: ${REMOTE_API_ROOT}`);
+            console.log(`Found GenUI backend API: ${REMOTE_API_ROOT}`);
 
             const generatorsURL = new URL('generators/', REMOTE_API_ROOT);
             callback({
@@ -66,33 +49,44 @@ const fetchBackendUrl = (callback) => {
 export default function App() {
   const [apiRoots, setApiRoots] = React.useState(null);
   const [user, setUser] = React.useState(null);
-  const appPath = PUBLIC_URL ? PUBLIC_URL : '';
+  const [userChecked, setUserChecked] = React.useState(false);
+  const [nextPage, setNextPage] = React.useState('projects');
+  let appPath = PUBLIC_URL ? PUBLIC_URL : '';
   const devMode = GENUI_DEPLOY_VERSION !== 'prod' || GENUI_DEPLOY_VERSION !== 'latest';
-  const loginPath = 'login';
-  const projectsPath = 'projects';
 
-  if (!apiRoots) {
-      if (devMode) {
-          console.error("Running in development mode!");
-      }
-      fetchBackendUrl(setApiRoots);
-      return null;
+  useEffect( () => {
+    const next = window.location.pathname.replaceAll(appPath, "");
+    if (next === '/' || next === '') {
+      setNextPage('projects');
+    } else {
+      setNextPage(next.replace(/\/?$/, '/'));
+    }
+    fetchBackendRoots(roots => {
+      setApiRoots(roots);
+      fetchUserInfo(roots.accountsRoot, userData => {
+        setUserChecked(true);
+        if (userData && userData.pk) {
+          setUser(userData);
+        }
+      });
+    });
+  }, [appPath]);
+
+  if (!user && !userChecked) {
+    return "Preparing..."; // TODO: show some loading info
   }
-
   return (
     <BrowserRouter basename={appPath}>
       <Routes>
         <Route
-          path={loginPath}
+          path='login'
           element={
-            <LoginPage
+            <LoginLayout
                   devMode={devMode}
-                  apiUrls={apiRoots}
-                  fetchUserInfo={callback => fetchUserInfo(apiRoots.accountsRoot, callback)}
+                  accountsRoot={apiRoots.accountsRoot}
                   setUser={setUser}
                   user={user}
-                  loginPagePath={loginPath}
-                  appPath={appPath}
+                  appRoot={appPath}
             />}
         />
         <Route path='/*' element={
@@ -101,13 +95,11 @@ export default function App() {
               apiUrls={apiRoots}
               user={user}
               setUser={setUser}
-              fetchUserInfo={callback => fetchUserInfo(apiRoots.accountsRoot, callback)}
-              loginPagePath={loginPath}
-              appPath={appPath}
+              appRoot={appPath}
               packageInfo={packageInfo}
             />
         } />
-        <Route path="/" element={<Navigate to={projectsPath}/>} />
+        <Route path='' element={!user && userChecked ? <Navigate to="login"/> : <Navigate to={nextPage}/>} />
       </Routes>
     </BrowserRouter>
   );

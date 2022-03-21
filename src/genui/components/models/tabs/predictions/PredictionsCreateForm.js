@@ -74,7 +74,7 @@ function PredictionsCreateForm(props) {
             </FormGroup>
             <FieldErrorMessage name="molecules"/>
 
-            <Button block type="submit" color="primary" disabled={isSubmitting}>{isSubmitting ? "Creating..." : "Create"}</Button>
+            <Button type="submit" color="primary" disabled={isSubmitting}>{isSubmitting ? "Creating..." : "Create"}</Button>
           </Form>
         )
       }

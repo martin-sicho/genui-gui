@@ -3,7 +3,6 @@ import ToggleSidebarButton from './components/ToggleSidebarButton';
 import PageLoader from '../PageLoader/PageLoader';
 
 import { Navbar, NavbarToggler, Collapse, Nav } from 'reactstrap';
-import { matchPath } from 'react-router-dom';
 
 export default class Header extends Component {
   constructor(props) {
@@ -19,23 +18,6 @@ export default class Header extends Component {
     }));
   };
 
-  getPageTitle = () => {
-    let name;
-    this.props.routes.map(prop => {
-      if (
-        matchPath(this.props.location.pathname, {
-          path: prop.path,
-          exact: true,
-          strict: false
-        })
-      ) {
-        name = prop.name;
-      }
-      return null;
-    });
-    return name;
-  };
-
   render() {
     return (
       <header className="app-header">
@@ -46,10 +28,10 @@ export default class Header extends Component {
               toggleSidebar={this.props.toggleSidebar}
               isSidebarCollapsed={this.props.isSidebarCollapsed}
             />
-            <div className="page-heading">{this.getPageTitle()}</div>
+            <div className="page-heading">{this.props.title}</div>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
-              <Nav className="ml-auto" navbar>
+              <Nav className="ms-auto" navbar>
                 {this.props.children}
               </Nav>
             </Collapse>

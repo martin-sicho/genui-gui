@@ -14,7 +14,7 @@ function HeaderNav(props) {
     <DropdownToggle nav caret>
       Create New
     </DropdownToggle>
-    <DropdownMenu right>
+    <DropdownMenu>
       <UncontrolledDropdown>
         <DropdownToggle nav>Train Model...</DropdownToggle>
         <DropdownMenu>

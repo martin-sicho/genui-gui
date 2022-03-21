@@ -41,7 +41,7 @@ class CompoundsPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.onHeaderChange(
+    this.props.setPageHeader(
       <HeaderNav
         {...this.props}
         molSetChoices={Object.keys(this.ignoreDefault ? this.classToComponentNoIgnore : this.classToComponent)}

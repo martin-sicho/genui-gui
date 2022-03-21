@@ -87,7 +87,7 @@ class RegisterManager extends React.Component {
   };
 
   sendRegisterRequest = (data, setErrors, setSubmitting) => {
-    fetch(new URL('registration/', this.props.apiUrls.accountsRoot), {
+    fetch(new URL('registration/', this.props.accountsRoot), {
       "headers": {
         "Accept": "application/json",
         "Content-Type": "application/json",

@@ -33,7 +33,7 @@ class ModelFormCardBody extends React.Component {
           />
         </CardBody>
         <CardFooter>
-          <Button block form={`${this.props.modelClass}-${this.props.formNameSuffix}-form`} type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? "Creating..." : "Create"}</Button>
+          <Button form={`${this.props.modelClass}-${this.props.formNameSuffix}-form`} type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? "Creating..." : "Create"}</Button>
         </CardFooter>
       </React.Fragment>
     )

@@ -63,7 +63,7 @@ export function NewMolSetFormRenderer(props) {
         />
       </FormWrapper>
       <ButtonWrapper>
-        <Button block form={id} type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? `${submitButtonText}...` : submitButtonText}</Button>
+        <Button form={id} type="submit" color="primary" disabled={formIsSubmitting}>{formIsSubmitting ? `${submitButtonText}...` : submitButtonText}</Button>
       </ButtonWrapper>
     </React.Fragment>
   );

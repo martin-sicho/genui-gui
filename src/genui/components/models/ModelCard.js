@@ -20,7 +20,11 @@ class ModelCard extends React.Component {
         <CardHeader>{model.name}</CardHeader>
 
         <CardBody className="scrollable">
-          <ProjectItemSubTitle {...this.props} item={model}/>
+          <ProjectItemSubTitle
+            tasks={this.props.tasksExist ? this.props.tasks : null}
+            progressURL={this.props.apiUrls.celeryProgress}
+            item={model}
+          />
           <TabWidget {...this.props} tabs={this.props.tabs}/>
         </CardBody>
 

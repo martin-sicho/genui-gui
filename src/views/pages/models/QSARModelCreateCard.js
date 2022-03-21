@@ -89,7 +89,7 @@ export default function QSARModelCreateCard (props) {
                 <p>Selected endpoint: {endpointData.name}</p>
               </Col>
               <Col sm={4}>
-                <Button block color="primary" onClick={() => setDataReady(true)}>Choose Model Parameters</Button>
+                <Button color="primary" onClick={() => setDataReady(true)}>Next: Model Parameters</Button>
               </Col>
             </Row>
           </CardFooter>

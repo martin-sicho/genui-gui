@@ -9,7 +9,7 @@ function HeaderNav(props) {
         <DropdownToggle nav caret>
           Actions
         </DropdownToggle>
-        <DropdownMenu right>
+        <DropdownMenu>
           <DropdownItem onClick={() => document.getElementById("new-proj-card").scrollIntoView()}>New Project</DropdownItem>
           <DropdownItem divider />
             <UncontrolledDropdown>
@@ -19,7 +19,7 @@ function HeaderNav(props) {
                         props.projects.map(project =>
                             (<DropdownItem
                                 key={project.id}
-                                onClick={() => {props.onProjectOpen(project);props.history.push(`/projects/${project.id}`)}}
+                                onClick={() => {props.openProject(project)}}
                             >
                                 {project.name}
                             </DropdownItem>)
@@ -72,7 +72,7 @@ class Projects extends Component {
             projects : projects,
             isLoading : false
         });
-        this.props.onHeaderChange(<HeaderNav {...this.props} projects={projects}/>);
+        this.props.setPageHeader(<HeaderNav {...this.props} projects={projects}/>);
     };
 
     handleCreate = (values) => {
@@ -93,8 +93,7 @@ class Projects extends Component {
                 this.setState({
                     creating: false
                 });
-                this.props.onProjectOpen(new_project);
-                this.props.history.push(new_project.url);
+                this.props.openProject(new_project);
             }
         )
         ;
@@ -131,7 +130,7 @@ class Projects extends Component {
           {
               project_cards.map(item =>
                   <Card key={item.id.toString()}>
-                      <ProjectCard {...this.props} project={item.data} onProjectDelete={project => {this.props.onProjectDelete(project).then(this.fetchUpdates)}}/>
+                      <ProjectCard {...this.props} project={item.data} deleteProject={project => {this.props.deleteProject(project, this.fetchUpdates)}}/>
                   </Card>
               ).concat([
                   (

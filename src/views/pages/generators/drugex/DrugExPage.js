@@ -12,7 +12,7 @@ function CreateModelsNav(props) {
       <DropdownToggle nav caret>
         Create Model
       </DropdownToggle>
-      <DropdownMenu right>
+      <DropdownMenu>
         <UncontrolledDropdown>
           <DropdownToggle nav>Train...</DropdownToggle>
           <DropdownMenu>
@@ -129,7 +129,7 @@ class DrugExPage extends React.Component {
   };
 
   componentDidMount() {
-    this.props.onHeaderChange(
+    this.props.setPageHeader(
       <CreateModelsNav
         {...this.props}
         modelConfig={this.state.config}

@@ -8,6 +8,7 @@ Current version: `0.0.0-alpha.2`
 
 - added an option to create exports for compound sets
 - show pending tasks in badges
+- update to the latest versions of dependencies
 
 ## Fixed Issues
 

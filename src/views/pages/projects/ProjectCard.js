@@ -34,10 +34,9 @@ export class ProjectCard extends React.Component {
         </CardBody>
         <CardFooter>
           <Button color="success" onClick={() => {
-            this.props.onProjectOpen(this.project);
-            this.props.history.push(`/projects/${this.project.id}`);
+            this.props.openProject(this.project);
           }}>Open</Button> <Button color="danger"
-                                   onClick={() => this.props.onProjectDelete(this.project)}>Delete</Button>
+                                   onClick={() => this.props.deleteProject(this.project)}>Delete</Button>
         </CardFooter>
       </React.Fragment>
     );
