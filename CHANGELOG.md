@@ -13,3 +13,4 @@ Current version: `0.0.0-alpha.2`
 ## Fixed Issues
 
 - fixed crashing of the QSAR app application on certain performance inputs for some models
+- fixed #1
