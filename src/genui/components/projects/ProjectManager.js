@@ -38,11 +38,10 @@ export default function ProjectManager(props) {
   };
 
   return project_id ? (
-      <ComponentWithResources updateCondition={(prev, now) => prev.project.id !== now.project.id} project={project} definition={{project: new URL(project_id + '/', props.projectListURL)}}>
+      <ComponentWithResources updateCondition={(prev, now) => prev.project && now.project ? prev.project.id !== now.project.id : false} project={project} definition={{project: new URL(project_id + '/', props.projectListURL)}}>
         {
           (isLoaded, data) => {
             if (isLoaded) {
-              console.log(data.project, project_id);
               return (
                 <React.Fragment>
                   {props.render({currentProject: data.project, openProject: openProject, deleteProject: deleteProject})}
