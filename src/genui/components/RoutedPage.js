@@ -80,11 +80,12 @@ const Export = (props) => {
   const setTitle = props.setPageTitle;
   const title = props.title;
   const setPageHeaderTitle = props.setPageHeaderTitle;
+  const projectName = props.currentProject && props.title !== 'Projects' ? ' (' + props.currentProject.name + ')' : '' ;
   useEffect(() => {
-    setTitle(title);
-    setPageHeaderTitle(title);
+    setTitle(title + projectName);
+    setPageHeaderTitle(title + projectName);
     setPageHeader(null);
-  }, [title, setPageHeader, setTitle, setPageHeaderTitle]);
+  }, [title, setPageHeader, setTitle, setPageHeaderTitle, projectName]);
   return (<RoutedPage {...props} router={{params: useParams(), navigate: useNavigate(), location: useLocation()}}/>);
 }
 export default Export;
