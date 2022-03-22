@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
 import { Header, SidebarNav, Footer, PageContent, Avatar, PageAlert, Page} from '../vibe';
 import {RoutedPage} from '../genui/'
@@ -302,4 +302,7 @@ function HeaderNav(props) {
   );
 }
 
-export default DashboardLayout;
+const Exported = (props) => (
+  <DashboardLayout {...props} location={useLocation()}/>
+);
+export default Exported;
