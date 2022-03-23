@@ -54,12 +54,12 @@ function ListItem(props) {
                         Tasks <TasksOverview {...props} />
                     </ListGroupItem>
                 </Col>
-                <Col xs="4" lg="2">
+                <Col xs="4" lg="2" className='text-center'>
                     <Button
                         active={inGrid}
                         outline
                         color="primary"
-                        block
+                        className='w-75'
                         onClick={(e) => {
                             props.handleSendToGrid(e, props.groupName, item, inGrid);
                             setInGrid(!inGrid);
