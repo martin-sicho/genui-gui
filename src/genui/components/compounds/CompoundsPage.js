@@ -155,8 +155,6 @@ class CompoundsPage extends React.Component {
               {...this.props}
               selectedNewClass={this.state.selected}
               compoundSets={this.state.inGrid}
-              classToComponentNoIgnore={this.classToComponentNoIgnore}
-              classToComponent={this.classToComponent}
               handleMolSetDelete={this.handleDelete}
               handleAddMolSet={this.handleAdd}
           />
