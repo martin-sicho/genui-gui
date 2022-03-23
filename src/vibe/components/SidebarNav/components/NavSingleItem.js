@@ -23,7 +23,7 @@ const NavSingleItem = ({ item }) => {
 
     return (
       <li className="nav-item">
-        <NavLink to={url} activeClassName="active">
+        <NavLink to={url} className={({ isActive }) => isActive ? "active" : ""}>
           {item.icon && Icon && <Icon className="side-nav-icon" />}
           <span className="nav-item-label">{item.name}</span>
           {item.badge && <NavBadge color={item.badge.variant} text={item.badge.text} />}

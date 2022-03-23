@@ -1,5 +1,5 @@
-import React from "react"
-import {Redirect} from "react-router-dom";
+import React, { useEffect } from 'react';
+import { Navigate, useNavigate, useParams, useLocation } from 'react-router-dom';
 import PageAlertContext from '../../vibe/components/PageAlert/PageAlertContext';
 import '../styles.css'
 
@@ -14,7 +14,6 @@ class RoutedPage extends React.Component {
     super(props);
     this.state = {
       notFound : false
-      , project : null
     };
   }
 
@@ -61,69 +60,32 @@ class RoutedPage extends React.Component {
     ;
   };
 
-  setPageTitle = (newTitle) => {
-    this.props.handlePageTitleChange(newTitle)
-  };
-  
-  /**
-   * Here, we define a react lifecycle method that gets executed each time
-   * our component is mounted to the DOM, which is exactly what we want in this case
-   */
-  componentDidMount() {
-    this.fetchProject();
-    this.setPageTitle(this.props.title);
-  }
-
-  componentWillUnmount() {
-    this.props.onHeaderChange(null);
-  }
-
-  fetchProject = () => {
-    const { project } = this.props.match.params;
-    if (project) {
-      const url = new URL(project + '/', this.props.apiUrls.projectList);
-      fetch(url, {credentials: 'include'})
-        .then((response) => this.handleResponseErrors(response, 'Failed to fetch project data from backend.'))
-        .then(this.processProjectData)
-        .catch(
-          () => {
-            this.retryAction(this.fetchProject, 'Failed to fetch project data from backend.')
-          }
-        );
-    }
-  };
-  
-   processProjectData = (data) => {
-        const project = Object.assign({url : `/projects/${data.id}/`}, data);
-        if (project.id) {
-          this.props.onProjectOpen(project);
-          this.setState({project : project});
-        } else {
-          this.setState({notFound : true});
-        }
-    };
-
   /**
    * Here, we use a component prop to render
    * a component, as specified in route configuration
    */
   render() {
     if (this.state.notFound) {
-      return <Redirect to='/404' />
+      return <Navigate to='/404' />
     }
-    
-    const PageComponent = this.props.component;
-    return (
-      <PageComponent
-        {...this.props}
-        currentProject={this.state.project}
-        setPageTitle={this.setPageTitle}
-        retryAction={this.retryAction}
-        handleResponseErrors={this.handleResponseErrors}
-      />
-    )
+
+    return <this.props.component {...this.props} retryAction={this.retryAction} handleResponseErrors={this.handleResponseErrors} setNotFound={(status) => this.setState({notFound: status})} />
   }
 }
 RoutedPage.contextType = PageAlertContext;
 
-export default RoutedPage
+// wrap the component to take advantage of hooks
+const Export = (props) => {
+  const setPageHeader = props.setPageHeader;
+  const setTitle = props.setPageTitle;
+  const title = props.title;
+  const setPageHeaderTitle = props.setPageHeaderTitle;
+  const projectName = props.currentProject && props.title !== 'Projects' ? ' (' + props.currentProject.name + ')' : '' ;
+  useEffect(() => {
+    setTitle(title + projectName);
+    setPageHeaderTitle(title + projectName);
+    setPageHeader(null);
+  }, [title, setPageHeader, setTitle, setPageHeaderTitle, projectName]);
+  return (<RoutedPage {...props} router={{params: useParams(), navigate: useNavigate(), location: useLocation()}}/>);
+}
+export default Export;

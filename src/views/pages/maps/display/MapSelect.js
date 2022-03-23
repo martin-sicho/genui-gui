@@ -17,7 +17,7 @@ class MapSelect extends React.Component {
     const maps = this.props.maps;
     const selectedMap = this.state.selectedMap;
     if (maps.length > 0 && !selectedMap) {
-      this.props.onHeaderChange(
+      this.props.setPageHeader(
         <HeaderNav
           {...this.props}
           maps={maps}

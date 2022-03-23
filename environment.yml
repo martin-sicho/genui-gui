@@ -1,0 +1,17 @@
+name: genui_frontend
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=1_gnu
+  - ca-certificates=2021.10.8=ha878542_0
+  - icu=69.1=h9c3ff4c_0
+  - libgcc-ng=11.2.0=h1d223b6_13
+  - libgomp=11.2.0=h1d223b6_13
+  - libstdcxx-ng=11.2.0=he4da1e4_13
+  - libuv=1.43.0=h7f98852_0
+  - libzlib=1.2.11=h36c2ea0_1013
+  - nodejs=17.4.0=hb5e7134_0
+  - openssl=3.0.0=h7f98852_2
+  - zlib=1.2.11=h36c2ea0_1013

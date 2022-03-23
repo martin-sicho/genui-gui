@@ -1,5 +1,6 @@
 import {groupBy} from "../../../../../genui";
-import {Line} from "react-chartjs-2";
+import 'chart.js/auto';
+import { Chart } from 'react-chartjs-2';
 import React from "react";
 
 export function DrExLossPlot(props) {
@@ -31,24 +32,23 @@ export function DrExLossPlot(props) {
         datasets: datasets
     };
     return (
-        <Line
+        <Chart
             data={data}
+            type='line'
             options={{
                 scales: {
-                    xAxes: [{
-                        scaleLabel: {
+                    x: {
+                        title: {
                             display: true,
-                            labelString: 'Step'
+                            text: 'Step'
                         }
-                    }],
-                    yAxes: [
-                        {
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Loss Value'
-                            }
-                        }
-                    ]
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Loss Value'
+                        },
+                    }
                 },
                 title: {
                     display: true,
@@ -79,24 +79,23 @@ export function DrExSMILESErrorPlot(props) {
         datasets: datasets
     };
     return (
-        <Line
+        <Chart
             data={data}
+            type='line'
             options={{
                 scales: {
-                    xAxes: [{
-                        scaleLabel: {
+                    x: {
+                        title: {
                             display: true,
-                            labelString: 'Step'
+                            text: 'Step'
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Error Value'
                         }
-                    }],
-                    yAxes: [
-                        {
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Error Value'
-                            }
-                        }
-                    ]
+                    }
                 },
                 title: {
                     display: true,
@@ -136,31 +135,31 @@ export function DrExAgentSMILESErrorPlot(props) {
     return (
         <div className="drugex-agent-smierror-chart">
             <h4>SMILES Error Rate</h4>
-            <Line
-                data={data}
-                options={{
-                    scales: {
-                        xAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Epoch'
-                            }
-                        }],
-                        yAxes: [
-                            {
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Error Value'
-                                }
-                            }
-                        ]
-                    },
-                    title: {
-                        display: true,
-                        text: 'SMILES Error Rate (DrugEx Agent)'
-                    }
-                }
-                }
+            <Chart
+              data={data}
+              type="line"
+              options={{
+                  scales: {
+                      x: {
+                          title: {
+                              display: true,
+                              text: 'Epoch'
+                          }
+                          ,
+                      },
+                      y: {
+                          title: {
+                              display: true,
+                              text: 'Error Value'
+                          },
+                      }
+                  },
+                  title: {
+                      display: true,
+                      text: 'SMILES Error Rate (DrugEx Agent)'
+                  }
+              }
+              }
             />
         </div>
     );
@@ -187,24 +186,23 @@ export function DrExAgentScoresPlot(props) {
     return (
         <div className="drugex-agent-scores-chart">
             <h4>Environment Model Scores</h4>
-            <Line
+            <Chart
+                type='line'
                 data={data}
                 options={{
                     scales: {
-                        xAxes: [{
-                            scaleLabel: {
+                        x: {
+                            title: {
                                 display: true,
-                                labelString: 'Epoch'
+                                text: 'Epoch'
                             }
-                        }],
-                        yAxes: [
-                            {
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Score Value'
-                                }
-                            }
-                        ]
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Score Value'
+                            },
+                        }
                     },
                     title: {
                         display: true,

@@ -1,58 +1,25 @@
 import {
   Button,
-  Card,
-  CardBody, CardFooter,
-  Col,
   Container,
   Form,
   FormGroup,
   Input,
   Label,
-  Row,
   UncontrolledAlert,
 } from 'reactstrap';
 import React from 'react';
 import { Field, Formik } from 'formik';
 import * as Yup from 'yup';
 import { FieldErrorMessage } from '../../../genui';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import LogInManager from './LoginManager';
 
-function UserInfo(props) {
-  return props.user && (props.user.first_name || props.last_name) ? (
-    <React.Fragment>{props.user.username} ({`${props.user.first_name} ${props.user.last_name}`})</React.Fragment>
-  ) : (props.user ? <React.Fragment>{props.user.username}</React.Fragment> : null)
-}
-
 function LoginForm(props) {
-  const history = useHistory();
-
-  if (props.loginSuccess) {
-    return <Redirect to={props.appPath}/>
+  if (props.loginSuccess || props.user) {
+    return <Navigate to="/"/>
   }
 
-  return props.user ? (
-      <Row>
-        <Col sm={12}>
-          <Card>
-            <CardBody className="display-flex">
-              <p>You are already signed in as: <strong className="text-success"><UserInfo {...props}/></strong>
-              </p>
-            </CardBody>
-            <CardFooter>
-              <Button color="primary" onClick={e => {
-                e.preventDefault();
-                const path = props.appPath;
-                history.push(path);
-              }}>Go to App</Button> <Button color="danger" onClick={e => {
-                e.preventDefault();
-                props.logoutUser(props.user)
-              }}>Logout</Button>
-            </CardFooter>
-          </Card>
-        </Col>
-      </Row>
-    ) : (
+  return  (
     <Container>
       <h2>Login</h2>
       {
@@ -96,7 +63,7 @@ function LoginForm(props) {
 export default function LoginTab(props) {
   return (
     <Container>
-      <LogInManager fetchUser={true} {...props} component={LoginForm} />
+      <LogInManager {...props} component={LoginForm} />
     </Container>
   )
 }

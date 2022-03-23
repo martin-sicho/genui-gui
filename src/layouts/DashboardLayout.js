@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import React, { Component, useState } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { DropdownToggle, DropdownMenu, DropdownItem, Dropdown } from 'reactstrap';
 import { Header, SidebarNav, Footer, PageContent, Avatar, PageAlert, Page} from '../vibe';
 import {RoutedPage} from '../genui/'
 // import Logo from '../assets/images/vibe-logo.svg';
 // import avatar1 from '../assets/images/avatar1.png';
-import defaultNav from '../_nav';
 import defaultRoutes from '../views';
 import ContextProviders from '../vibe/components/utilities/ContextProviders';
 import handleKeyAccessibility, { handleClickAccessibility } from '../vibe/helpers/handleTabAccessibility';
 import LogInManager from '../views/pages/login/LoginManager';
+import ProjectManager from '../genui/components/projects/ProjectManager';
 
 const MOBILE_SIZE = 992;
 
@@ -18,15 +18,31 @@ class DashboardLayout extends Component {
     super(props);
     this.apiUrls = this.props.apiUrls;
     this.routes = defaultRoutes;
+    this.defaultNav = {
+      top: [
+        {
+          name: 'Projects',
+          url: '/projects',
+          icon: 'Home',
+          key: 'projects'
+        },
+        {
+          divider: true,
+        },
+      ],
+      bottom: [
+        // empty
+      ],
+    };
     this.state = {
       pageTitle : "GenUI",
       sidebarCollapsed: false,
       isMobile: window.innerWidth <= MOBILE_SIZE,
       showChat1: false,
       currentProject: null,
-      nav: defaultNav,
+      nav: this.defaultNav,
       headerComponent: null,
-      failedToLogIn: false,
+      headerTitle: "",
     };
   }
 
@@ -49,24 +65,22 @@ class DashboardLayout extends Component {
     // window.addEventListener('resize', this.handleResize);
     document.addEventListener('keydown', handleKeyAccessibility);
     document.addEventListener('click', handleClickAccessibility);
-    if (!this.props.user) {
-      this.props.fetchUserInfo((userData) => {
-        if (userData) {
-          this.props.setUser(userData);
-        } else {
-          this.setState({failedToLogIn: true})
-        }
-      })
-    }
   }
 
   activateProject = (project) => {
-    const current_project = project;
-    const nav = JSON.parse(JSON.stringify(defaultNav));
+    if (!project) {
+      this.setState({
+        nav: this.defaultNav
+      })
+      return;
+    }
+
+    const url = `/projects/${project.id}/`;
+    const nav = JSON.parse(JSON.stringify(this.defaultNav));
     nav.top.push(
       {
-        name: current_project.name,
-        url: current_project.url,
+        name: "Overview",
+        url: url,
         icon: 'Layers',
       }
     );
@@ -78,14 +92,14 @@ class DashboardLayout extends Component {
     nav.top.push(
       {
         name: "Compounds",
-        url: current_project.url + "compounds/",
+        url: url + "compounds/",
         icon: 'Box',
       }
     );
     nav.top.push(
       {
         name: "QSAR Models",
-        url: current_project.url + "qsar/",
+        url: url + "qsar/",
         icon: 'Activity',
       }
     );
@@ -96,7 +110,7 @@ class DashboardLayout extends Component {
         children: [
           {
             name: 'DrugEx',
-            url: current_project.url + "generators/drugex/",
+            url: url + "generators/drugex/",
           }
         ],
       },
@@ -108,36 +122,19 @@ class DashboardLayout extends Component {
         children: [
           {
             name: 'Creator',
-            url: current_project.url + "maps/creator/",
+            url: url + "maps/creator/",
           },
           {
             name: 'Explorer',
-            url: current_project.url + "maps/explorer/",
+            url: url + "maps/explorer/",
           }
         ],
       }
     );
 
-    this.setState(() => ({
-        currentProject : current_project,
-        nav : nav,
-    }));
-  };
-
-  deleteProject = (project) => {
-      return fetch(this.apiUrls.projectList + project.id + '/', {method: 'DELETE', credentials: "include"}).then((response) => {
-        if (response.ok) {
-            if (this.state.currentProject && (project.id === this.state.currentProject.id)) {
-              const nav = JSON.parse(JSON.stringify(defaultNav));
-              this.setState(() => ({
-                  currentProject : null,
-                  nav : nav,
-              }));
-            }
-        } else {
-            console.log("Failed to delete project: " + project.id);
-        }
-      });
+    this.setState({
+      nav : nav
+    })
   };
 
   componentWillUnmount() {
@@ -153,12 +150,8 @@ class DashboardLayout extends Component {
   };
 
   render() {
-    if (this.state.failedToLogIn) {
-      return <Redirect to={this.props.loginPagePath}/>
-    }
-
     if (!this.props.user) {
-      return <div/> // TODO: make this nicer (show some progress or information about trying to log in)
+      return <Navigate to='/login'/>
     }
 
     const { sidebarCollapsed } = this.state;
@@ -182,41 +175,43 @@ class DashboardLayout extends Component {
               <Header
                 toggleSidebar={this.toggleSideCollapse}
                 isSidebarCollapsed={sidebarCollapsed}
-                routes={routes}
+                title={this.state.headerTitle}
                 {...this.props}
               >
                 <HeaderNav
                     {...this.props}
                     injected={this.injectContentToHeader}
-                    showProfile={() => {
-                        this.setState({failedToLogIn: true})
-                    }}
-                    onLogout={() => {
-                        this.setState({failedToLogIn: true})
-                    }}/>
+                />
               </Header>
               <PageContent>
-                <Switch>
+                <Routes>
                   {routes.map(page => (
                     <Route
-                        exact path={page.path}
+                        path={page.path}
                         key={page.key}
-                        render={props => (
-                            <RoutedPage
-                                {...props}
-                                handlePageTitleChange={this.handlePageTitleChange}
-                                apiUrls={this.apiUrls}
-                                component={page.component}
-                                title={page.name}
-                                currentProject={this.state.currentProject}
-                                onProjectOpen={project => this.activateProject(project)}
-                                onProjectDelete={project => this.deleteProject(project)}
-                                onHeaderChange={this.handleHeaderChange}
-                            />
-                        )}
+                        element={
+                          <ProjectManager
+                            projectListURL={this.props.apiUrls.projectList}
+                            onProjectOpen={this.activateProject}
+                            render={
+                              (props) => (
+                                <RoutedPage
+                                  {...this.props}
+                                  {...props}
+                                  apiUrls={this.apiUrls}
+                                  component={page.component}
+                                  title={page.name}
+                                  setPageTitle={this.handlePageTitleChange}
+                                  setPageHeader={this.handleHeaderChange}
+                                  setPageHeaderTitle={this.handleHeaderTitleChange}
+                                />
+                              )
+                            }
+                          />
+                        }
                     />
                   ))}
-                </Switch>
+                </Routes>
               </PageContent>
             </Page>
           </div>
@@ -243,13 +238,19 @@ class DashboardLayout extends Component {
   }
 
     injectContentToHeader = () => {
-        return this.state.headerComponent
+        return this.state.headerComponent;
     };
 
     handleHeaderChange = (component) => {
       this.setState({
           headerComponent : component
-      })
+      });
+    };
+
+    handleHeaderTitleChange = (title) => {
+      this.setState({
+        headerTitle : title
+      });
     };
 
     handlePageTitleChange = (newTitle) => {
@@ -260,6 +261,7 @@ class DashboardLayout extends Component {
 
 function HeaderNav(props) {
    const Injected = props.injected ? props.injected : React.Fragment;
+   const [userMenuOpen, setUserMenuOpen] = useState(false);
    return (
     <React.Fragment>
       {/*<NavItem>*/}
@@ -271,34 +273,36 @@ function HeaderNav(props) {
       {/*  </form>*/}
       {/*</NavItem>*/}
       <Injected/>
-      <UncontrolledDropdown nav inNavbar>
+      <Dropdown isOpen={userMenuOpen} toggle={() => userMenuOpen ? setUserMenuOpen(false) : setUserMenuOpen(true)}>
         <DropdownToggle nav>
           <Avatar size="small" color="blue" initials={props.user.username[0]} />
         </DropdownToggle>
-        <DropdownMenu right>
+        <DropdownMenu end>
           {/*<DropdownItem>Settings</DropdownItem>*/}
-          <DropdownItem onClick={(e) => {
-            e.preventDefault();
-            props.showProfile()
-          }}>Profile</DropdownItem>
-          <DropdownItem divider />
+          {/*<DropdownItem onClick={(e) => {*/}
+          {/*  e.preventDefault();*/}
+          {/*  props.showProfile()*/}
+          {/*}}>Profile</DropdownItem>*/}
+          {/*<DropdownItem divider />*/}
           <LogInManager
-            {...props}
+            accountsRoot={props.apiUrls.accountsRoot}
           >
             {
               (sendLogInRequest, sendLogOutRequest) => (
                 <DropdownItem onClick={(e) => {
                   e.preventDefault();
-                  sendLogOutRequest();
-                  props.onLogout()
+                  sendLogOutRequest(() => props.setUser(null));
                 }}>Log Out</DropdownItem>
               )
             }
           </LogInManager>
         </DropdownMenu>
-      </UncontrolledDropdown>
+      </Dropdown>
     </React.Fragment>
   );
 }
 
-export default DashboardLayout;
+const Exported = (props) => (
+  <DashboardLayout {...props} location={useLocation()}/>
+);
+export default Exported;

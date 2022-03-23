@@ -75,7 +75,7 @@ function NewExportForm(props) {
                             <FieldErrorMessage name="exporter"/>
                         </FormGroup>
 
-                        <Button block type="submit" color="primary" disabled={isSubmitting}>{isSubmitting ? "Submitting" : "Submit"}</Button>
+                        <Button type="submit" color="primary" disabled={isSubmitting}>{isSubmitting ? "Submitting" : "Submit"}</Button>
                     </Form>
                 )
             }
@@ -101,7 +101,7 @@ function ExportsTable(props) {
                         <td>{item.name}</td>
                         <td>{item.description}</td>
                         <td><a href={item.files[0].file}>Link</a></td>
-                        <td><Button block color="danger" onClick={() => props.handleDelete(item)}>X</Button></td>
+                        <td><Button color="danger" onClick={() => props.handleDelete(item)}>X</Button></td>
                     </tr>
                     ))
                 }
@@ -152,7 +152,7 @@ export default function ExportMolSet(props) {
                                             }
                                         }
                                     />
-                                ) : <Button block color="primary" onClick={() => setFormShown(true)}>Create New</Button>
+                                ) : <Button color="primary" onClick={() => setFormShown(true)}>Create New</Button>
                             }
 
                             {

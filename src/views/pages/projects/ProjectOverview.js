@@ -1,108 +1,106 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-class ProjectOverview extends React.Component {
+function ProjectOverview (props) {
+  const project = props.currentProject;
 
-    render() {
-        if (this.props.currentProject) {
-            document.title = this.props.currentProject.name;
-            return(
-                <div className='project-overview'>
-                    <h1>{this.props.currentProject.name}</h1>
+  if (props.currentProject) {
+    return(
+      <div className='project-overview'>
+        <h1>{project.name}</h1>
 
-                    <p>
-                        {this.props.currentProject.description}
-                    </p>
+        <p>
+          {project.description}
+        </p>
 
-                    <hr />
+        <hr />
 
-                    <h1>GenUI Quick Tour</h1>
+        <h1>GenUI Quick Tour</h1>
 
-                    <p>
-                        A short guide that explains the most important features of the GenUI application.
-                    </p>
+        <p>
+          A short guide that explains the most important features of the GenUI application.
+        </p>
 
-                    <h2>Compounds</h2>
+        <h2>Compounds</h2>
 
-                    <p>
-                        Probably the first thing you will want to do in GenUI is to import some compounds and look at them.
-                        You can create and manage your compound sets in the <Link target='_blank' to="./compounds">Compounds</Link> interface.
-                        You can import from CSV and SDF files, but you can also
-                        easily integrate data from the <a target="_blank" rel="noopener noreferrer" href='https://www.ebi.ac.uk/chembl/'>ChEMBL database</a>.
-                        You will also use this page when you want to generate new compounds with a trained generator, but more on that later.
-                    </p>
+        <p>
+          Probably the first thing you will want to do in GenUI is to import some compounds and look at them.
+          You can create and manage your compound sets in the <Link target='_blank' to="./compounds">Compounds</Link> interface.
+          You can import from CSV and SDF files, but you can also
+          easily integrate data from the <a target="_blank" rel="noopener noreferrer" href='https://www.ebi.ac.uk/chembl/'>ChEMBL database</a>.
+          You will also use this page when you want to generate new compounds with a trained generator, but more on that later.
+        </p>
 
-                    <p>
-                        Be careful when selecting the name for your compound set. The name is used to identify this set of compounds in your project so
-                        try to avoid duplicate names, but also names that are too long (you can always add arbitrary information in the
-                        description field when creating a compound set).
-                    </p>
+        <p>
+          Be careful when selecting the name for your compound set. The name is used to identify this set of compounds in your project so
+          try to avoid duplicate names, but also names that are too long (you can always add arbitrary information in the
+          description field when creating a compound set).
+        </p>
 
-                    <h2>QSAR Models</h2>
+        <h2>QSAR Models</h2>
 
-                    <p>
-                        A lot of molecular generators use QSAR model predictions to optimize generated compounds against a certain target,
-                        but they can also be useful to estimate missing activity data for existing compounds. Therefore, GenUI has
-                        basic QSAR modelling functionality built in and you can use the trained models to generate sets of
-                        predicted activities to your compound sets.
-                    </p>
+        <p>
+          A lot of molecular generators use QSAR model predictions to optimize generated compounds against a certain target,
+          but they can also be useful to estimate missing activity data for existing compounds. Therefore, GenUI has
+          basic QSAR modelling functionality built in and you can use the trained models to generate sets of
+          predicted activities to your compound sets.
+        </p>
 
-                    <p>
-                        In the <Link to='./qsar' target='_blank'>QSAR Models</Link> screen, you can select a compound set
-                        for training a QSAR model. GenUI automatically finds possible endpoints for modelling and it also
-                        handles basic model validation procedures. You can also import and export models to share them with colleagues
-                        or make them available along with publications.
-                    </p>
+        <p>
+          In the <Link to='./qsar' target='_blank'>QSAR Models</Link> screen, you can select a compound set
+          for training a QSAR model. GenUI automatically finds possible endpoints for modelling and it also
+          handles basic model validation procedures. You can also import and export models to share them with colleagues
+          or make them available along with publications.
+        </p>
 
-                    <h2>Generators</h2>
+        <h2>Generators</h2>
 
-                    <p>
-                        <Link to='./generators/drugex' target='_blank'>DrugEx</Link> is the first generator integrated
-                        in the GenUI framework, but more generators will be added to the app in the future. The user
-                        interface will likely wary a lot between generators, but one common feature is that each created
-                        generator is also accessible from the  <Link to='./compounds/' target='_blank'>Compounds</Link> page
-                        where it can be used to generate sets of new compounds.
-                    </p>
+        <p>
+          <Link to='./generators/drugex' target='_blank'>DrugEx</Link> is the first generator integrated
+          in the GenUI framework, but more generators will be added to the app in the future. The user
+          interface will likely wary a lot between generators, but one common feature is that each created
+          generator is also accessible from the  <Link to='./compounds/' target='_blank'>Compounds</Link> page
+          where it can be used to generate sets of new compounds.
+        </p>
 
-                    <h2>Maps</h2>
+        <h2>Maps</h2>
 
-                    <p>
-                        Under Maps, you will find visual interactive tools which should help you make
-                        sense of all the data you imported and generated. All compound sets in the project
-                        can be added to a so called 'Map', which is a 2D representation of the chemical
-                        space occupied by your compounds. Multiple visualization methods
-                        are available (and more will be added) so that you can choose one that
-                        represents your data the best.
-                    </p>
+        <p>
+          Under Maps, you will find visual interactive tools which should help you make
+          sense of all the data you imported and generated. All compound sets in the project
+          can be added to a so called 'Map', which is a 2D representation of the chemical
+          space occupied by your compounds. Multiple visualization methods
+          are available (and more will be added) so that you can choose one that
+          represents your data the best.
+        </p>
 
-                    <p>
-                        <Link to='./maps/creator' target='_blank'>Creator</Link> allows you to create
-                        chemical space mappings with various dimensionality reduction techniques. Once a map is created,
-                        you can visualize it with the <Link to='./maps/explorer' target='_blank'>Explorer</Link>.
-                        Explorer not only allows you to see the embedding of compounds in 2D space as
-                        generated by the Creator, but it also integrates both calculated and real activities of compounds.
-                        Various visualization techniques should help you navigate the map quickly and pinpoint molecules with interesting
-                        properties. You can also select groups of compounds and look at them and their activities in more detail.
-                    </p>
+        <p>
+          <Link to='./maps/creator' target='_blank'>Creator</Link> allows you to create
+          chemical space mappings with various dimensionality reduction techniques. Once a map is created,
+          you can visualize it with the <Link to='./maps/explorer' target='_blank'>Explorer</Link>.
+          Explorer not only allows you to see the embedding of compounds in 2D space as
+          generated by the Creator, but it also integrates both calculated and real activities of compounds.
+          Various visualization techniques should help you navigate the map quickly and pinpoint molecules with interesting
+          properties. You can also select groups of compounds and look at them and their activities in more detail.
+        </p>
 
-                    <h2>Tips</h2>
+        <h2>Tips</h2>
 
-                    <ul>
-                        <li><p>
-                            You can drag all UI cards around and to some extent customize your workspace that way. You can also use
-                            the bottom right corner of each card to resize it as needed. The resulting layout is unfortunately not
-                            yet persisted across logins and page refreshes, but this feature is planned to be added soon.
-                        </p></li>
-                    </ul>
-
+        <ul>
+          <li><p>
+            You can drag all UI cards around and to some extent customize your workspace that way. You can also use
+            the bottom right corner of each card to resize it as needed. The resulting layout is unfortunately not
+            yet persisted across logins and page refreshes, but this feature is planned to be added soon.
+          </p></li>
+        </ul>
 
 
-                </div>
-            )
-        } else {
-            return <div>Loading...</div>
-        }
-    };
+
+      </div>
+    )
+  } else {
+    return <div>Loading...</div>
+  }
 }
 
 export default ProjectOverview;

@@ -15,7 +15,7 @@ export default function SimpleDropDownToggle(props) {
       <Row>
         <Col sm={12}>
           <ButtonDropdown style={{width: "100%"}} isOpen={dropdownOpen} toggle={() => setOpen(!dropdownOpen)}>
-            <DropdownToggle caret color="primary" block>
+            <DropdownToggle caret color="primary">
               {title}
             </DropdownToggle>
             <DropdownMenu style={{width: "100%"}}>

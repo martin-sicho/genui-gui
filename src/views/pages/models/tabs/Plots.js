@@ -1,5 +1,6 @@
 import {PLOTLY_COLORS} from "../../../../genui";
-import {Scatter} from "react-chartjs-2";
+import 'chart.js/auto';
+import { Chart } from 'react-chartjs-2';
 import React from "react";
 
 export function ROCCurvePlot(props) {
@@ -47,24 +48,23 @@ export function ROCCurvePlot(props) {
     };
 
     return (
-        <Scatter
+        <Chart
+            type='scatter'
             data={data}
             options={{
                 scales: {
-                    xAxes: [{
-                        scaleLabel: {
+                    x: {
+                        title: {
                             display: true,
-                            labelString: 'False Positive Rate'
+                            text: 'False Positive Rate'
                         }
-                    }],
-                    yAxes: [
-                        {
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'True Positive Rate'
-                            }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'True Positive Rate'
                         }
-                    ]
+                    }
                 },
                 title: {
                     display: true,

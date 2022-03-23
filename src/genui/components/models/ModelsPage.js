@@ -37,7 +37,7 @@ class ModelsPage extends React.Component {
   componentDidMount() {
     const HeaderComp = this.headerComponent;
     if (HeaderComp) {
-      this.props.onHeaderChange(<HeaderComp {...this.props} addChoices={this.props.algorithmChoices} onModelAdd={this.handleAddNew}/>);
+      this.props.setPageHeader(<HeaderComp {...this.props} addChoices={this.props.algorithmChoices} onModelAdd={this.handleAddNew}/>);
     }
   }
 

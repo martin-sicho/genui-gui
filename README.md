@@ -50,7 +50,7 @@ of [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-st
 ### Creating a menu entry
 
 All pages are accessible by their routes, but only pages added to 
-the `nav` state property of `DashboardLayout` or manually defined in `./src/_nav.js` 
+the `nav` state property of `DashboardLayout` 
 show up on the sidebar menu. There are two menus available to fill: `top` and `bottom`.
 
 Every top level menu entry can either be a top level button or a folder with a single level of child entries.
