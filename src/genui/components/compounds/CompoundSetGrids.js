@@ -3,8 +3,6 @@ import React from "react";
 function CompoundSetsGrids(props) {
     const molsets = props.compoundSets;
     const definitions = props.definitions;
-    // const classToComponentNoIgnore = props.classToComponentNoIgnore
-    // const classToComponent = classToComponentNoIgnore ? classToComponentNoIgnore : props.classToComponent;
 
     const tabs = [];
     Object.keys(molsets).forEach(MolSetClass => {

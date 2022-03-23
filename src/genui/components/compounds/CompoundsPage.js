@@ -27,15 +27,6 @@ class CompoundsPage extends React.Component {
   constructor(props) {
     super(props);
 
-    // this.defaultClass = this.props.defaultClass;
-    // this.ignoreDefault = this.props.ignoreDefault;
-    // this.classToComponent = this.props.definitions;
-    // this.classToComponentNoIgnore = this.ignoreDefault ? Object.keys(this.classToComponent).reduce((object, key) => {
-    //   if (key !== this.defaultClass) {
-    //     object[key] = this.classToComponent[key]
-    //   }
-    //   return object
-    // }, {}) : undefined;
     this.state = {
       selected: null,
       inGrid: {}
