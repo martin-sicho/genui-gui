@@ -1,8 +1,7 @@
 import React from "react";
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import {scrollTo} from '../../utils';
-import CompoundSetsGrids from "./CompoundSetGrids";
 import ObjectGroupsList from "../ObjectSelectionList";
+import { scrollTo } from '../../utils';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>
@@ -28,8 +27,7 @@ class CompoundsPage extends React.Component {
     super(props);
 
     this.state = {
-      selected: null,
-      inGrid: {}
+      selected: null
     }
   }
 
@@ -41,77 +39,18 @@ class CompoundsPage extends React.Component {
         onMolSetChoice={(choice, array) => {
           this.setState(prevState => {
               prevState.selected = choice;
-              const prevGrid = prevState.inGrid;
-              if (!prevGrid.hasOwnProperty(choice)) {
-                  prevGrid[choice] = [];
-                  return prevState;
-              }
           }, () => {
-            const elmnt = document.getElementById(choice);
-            scrollTo(document.documentElement, elmnt.offsetTop, 300);
-            elmnt.scrollIntoView();
+            if (choice) {
+              const elmnt = document.getElementById(`${choice}-create-card`);
+              scrollTo(document.documentElement, elmnt.offsetTop, 300);
+              elmnt.scrollIntoView();
+            }
           });
           this.props.handleAddMolSetList(choice, array);
         }
         }
       />
     );
-  }
-
-  handleAdd = (className, molset) => {
-      this.setState({selected: null}, () => {
-          let elmnt = document.getElementById(`${className}-group-list`);
-          if (elmnt) {
-              scrollTo(document.documentElement, elmnt.offsetTop, 300);
-              elmnt.scrollIntoView();
-          } else {
-              elmnt = document.getElementById("compound-sets-list");
-              scrollTo(document.documentElement, elmnt.offsetTop, 300);
-              elmnt.scrollIntoView();
-          }
-          this.props.handleAddMolSet(className, molset);
-      })
-  }
-
-  handleDelete = (name, molset) => {
-      this.setState(prevState => {
-          if (prevState.inGrid.hasOwnProperty(name)) {
-              const group = prevState.inGrid[name];
-              const deletedIndex = group.findIndex((item) => item.id === molset.id);
-              group.splice(deletedIndex, 1);
-              return prevState;
-          }
-      });
-      this.props.handleMolSetDelete(name, molset);
-  }
-
-  sendToGrid = (e, className, item, inGrid) => {
-      if (!inGrid) {
-          this.setState((prevState) => {
-              const previousGrid = prevState.inGrid;
-              if (previousGrid.hasOwnProperty(className)) {
-                  previousGrid[className].push(item);
-                  prevState.inGrid = previousGrid;
-                  return prevState;
-              } else {
-                  prevState.inGrid[className] = [item];
-                  return prevState;
-              }
-          })
-      } else {
-          this.setState((prevState) => {
-              const previousItems = prevState.inGrid[className];
-              const index = previousItems.findIndex(inside => inside.id === item.id);
-              previousItems.splice(index, 1);
-              if (previousItems.length === 0) {
-                  delete prevState.inGrid[className];
-                  return prevState;
-              } else {
-                  prevState.inGrid[className] = previousItems;
-                  return prevState;
-              }
-          })
-      }
   }
 
   render() {
@@ -135,19 +74,14 @@ class CompoundsPage extends React.Component {
             groupNameProp='currentMolsetClass'
             urlProp='molsetListUrl'
             ignoreGroups={['MolSet']}
+            onDelete={this.props.handleMolSetDelete}
+            onCreate={this.props.handleAddMolSet}
+            onUpdate={this.props.requestMolSetsUpdate}
+            addNew={this.state.selected}
+            onNewFormOpen={(e, className) => this.setState({selected: className})}
             tasksUrlRoot={this.props.apiUrls.compoundSetsRoot}
             groupDefinitions={this.props.definitions}
             compoundSetsDefinitions={this.props.definitions}
-            handleSendToGrid={this.sendToGrid}
-            handleMolSetDelete={this.handleDelete}
-          />
-          <hr/>
-          <CompoundSetsGrids
-              {...this.props}
-              selectedNewClass={this.state.selected}
-              compoundSets={this.state.inGrid}
-              handleMolSetDelete={this.handleDelete}
-              handleAddMolSet={this.handleAdd}
           />
         </React.Fragment>
     )

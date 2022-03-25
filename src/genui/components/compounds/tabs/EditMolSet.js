@@ -76,8 +76,9 @@ export default function EditMolSet(props) {
                     )
                     .then(response => response.json())
                     .then(data => {
-                        props.updateMolSet(data);
+                        // props.updateMolSet(data);
                         setFormIsSubmitting(false);
+                        props.requestMolSetsUpdate();
                     }
                     ).catch(
                     (e) => {

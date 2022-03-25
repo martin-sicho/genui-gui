@@ -1,13 +1,13 @@
 import React from 'react';
 import {ComponentWithObjects, ComponentWithResources, CompoundsPage} from '../../../genui';
-import ChEMBLGrid from './chembl/ChEMBLGrid';
-import GeneratedGrid from './generated/GeneratedGrid';
-import SDFGrid from './sdf/SDFGrid';
-import CSVGrid from "./csv/CSVGrid";
 import ChEMBLCard from "./chembl/ChEMBLCard";
 import GeneratedCard from "./generated/GeneratedCard";
 import SDFCard from "./sdf/SDFCard";
 import CSVCard from "./csv/CSVCard";
+import ChEMBLCardNew from './chembl/ChEMBLCardNew';
+import GeneratedCardNew from './generated/GeneratedCardNew';
+import SDFCardNew from './sdf/SDFCardNew';
+import CSVCardNew from './csv/CSVCardNew';
 
 class Compounds extends React.Component {
 
@@ -18,26 +18,26 @@ class Compounds extends React.Component {
         ChEMBLCompounds: {
             name: 'ChEMBL Sets',
             url: new URL( 'chembl/', this.props.apiUrls.compoundSetsRoot),
-            gridComponent: ChEMBLGrid,
+            emptyComponent: ChEMBLCardNew,
             listComponent: ChEMBLCard,
         },
         GeneratedMolSet: {
             name: 'Generated Sets',
             url: new URL( 'generated/', this.props.apiUrls.compoundSetsRoot),
-            gridComponent: GeneratedGrid,
+            emptyComponent: GeneratedCardNew,
             listComponent: GeneratedCard
         },
         SDFCompounds: {
             name: 'SDF Files',
             url: new URL( 'sdf/', this.props.apiUrls.compoundSetsRoot),
-            gridComponent: SDFGrid,
+            emptyComponent: SDFCardNew,
             listComponent: SDFCard,
         },
         CSVCompounds: {
             name: 'CSV Files',
             url: new URL( 'csv/', this.props.apiUrls.compoundSetsRoot),
             relativeUrl: 'csv',
-            gridComponent: CSVGrid,
+            emptyComponent: CSVCardNew,
             listComponent: CSVCard
         }
     }
