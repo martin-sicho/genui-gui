@@ -1,17 +1,19 @@
 name: genui_frontend
 channels:
   - conda-forge
+  - rdkit
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
-  - _openmp_mutex=4.5=1_gnu
-  - ca-certificates=2021.10.8=ha878542_0
-  - icu=69.1=h9c3ff4c_0
-  - libgcc-ng=11.2.0=h1d223b6_13
-  - libgomp=11.2.0=h1d223b6_13
-  - libstdcxx-ng=11.2.0=he4da1e4_13
+  - _openmp_mutex=4.5=2_gnu
+  - ca-certificates=2022.6.15=ha878542_0
+  - icu=70.1=h27087fc_0
+  - libgcc-ng=12.1.0=h8d9b700_16
+  - libgomp=12.1.0=h8d9b700_16
+  - libstdcxx-ng=12.1.0=ha89aaad_16
   - libuv=1.43.0=h7f98852_0
-  - libzlib=1.2.11=h36c2ea0_1013
-  - nodejs=17.4.0=hb5e7134_0
-  - openssl=3.0.0=h7f98852_2
-  - zlib=1.2.11=h36c2ea0_1013
+  - libzlib=1.2.12=h166bdaf_2
+  - nodejs=17.9.0=h8839609_0
+  - openssl=3.0.5=h166bdaf_1
+  - zlib=1.2.12=h166bdaf_2
+prefix: /home/sichom/software/miniconda/envs/genui_frontend
