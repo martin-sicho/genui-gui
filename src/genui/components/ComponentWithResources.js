@@ -10,6 +10,7 @@ class ComponentWithResources extends React.Component {
 
     this.interval = this.props.updateInterval ? this.props.updateInterval: null;
     this.intervalIDs = {};
+    this.method = this.props.method ? this.props.method : 'GET'
     this.state = {
       allLoaded : false,
       data : {}
@@ -62,7 +63,8 @@ class ComponentWithResources extends React.Component {
   };
 
   fetchResource = (name, url) => {
-    fetch(url, {signal : this.abort.signal, credentials: "include",})
+    fetch(url, {signal : this.abort.signal, credentials: "include", method:
+        this.method})
       .then(response => response.json())
       .then((data) => {
         if (this.hasUnmounted) {

@@ -40,7 +40,7 @@ export function DrExLossPlot(props) {
                     x: {
                         title: {
                             display: true,
-                            text: 'Step'
+                            text: 'Epoch'
                         }
                     },
                     y: {
@@ -87,7 +87,7 @@ export function DrExSMILESErrorPlot(props) {
                     x: {
                         title: {
                             display: true,
-                            text: 'Step'
+                            text: 'Epoch'
                         },
                     },
                     y: {
@@ -107,85 +107,85 @@ export function DrExSMILESErrorPlot(props) {
     );
 }
 
-export function DrExAgentSMILESErrorPlot(props) {
-    if (props.errors.length === 0) {
-        return <div>No data available.</div>
-    }
-
-    const datasets = [
-        {
-            label: "SMILES Error Rate",
-            fill: false,
-            data: props.errors.map(err => err.value),
-            backgroundColor: '#36a2eb',
-            borderColor: '#36a2eb'
-        },
-        {
-            label: "SMILES Error Rate (Unique)",
-            fill: false,
-            data: props.errorsUnique.map(err => 1 - err.value),
-            backgroundColor: '#ff6384',
-            borderColor: '#ff6384'
-        }
-    ];
-    const data = {
-        labels: props.errors.map(err => err.extraArgs.epoch),
-        datasets: datasets
-    };
-    return (
-        <div className="drugex-agent-smierror-chart">
-            <h4>SMILES Error Rate</h4>
-            <Chart
-              data={data}
-              type="line"
-              options={{
-                  scales: {
-                      x: {
-                          title: {
-                              display: true,
-                              text: 'Epoch'
-                          }
-                          ,
-                      },
-                      y: {
-                          title: {
-                              display: true,
-                              text: 'Error Value'
-                          },
-                      }
-                  },
-                  title: {
-                      display: true,
-                      text: 'SMILES Error Rate (DrugEx Agent)'
-                  }
-              }
-              }
-            />
-        </div>
-    );
-}
+// export function DrExAgentSMILESErrorPlot(props) {
+//     if (props.errors.length === 0) {
+//         return <div>No data available.</div>
+//     }
+//
+//     const datasets = [
+//         {
+//             label: "SMILES Error Rate",
+//             fill: false,
+//             data: props.errors.map(err => err.value),
+//             backgroundColor: '#36a2eb',
+//             borderColor: '#36a2eb'
+//         },
+//         {
+//             label: "SMILES Error Rate (Unique)",
+//             fill: false,
+//             data: props.errorsUnique.map(err => 1 - err.value),
+//             backgroundColor: '#ff6384',
+//             borderColor: '#ff6384'
+//         }
+//     ];
+//     const data = {
+//         labels: props.errors.map(err => err.extraArgs.epoch),
+//         datasets: datasets
+//     };
+//     return (
+//         <div className="drugex-agent-smierror-chart">
+//             <h4>SMILES Error Rate</h4>
+//             <Chart
+//               data={data}
+//               type="line"
+//               options={{
+//                   scales: {
+//                       x: {
+//                           title: {
+//                               display: true,
+//                               text: 'Epoch'
+//                           }
+//                           ,
+//                       },
+//                       y: {
+//                           title: {
+//                               display: true,
+//                               text: 'Error Value'
+//                           },
+//                       }
+//                   },
+//                   title: {
+//                       display: true,
+//                       text: 'SMILES Error Rate (DrugEx Agent)'
+//                   }
+//               }
+//               }
+//             />
+//         </div>
+//     );
+// }
 
 export function DrExAgentScoresPlot(props) {
-    if (props.scores.length === 0) {
+    if (props.datasets[0].data.length === 0) {
         return <div>No data available.</div>
     }
 
-    const datasets = [
+    const datasets = props.datasets.map(item => (
         {
-            label: "Model Scores",
+            label: item.title,
             fill: false,
-            data: props.scores.map(score => score.value),
-            backgroundColor: '#36a2eb',
-            borderColor: '#36a2eb'
+            data: item.data.map(score => score.value),
+            backgroundColor: item.color,
+            borderColor: item.color
         }
-    ];
+    ));
     const data = {
-        labels: props.scores.map(score => score.extraArgs.epoch),
+        labels: props.datasets[0].data.map(score => score.extraArgs.epoch),
         datasets: datasets
     };
     return (
         <div className="drugex-agent-scores-chart">
-            <h4>Environment Model Scores</h4>
+            <h4>{props.title}</h4>
             <Chart
                 type='line'
                 data={data}
@@ -200,13 +200,13 @@ export function DrExAgentScoresPlot(props) {
                         y: {
                             title: {
                                 display: true,
-                                text: 'Score Value'
+                                text: 'Values'
                             },
                         }
                     },
                     title: {
                         display: true,
-                        text: 'DrugEx Agent Environment Model Scores'
+                        text: props.title
                     }
                 }
                 }

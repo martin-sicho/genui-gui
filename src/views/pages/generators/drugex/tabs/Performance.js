@@ -1,14 +1,34 @@
 import React from "react";
-import {DrExAgentScoresPlot, DrExAgentSMILESErrorPlot, DrExLossPlot, DrExSMILESErrorPlot} from "./Plots";
+import {DrExAgentScoresPlot, DrExLossPlot, DrExSMILESErrorPlot} from "./Plots";
 
 export function DrugExAgentPerformanceTab(props) {
-    const errors = props.getPerfValuesForMetric(props.performance, "ModelPerformanceDrugExAgent", props.metrics.find(metric => metric.name === 'SMILES_ER'));
-    const errors_uq = props.getPerfValuesForMetric(props.performance, "ModelPerformanceDrugExAgent", props.metrics.find(metric => metric.name === 'SMILES_UQR'));
-    const scores = props.getPerfValuesForMetric(props.performance, "ModelPerformanceDrugExAgent", props.metrics.find(metric => metric.name === 'DrExActivity'));
+    const loss = props.getPerfValuesForMetric(props.performance, "ModelPerformanceDrugEx", props.metrics.find(metric => metric.name === 'DrExLoss'));
+    const errors = props.getPerfValuesForMetric(props.performance, "ModelPerformanceDrugEx", props.metrics.find(metric => metric.name === 'SMILES_ER'));
+    const uniqueness = props.getPerfValuesForMetric(props.performance, "ModelPerformanceDrugEx", props.metrics.find(metric => metric.name === 'SMILES_UQR'));
+    const desirability = props.getPerfValuesForMetric(props.performance, "ModelPerformanceDrugEx", props.metrics.find(metric => metric.name === 'DrExDesire'));
+
     return (
         <div className="drugex-agent-performance-plots">
-            <DrExAgentSMILESErrorPlot errors={errors} errorsUnique={errors_uq}/>
-            <DrExAgentScoresPlot scores={scores}/>
+            <DrExLossPlot losses={loss}/>
+            <DrExAgentScoresPlot
+              datasets={[
+                {
+                  title: "Desirability",
+                  data: desirability,
+                  color: "#36a2eb"
+                },
+                {
+                  title: "Error Rate",
+                  data: errors,
+                  color: "#ff6384"
+                },
+                {
+                  title: "Uniqueness",
+                  data: uniqueness,
+                  color: "#7fd280"
+                }
+              ]}
+            />
         </div>
     )
 }

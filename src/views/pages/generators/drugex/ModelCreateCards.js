@@ -28,6 +28,55 @@ function DrugExNetValidationFields(props) {
   )
 }
 
+function DrugExAgentValidationFields(props) {
+  const validationStrategyPrefix = props.validationStrategyPrefix;
+
+  return (
+    <React.Fragment>
+      <FormGroup row>
+        <Label htmlFor={`${validationStrategyPrefix}.validSetSize`} sm={4}>Validation Set Size</Label>
+        <Col sm={8}>
+          <Field name={`${validationStrategyPrefix}.validSetSize`} as={Input} type="number" step="1"/>
+        </Col>
+      </FormGroup>
+      <FieldErrorMessage name={`${validationStrategyPrefix}.validSetSize`}/>
+    </React.Fragment>
+  )
+}
+
+function DrugExNetTrainingFields(props) {
+  const trainingStrategyPrefix = props.trainingStrategyPrefix;
+
+  return (
+    <React.Fragment>
+
+      <FormGroup row>
+        <Label htmlFor={`${trainingStrategyPrefix}.modelClass`} sm={4}>Model Class</Label>
+        <Col sm={8}>
+          <Field name={`${trainingStrategyPrefix}.modelClass`} as={Input} type="select">
+            {
+              props.drexnetAlgorithms.map((model) => <option key={model.value} value={model.value}>{model.display_name}</option>)
+            }
+          </Field>
+        </Col>
+      </FormGroup>
+      <FieldErrorMessage name={`${trainingStrategyPrefix}.modelClass`}/>
+
+      <FormGroup row>
+        <Label htmlFor={`${trainingStrategyPrefix}.inputType`} sm={4}>Input Type</Label>
+        <Col sm={8}>
+          <Field name={`${trainingStrategyPrefix}.inputType`} as={Input} type="select">
+            {
+              props.drexnetInputTypes.map((model) => <option key={model.value} value={model.value}>{model.display_name}</option>)
+            }
+          </Field>
+        </Col>
+      </FormGroup>
+      <FieldErrorMessage name={`${trainingStrategyPrefix}.inputType`}/>
+    </React.Fragment>
+  )
+}
+
 function DrugExNetExtraFields(props) {
   return (
     <React.Fragment>
@@ -81,6 +130,10 @@ export class DrugExNetCreateCard extends React.Component {
     const validationStrategyInit = {
       validSetSize: 512,
     };
+    const trainingStrategyInit = {
+      inputType: this.props.drexnetInputTypes[0].value,
+      modelClass: this.props.drexnetAlgorithms[0].value
+    }
     const extraParamInit = {
       parent: this.props.models.length > 0 ? this.props.models[this.props.models.length - 1].id : undefined,
       molset: molsets[0].id,
@@ -89,6 +142,10 @@ export class DrugExNetCreateCard extends React.Component {
     const validationStrategySchema = {
       validSetSize: Yup.number().integer().min(0, 'Validation set size must be positive or zero.'),
     };
+    const trainingStrategySchema = {
+      inputType: Yup.string().required("You have to specify input type."),
+      modelClass: Yup.string().required("You have to specify model class.")
+    }
     const extraParamsSchema = {
       parent: Yup.number().integer().positive('Parent network ID must be a positive integer.'),
       molset: Yup.number().integer().positive('Molecule set ID must be a positive integer.').required('You need to supply a set of compounds to create the corpus from.')
@@ -99,15 +156,38 @@ export class DrugExNetCreateCard extends React.Component {
         {...this.props}
         molsets={molsets}
         validationStrategyInit={validationStrategyInit}
+        trainingStrategyInit={trainingStrategyInit}
         extraParamsInit={extraParamInit}
         validationStrategySchema={validationStrategySchema}
+        trainingStrategySchema={trainingStrategySchema}
         extraParamsSchema={extraParamsSchema}
         validationStrategyFields={DrugExNetValidationFields}
+        trainingStrategyFields={DrugExNetTrainingFields}
         extraFields={DrugExNetExtraFields}
         disabledModelFormFields={['validationStrategy.metrics', 'trainingStrategy.mode']}
       />
     )
   }
+}
+
+function DrugExAgentTrainingFields(props) {
+  const trainingStrategyPrefix = props.trainingStrategyPrefix;
+  return (
+    <React.Fragment>
+      <FormGroup row>
+        <Label htmlFor={`${trainingStrategyPrefix}.explorer`} sm={4}>Explorer</Label>
+        <p>Suitable choice for your model should already be preselected.</p>
+        <Col sm={8}>
+          <Field name={`${trainingStrategyPrefix}.explorer`} as={Input} type="select">
+            {
+              props.drexagentExplorers.map((model) => <option key={model.value} value={model.value}>{model.display_name}</option>)
+            }
+          </Field>
+        </Col>
+      </FormGroup>
+      <FieldErrorMessage name={`${trainingStrategyPrefix}.explorer`}/>
+    </React.Fragment>
+  )
 }
 
 function DrugExAgentExtraFields(props) {
@@ -156,6 +236,20 @@ function DrugExAgentCreateCardRenderer(props) {
     return <InfoCard title={infoTitle} text="You have to create a DrugEx exploitation and exploration network before you can train the DrugEx agent."/>
   }
 
+  const trainingStrategyInit = {
+    explorer: props.drexagentExplorers[0].value,
+  }
+  const trainingStrategySchema = {
+    explorer: Yup.string().required("You have to specify an explorer.")
+  }
+
+  const validationStrategyInit = {
+    validSetSize: 512,
+  };
+  const validationStrategySchema = {
+    validSetSize: Yup.number().integer().min(0, 'Validation set size must be positive or zero.'),
+  };
+
   const extraParamInit = {
     environment: props.environments[0].id,
     exploitationNet: props.networks[props.networks.length - 1].id,
@@ -173,6 +267,12 @@ function DrugExAgentCreateCardRenderer(props) {
       {...props}
       environments={props.environments}
       networks={props.networks}
+      trainingStrategyInit={trainingStrategyInit}
+      trainingStrategySchema={trainingStrategySchema}
+      trainingStrategyFields={DrugExAgentTrainingFields}
+      validationStrategyInit={validationStrategyInit}
+      validationStrategySchema={validationStrategySchema}
+      validationStrategyFields={DrugExAgentValidationFields}
       extraParamsInit={extraParamInit}
       extraParamsSchema={extraParamsSchema}
       extraFields={DrugExAgentExtraFields}

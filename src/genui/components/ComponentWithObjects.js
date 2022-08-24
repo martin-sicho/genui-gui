@@ -9,7 +9,8 @@ class ComponentWithObjects extends React.Component {
     super(props);
 
     this.objectListRoot = this.props.objectListURL;
-    this.emptyClassProperty = props.emptyClassName;
+    this.emptyClassProperty = this.props.emptyClassName;
+    this.doPost = this.props.commitObjects;
 
     if (!this.emptyClassProperty) {
       throw new Error("Unspecified empty class name for ComponentWithObjects. This is required. Specify a default name if class cannot be determined from data.");
@@ -70,7 +71,7 @@ class ComponentWithObjects extends React.Component {
     })
   };
 
-  handleAddObject = (className, data) => {
+  addToObjects = (className, data) => {
     this.setState(prevState => {
       if (!prevState.objects.hasOwnProperty(className)) {
         prevState.objects[className] = []
@@ -80,6 +81,29 @@ class ComponentWithObjects extends React.Component {
         objects : prevState.objects
       };
     });
+  }
+
+  handleAddObject = (className, data) => {
+    if (this.doPost) {
+      fetch(this.objectListRoot.toString(), {
+        method: 'POST',
+        credentials: "include",
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(response => response.json()).then(
+          (data) => {
+            // console.log(data);
+            this.addToObjects(className, data)
+          }
+        ).catch(
+        (error) => console.log(error)
+      )
+      ;
+    } else {
+      this.addToObjects(className, data)
+    }
   };
 
   handleAddObjectList = (className, objectList, overwrite=false) => {
