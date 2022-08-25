@@ -1,7 +1,7 @@
 import React from "react";
 import {Row, Col, ListGroupItem, ListGroup, Container, Button} from "reactstrap";
 import {Card} from "reactstrap";
-import { scrollTo, TaskAwareComponent, TaskBadgeGroup } from '../index';
+import { TaskAwareComponent, TaskBadgeGroup } from '../index';
 
 function TasksOverview(props) {
     const tasksURL = new URL(`${props.item.id}/tasks/all/`, props.tasksUrlRoot);

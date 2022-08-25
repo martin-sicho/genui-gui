@@ -1,14 +1,7 @@
 import React from "react";
-// import {DrugExAgentCreateCard, DrugExNetCreateCard, DrugExNetFromFileCard} from './ModelCreateCards';
-// import {DrugExAgentCard, DrugExNetCard} from './ModelCards';
-// import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap';
-// import {scrollTo} from '../../../../genui/utils';
-import {DrugeExNetGrid, DrugExAgentGrid} from "./Grids";
 import { DrugExAgentCard, DrugExNetCard } from './ModelCards';
 import { DrugExAgentCreateCard, DrugExNetCreateCard, DrugExNetFromFileCard } from './ModelCreateCards';
-import ObjectGroupsList from '../../../../genui/components/ObjectSelectionList';
-import { ComponentWithObjects, ComponentWithResources, ModelsPage } from '../../../../genui';
-// import ChEMBLCardNew from '../../compounds/chembl/ChEMBLCardNew';
+import { ComponentWithResources, ModelsPage } from '../../../../genui';
 
 // function CreateModelsNav(props) {
 //

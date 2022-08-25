@@ -1,7 +1,6 @@
 import React from "react";
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import ObjectGroupsList from "../ObjectSelectionList";
-import { scrollTo } from '../../utils';
 
 function HeaderNav(props) {
   return (<UncontrolledDropdown nav inNavbar>

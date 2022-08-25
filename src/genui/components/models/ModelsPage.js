@@ -1,8 +1,8 @@
 import React from 'react';
 import { ComponentWithObjects } from '../../index';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import QSARModelCreateCard from '../../../views/pages/models/QSARModelCreateCard';
-import QSARModelCreateFromFileCard from '../../../views/pages/models/QSARModelCreateFromFileCard';
+// import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+// import QSARModelCreateCard from '../../../views/pages/models/QSARModelCreateCard';
+// import QSARModelCreateFromFileCard from '../../../views/pages/models/QSARModelCreateFromFileCard';
 import ObjectGroupsList from '../ObjectSelectionList';
 
 // function HeaderNav(props) {

@@ -35,7 +35,6 @@ const MapDisplay = (props) => {
     algorithmChoices : new URL('algorithms/', props.apiUrls.mapsRoot),
     descriptors: new URL('descriptors/', props.apiUrls.mapsRoot),
   };
-  const listUrl = props.apiUrls.mapsRoot;
   const definitions = {
     Map: {
       name: "Chemical Space Maps",
