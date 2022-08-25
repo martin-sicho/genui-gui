@@ -286,7 +286,7 @@ export function DrugExAgentCreateCard (props) {
     <ComponentWithResources
       {...props}
       definition={{
-          networks: props.netsUrl
+          networks: props.netsUrl + `?project_id=${props.currentProject.id}`
       }}
     >
         {
@@ -299,7 +299,7 @@ export function DrugExAgentCreateCard (props) {
                         />
                     )
                 } else {
-                    return <div>Loading...</div>
+                    return <div>Fetching networks...</div>
                 }
             }
         }

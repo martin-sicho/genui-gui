@@ -39,12 +39,6 @@ class CompoundsPage extends React.Component {
         onMolSetChoice={(choice, array) => {
           this.setState(prevState => {
               prevState.selected = choice;
-          }, () => {
-            if (choice) {
-              const elmnt = document.getElementById(`${choice}-create-card`);
-              scrollTo(document.documentElement, elmnt.offsetTop, 300);
-              elmnt.scrollIntoView();
-            }
           });
           this.props.handleAddMolSetList(choice, array);
         }
@@ -65,25 +59,25 @@ class CompoundsPage extends React.Component {
     }
 
     return (
-        <React.Fragment>
-          <ObjectGroupsList
-            {...this.props}
-            id="compound-sets-list"
-            objects={molsets}
-            objectProp='molset'
-            groupNameProp='currentMolsetClass'
-            urlProp='molsetListUrl'
-            ignoreGroups={['MolSet']}
-            onDelete={this.props.handleMolSetDelete}
-            onCreate={this.props.handleAddMolSet}
-            onUpdate={this.props.requestMolSetsUpdate}
-            addNew={this.state.selected}
-            onNewFormOpen={(e, className) => this.setState({selected: className})}
-            tasksUrlRoot={this.props.apiUrls.compoundSetsRoot}
-            groupDefinitions={this.props.definitions}
-            compoundSetsDefinitions={this.props.definitions}
-          />
-        </React.Fragment>
+        <ObjectGroupsList
+          {...this.props}
+          id="compound-sets-list"
+          objects={molsets}
+          objectProp='molset'
+          groupNameProp='currentMolsetClass'
+          urlProp='molsetListUrl'
+          ignoreGroups={['MolSet']}
+          createProp="handleCreateNew"
+          deleteProp="handleDelete"
+          updateProp="handleUpdate"
+          onDelete={this.props.handleMolSetDelete}
+          onCreate={this.props.handleAddMolSet}
+          onUpdate={this.props.requestMolSetsUpdate}
+          focusGroup={this.state.selected}
+          tasksUrlRoot={this.props.apiUrls.compoundSetsRoot}
+          groupDefinitions={this.props.definitions}
+          // compoundSetsDefinitions={this.props.definitions}
+        />
     )
   }
 }

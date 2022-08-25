@@ -6,56 +6,7 @@ import {
 } from '../../../genui';
 import QSARModelCard from './ModelCard';
 import QSARModelCreateCard from './QSARModelCreateCard';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import QSARModelCreateFromFileCard from './QSARModelCreateFromFileCard';
-
-function HeaderNav(props) {
-  return (<UncontrolledDropdown nav inNavbar>
-    <DropdownToggle nav caret>
-      Create New
-    </DropdownToggle>
-    <DropdownMenu>
-      <UncontrolledDropdown>
-        <DropdownToggle nav>Train Model...</DropdownToggle>
-        <DropdownMenu>
-          {
-            props.addChoices.map(choice =>
-              (<DropdownItem
-                key={choice.id}
-                onClick={() => {props.onModelAdd(choice, QSARModelCreateCard, {
-                  h : {"md" : 10, "sm" : 7},
-                  w : {"md" : 1, "sm" : 1},
-                  minH : {"md" : 3, "sm" : 3},
-                })}}
-              >
-                {choice.name}
-              </DropdownItem>)
-            )
-          }
-        </DropdownMenu>
-      </UncontrolledDropdown>
-      <UncontrolledDropdown>
-        <DropdownToggle nav>Import Model...</DropdownToggle>
-        <DropdownMenu>
-          {
-            props.addChoices.map(choice =>
-              (<DropdownItem
-                key={choice.id}
-                onClick={() => {props.onModelAdd(choice, QSARModelCreateFromFileCard, {
-                  h : {"md" : 8, "sm" : 8},
-                  w : {"md" : 1, "sm" : 1},
-                  minH : {"md" : 3, "sm" : 3},
-                })}}
-              >
-                {choice.name}
-              </DropdownItem>)
-            )
-          }
-        </DropdownMenu>
-      </UncontrolledDropdown>
-    </DropdownMenu>
-  </UncontrolledDropdown>)
-}
 
 function Models(props) {
   const resources = {
@@ -63,8 +14,24 @@ function Models(props) {
     descriptors: new URL('descriptors/', props.apiUrls.qsarRoot),
     metrics: new URL('metrics/', props.apiUrls.qsarRoot)
   };
-  const listUrl = new URL(`models/`, props.apiUrls.qsarRoot);
-  const defaultClassName = "QSARModel";
+  const definitions = {
+    QSARModel: {
+      name: "QSAR Models",
+      url: new URL( 'models/', props.apiUrls.qsarRoot),
+      newComponents: [
+        {
+          label: "Add",
+          component: QSARModelCreateCard
+        },
+        {
+          label: "Import",
+          component: QSARModelCreateFromFileCard
+        }
+      ],
+      listComponent: QSARModelCard,
+    }
+  }
+  const defaultClassName = "MolSet";
   return (
     <ComponentWithResources definition={resources}>
       {
@@ -82,16 +49,8 @@ function Models(props) {
                 return (compoundSetsAvailable ? <ModelsPage
                   {...props}
                   {...resources}
-                  modelClass={defaultClassName}
-                  listURL={listUrl}
-                  modelComponent={QSARModelCard}
+                  definitions={definitions}
                   compoundSets={compoundSets}
-                  headerComponent={HeaderNav}
-                  cardSetup={{
-                    h : {"md" : 10, "sm" : 7},
-                    w : {"md" : 1, "sm" : 1},
-                    minH : {"md" : 3, "sm" : 3},
-                  }}
                 /> : <div><p>There are currently no compound sets. You need to create one before building a QSAR model.</p></div>)
               }
             }

@@ -30,7 +30,7 @@ function TaskBadge(props) {
               return (
                 <div key={task.task_id}>
                   <Button color={color} id={`toggler-${index}`} style={{ marginBottom: '1rem' }}>
-                    {task.task_name === '' ? 'Unknown' : task.task_name}
+                    {task.task_name === '' ? task.task_id : task.task_name}
                   </Button>
                   <UncontrolledCollapse toggler={`#toggler-${index}`}>
                     <Card>

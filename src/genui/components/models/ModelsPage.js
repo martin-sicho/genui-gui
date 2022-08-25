@@ -1,5 +1,57 @@
 import React from 'react';
-import { ComponentWithObjects, ModelGrid } from '../../index';
+import { ComponentWithObjects } from '../../index';
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import QSARModelCreateCard from '../../../views/pages/models/QSARModelCreateCard';
+import QSARModelCreateFromFileCard from '../../../views/pages/models/QSARModelCreateFromFileCard';
+import ObjectGroupsList from '../ObjectSelectionList';
+
+// function HeaderNav(props) {
+//   return (<UncontrolledDropdown nav inNavbar>
+//     <DropdownToggle nav caret>
+//       Create New
+//     </DropdownToggle>
+//     <DropdownMenu>
+//       <UncontrolledDropdown>
+//         <DropdownToggle nav>Train Model...</DropdownToggle>
+//         <DropdownMenu>
+//           {
+//             props.addChoices.map(choice =>
+//               (<DropdownItem
+//                 key={choice.id}
+//                 onClick={() => {props.onModelAdd(choice, QSARModelCreateCard, {
+//                   h : {"md" : 10, "sm" : 7},
+//                   w : {"md" : 1, "sm" : 1},
+//                   minH : {"md" : 3, "sm" : 3},
+//                 })}}
+//               >
+//                 {choice.name}
+//               </DropdownItem>)
+//             )
+//           }
+//         </DropdownMenu>
+//       </UncontrolledDropdown>
+//       <UncontrolledDropdown>
+//         <DropdownToggle nav>Import Model...</DropdownToggle>
+//         <DropdownMenu>
+//           {
+//             props.addChoices.map(choice =>
+//               (<DropdownItem
+//                 key={choice.id}
+//                 onClick={() => {props.onModelAdd(choice, QSARModelCreateFromFileCard, {
+//                   h : {"md" : 8, "sm" : 8},
+//                   w : {"md" : 1, "sm" : 1},
+//                   minH : {"md" : 3, "sm" : 3},
+//                 })}}
+//               >
+//                 {choice.name}
+//               </DropdownItem>)
+//             )
+//           }
+//         </DropdownMenu>
+//       </UncontrolledDropdown>
+//     </DropdownMenu>
+//   </UncontrolledDropdown>)
+// }
 
 class ModelsPage extends React.Component {
 
@@ -34,36 +86,38 @@ class ModelsPage extends React.Component {
     })
   };
 
-  componentDidMount() {
-    const HeaderComp = this.headerComponent;
-    if (HeaderComp) {
-      this.props.setPageHeader(<HeaderComp {...this.props} addChoices={this.props.algorithmChoices} onModelAdd={this.handleAddNew}/>);
-    }
-  }
+  // componentDidMount() {
+  //   this.props.setPageHeader(<HeaderNav {...this.props} addChoices={this.props.algorithmChoices} onModelAdd={this.handleAddNew}/>);
+  // }
 
   render() {
-    const selectedToAdd = this.props.selectedToAdd ? this.props.selectedToAdd : this.state.selectedToAdd;
-    const newModelComponent = this.props.newModelComponent ? this.props.newModelComponent : this.state.newModelComponent;
-    const newCardSetup = this.props.newCardSetup ? this.props.newCardSetup : this.state.newCardSetup;
-    const cardSetup = this.props.cardSetup ? this.props.cardSetup : this.state.cardSetup;
-
+    const modelClass = Object.keys(this.props.definitions)[0];
     return (
       <div className="models-page">
         <ComponentWithObjects
           {...this.props}
-          emptyClassName={this.props.modelClass}
-          objectListURL={this.props.listURL}
+          emptyClassName={modelClass}
+          objectListURL={this.props.definitions[modelClass].url}
           render={
-            (models, handleAddModelList, handleAddModel, handleModelDelete) => {
-              return <ModelGrid
+            (models, handleAddModelList, handleAddModel, handleModelDelete, handleModelUpdate) => {
+              return <ObjectGroupsList
                 {...this.props}
-                chosenAlgorithm={selectedToAdd}
-                newModelComponent={newModelComponent}
-                newCardSetup={newCardSetup}
-                cardSetup={cardSetup}
-                models={models[this.props.modelClass]}
-                handleAddModel={handleAddModel}
-                handleModelDelete={handleModelDelete}
+                chosenAlgorithm={this.props.algorithmChoices.length === 1 ? this.props.algorithmChoices[0] : null}
+                models={models[modelClass]}
+                id="models-list"
+                objects={models}
+                objectProp="model"
+                groupNameProp="modelClass"
+                urlProp="listURL"
+                createProp="handleCreate"
+                deleteProp="onModelDelete"
+                updateProp="onModelUpdate"
+                onCreate={handleAddModel}
+                onDelete={handleModelDelete}
+                onUpdate={handleModelUpdate}
+                focusGroup={modelClass}
+                tasksUrlRoot={this.props.definitions[modelClass].url}
+                groupDefinitions={this.props.definitions}
               />
             }
           }

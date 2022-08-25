@@ -19,7 +19,7 @@ export default function MapCard(props) {
   const tabs = [
     {
       title : "Info",
-      renderedComponent : () =>
+      renderedComponent : (props) =>
         <ModelInfoTab
           {...props}
           extraTrainingParams={trainingParams}

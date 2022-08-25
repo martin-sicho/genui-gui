@@ -12,32 +12,42 @@ import CSVCardNew from './csv/CSVCardNew';
 class Compounds extends React.Component {
 
   render() {
-    // const defaultClass = "MolSet";
-
     const definitions = {
         ChEMBLCompounds: {
             name: 'ChEMBL Sets',
             url: new URL( 'chembl/', this.props.apiUrls.compoundSetsRoot),
-            emptyComponent: ChEMBLCardNew,
+            newComponents: [{
+                label: "New",
+                component: ChEMBLCardNew
+            }],
             listComponent: ChEMBLCard,
         },
         GeneratedMolSet: {
             name: 'Generated Sets',
             url: new URL( 'generated/', this.props.apiUrls.compoundSetsRoot),
-            emptyComponent: GeneratedCardNew,
+            newComponents:[{
+              label: "New",
+              component: GeneratedCardNew
+            }],
             listComponent: GeneratedCard
         },
         SDFCompounds: {
             name: 'SDF Files',
             url: new URL( 'sdf/', this.props.apiUrls.compoundSetsRoot),
-            emptyComponent: SDFCardNew,
+            newComponents: [{
+              label: "New",
+              component: SDFCardNew
+            }],
             listComponent: SDFCard,
         },
         CSVCompounds: {
             name: 'CSV Files',
             url: new URL( 'csv/', this.props.apiUrls.compoundSetsRoot),
             relativeUrl: 'csv',
-            emptyComponent: CSVCardNew,
+            newComponents: [{
+              label: "New",
+              component: CSVCardNew
+            }],
             listComponent: CSVCard
         }
     }

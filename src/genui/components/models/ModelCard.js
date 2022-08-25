@@ -14,6 +14,7 @@ class ModelCard extends React.Component {
 
   render() {
     const model = this.props.model;
+    const modelUrl = new URL(`${model.id}/`, this.props.listURL);
 
     return (
       <React.Fragment>
@@ -21,11 +22,11 @@ class ModelCard extends React.Component {
 
         <CardBody className="scrollable">
           <ProjectItemSubTitle
-            tasks={this.props.tasksExist ? this.props.tasks : null}
+            tasks={this.props.taskInfo.tasksExist ? this.props.tasks : null}
             progressURL={this.props.apiUrls.celeryProgress}
             item={model}
           />
-          <TabWidget {...this.props} tabs={this.props.tabs}/>
+          <TabWidget {...this.props} modelUrl={modelUrl} tabs={this.props.tabs}/>
         </CardBody>
 
         <CardFooter>

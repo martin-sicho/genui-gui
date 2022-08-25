@@ -1,34 +1,34 @@
 import React from 'react';
 import { ComponentWithObjects, ComponentWithResources, ModelsPage } from '../../../../genui';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+// import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import MapCreateCard from './MapCreateCard';
 import MapCard from './MapCard';
 
-function HeaderNav(props) {
-  return (<UncontrolledDropdown nav inNavbar>
-    <DropdownToggle nav>Create New...</DropdownToggle>
-    <DropdownMenu>
-      {
-        props.addChoices.map(choice =>
-            (<DropdownItem
-                key={choice.id}
-                onClick={() => {props.onModelAdd(
-                    choice
-                    , MapCreateCard
-                    , {
-                      h : {"md" : 13, "sm" : 13},
-                      w : {"md" : 1, "sm" : 1},
-                      minH : {"md" : 3, "sm" : 3},
-                    }
-                )}}
-            >
-              {choice.name}
-            </DropdownItem>)
-        )
-      }
-    </DropdownMenu>
-  </UncontrolledDropdown>)
-}
+// function HeaderNav(props) {
+//   return (<UncontrolledDropdown nav inNavbar>
+//     <DropdownToggle nav>Create New...</DropdownToggle>
+//     <DropdownMenu>
+//       {
+//         props.addChoices.map(choice =>
+//             (<DropdownItem
+//                 key={choice.id}
+//                 onClick={() => {props.onModelAdd(
+//                     choice
+//                     , MapCreateCard
+//                     , {
+//                       h : {"md" : 13, "sm" : 13},
+//                       w : {"md" : 1, "sm" : 1},
+//                       minH : {"md" : 3, "sm" : 3},
+//                     }
+//                 )}}
+//             >
+//               {choice.name}
+//             </DropdownItem>)
+//         )
+//       }
+//     </DropdownMenu>
+//   </UncontrolledDropdown>)
+// }
 
 const MapDisplay = (props) => {
   const resources = {
@@ -36,6 +36,19 @@ const MapDisplay = (props) => {
     descriptors: new URL('descriptors/', props.apiUrls.mapsRoot),
   };
   const listUrl = props.apiUrls.mapsRoot;
+  const definitions = {
+    Map: {
+      name: "Chemical Space Maps",
+      url: props.apiUrls.mapsRoot,
+      newComponents: [
+        {
+          label: "Add",
+          component: MapCreateCard
+        }
+      ],
+      listComponent: MapCard,
+    }
+  }
   const defaultClassName = "Map";
   return (
     <ComponentWithResources definition={resources}>
@@ -54,16 +67,8 @@ const MapDisplay = (props) => {
                 return (compoundSetsAvailable ? <ModelsPage
                   {...props}
                   {...resources}
-                  modelClass={defaultClassName}
-                  listURL={listUrl}
-                  modelComponent={MapCard}
+                  definitions={definitions}
                   compoundSets={compoundSets}
-                  headerComponent={HeaderNav}
-                  cardSetup={{
-                    h : {"md" : 11, "sm" : 11},
-                    w : {"md" : 1, "sm" : 1},
-                    minH : {"md" : 3, "sm" : 3},
-                  }}
                 /> : <div><p>There are currently no compound sets. You need to create one before you can create a map.</p></div>)
               }
             }

@@ -1,7 +1,7 @@
 import React from "react";
 import {Row, Col, ListGroupItem, ListGroup, Container, Button} from "reactstrap";
 import {Card} from "reactstrap";
-import {TaskAwareComponent, TaskBadgeGroup} from "../index";
+import { scrollTo, TaskAwareComponent, TaskBadgeGroup } from '../index';
 
 function TasksOverview(props) {
     const tasksURL = new URL(`${props.item.id}/tasks/all/`, props.tasksUrlRoot);
@@ -14,7 +14,7 @@ function TasksOverview(props) {
                 taskInfo => {
                     return taskInfo.tasksExist ? (
                         <React.Fragment>
-                            <span style={{fontSize: "large"}}><TaskBadgeGroup tasks={taskInfo.tasks}/></span> <br/>
+                          Tasks<span style={{fontSize: "large"}}><TaskBadgeGroup tasks={taskInfo.tasks}/></span> <br/>
                             {/*<TaskProgressBar*/}
                             {/*    progressURL={this.props.progressURL}*/}
                             {/*    tasks={taskInfo.tasks.running}*/}
@@ -50,7 +50,7 @@ function ListItem(props) {
                         }}
                     >
                         <strong>{props.item.name}</strong> |
-                        Tasks <TasksOverview {...props} />
+                        <TasksOverview {...props} />
                     </ListGroupItem>
                 </Col>
                 <Col xs="2" lg="1" className='text-center'>
@@ -71,7 +71,18 @@ function ListItem(props) {
                     <React.Fragment>
                         <br/>
                         <Card>
-                            <Component {...props} {...componentProps}/>
+                          <TaskAwareComponent
+                            handleResponseErrors={props.handleResponseErrors}
+                            tasksURL={new URL(`${props.item.id}/tasks/all/`, props.tasksUrlRoot)}
+                            // onTaskUpdate={props.onTaskUpdate}
+                            render={
+                              taskInfo => {
+                                return (
+                                  <Component {...props} {...componentProps} taskInfo={taskInfo} tasks={taskInfo.tasks}/>
+                                )
+                              }
+                            }
+                          />
                         </Card>
                     </React.Fragment>
                 ) : null
@@ -81,44 +92,59 @@ function ListItem(props) {
 }
 
 function ObjectList(props) {
-    const readableName = props.groupDefinitions[props.groupName].name;
-    const NewComponent = props.groupDefinitions[props.groupName].emptyComponent;
-    const [newForm, setNewForm] = React.useState(props.addNew);
+    const name = props.groupDefinitions[props.groupName].name;
+    const new_components = props.groupDefinitions[props.groupName].newComponents;
+    const [activeNew, setActiveNew] = React.useState(null);
 
     const componentProps = {};
     componentProps[props.groupNameProp] = props.groupName;
     componentProps[props.urlProp] = props.groupDefinitions[props.groupName].url;
+    componentProps[props.createProp] = (className, data) => {
+      props.onCreate(className, data);
+      setActiveNew(null);
+    };
+    componentProps[props.deleteProp] = props.onDelete;
+    componentProps[props.updateProp] = props.onUpdate;
+
+    // React.useEffect(() => {
+    //   if (props.focusGroup) {
+    //     const elmnt = document.getElementById(props.focusGroup);
+    //     scrollTo(document.documentElement, elmnt.offsetTop, 300);
+    //     elmnt.scrollIntoView();
+    //   }
+    // }, [props.focusGroup])
 
     return (
         <React.Fragment>
-          <h2 style={{display: 'inline-block'}}>{readableName}</h2>{' '}
-          <Button
-            active={newForm || props.addNew}
-            outline
-            color="primary"
-            onClick={(e) => {
-              if (!newForm && !props.addNew) {
-                props.onNewFormOpen(e, props.groupName);
-                setNewForm(true);
-              } else {
-                props.onNewFormOpen(e, null);
-                setNewForm(false);
-              }
-            }}>
-            Create New
-          </Button>
-
+          <h2 style={{display: 'inline-block'}}>{name}</h2> |
+          {
+            new_components.map(item => (
+              <Button
+                style={{display: 'inline-block', marginLeft: "0.25rem",marginRight: "0.25rem"}}
+                key={item.label}
+                active={activeNew && (item.label === activeNew.label)}
+                outline
+                color="primary"
+                onClick={(e) => {
+                  if (!activeNew || !(item.label === activeNew.label)) {
+                    setActiveNew(item);
+                  } else {
+                    setActiveNew(null);
+                  }
+                }}>
+                {item.label}
+              </Button>
+            ))
+          }
           <hr/>
           <div id={`${props.groupName}-group-list`} className="group-list">
             {
-              props.addNew ? (
+              activeNew ? (
                 <div>
-                  <Card id={`${props.groupName}-create-card`}>
-                    <NewComponent {...props} {...componentProps} handleCreateNew={(className, data) => {
-                      props.onNewFormOpen(null, null);
-                      setNewForm(false);
-                      props.onCreate(className, data);
-                    }}/>
+                  <Card id={`${props.groupName}-create-card`} style={{
+                    minHeight: '30rem'
+                  }}>
+                    <activeNew.component {...props} {...componentProps} />
                   </Card>
                 </div>
               ) : null
@@ -126,7 +152,7 @@ function ObjectList(props) {
 
             <ListGroup>
               {
-                props.objects.map(item => <ListItem {...props} key={item.id} item={item}/>)
+                props.objects.map(item => <ListItem {...props} {...componentProps} key={item.id} item={item}/>)
               }
             </ListGroup>
 
@@ -138,10 +164,16 @@ function ObjectList(props) {
 
 function ObjectGroupsList(props) {
     const objects = Object.assign({}, props.objects);
-    props.ignoreGroups.forEach(item => delete objects[item]);
+    if (props.ignoreGroups) {
+      props.ignoreGroups.forEach(item => delete objects[item]);
+    }
 
-    if (props.addNew && !objects.hasOwnProperty(props.addNew)) {
-      objects[props.addNew] = [];
+    let scrollToFocus = null;
+    if (props.focusGroup && !objects.hasOwnProperty(props.focusGroup)) {
+      objects[props.focusGroup] = [];
+      scrollToFocus = `${props.focusGroup}-group-list`;
+    } else {
+      scrollToFocus = false;
     }
 
     return (
@@ -151,6 +183,7 @@ function ObjectGroupsList(props) {
                   return (
                     <ObjectList
                       {...props}
+                      scrollToFocus={scrollToFocus}
                       key={groupName}
                       addNew={groupName === props.addNew}
                       groupName={groupName}
