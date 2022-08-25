@@ -6,8 +6,9 @@ Current version: `0.0.0-alpha.3`
 
 ## Changes
 
-TBD
+- remove grid-based views and replace them with expandable lists
+- integrate DrugEx v3.1.0
 
-## Fixed Issues
+## Fixes
 
-TBD
+None
