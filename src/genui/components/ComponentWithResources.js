@@ -87,7 +87,7 @@ class ComponentWithResources extends React.Component {
   };
 
   render() {
-    return this.props.children(this.state.allLoaded, this.state.data);
+    return this.props.children(this.state.allLoaded, this.state.data, name => this.fetchResource(name, this.props.definition[name]));
   }
 
 }
