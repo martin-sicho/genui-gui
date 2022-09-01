@@ -187,6 +187,119 @@ function Scorers(props) {
   )
 }
 
+function Evaluator(props) {
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const molsets_ids = props.molsets.map(item => item.id);
+  const schema = {
+    type: "object",
+    properties: {
+      molset: {type: "integer", title: "Compounds", default: molsets_ids[0], enum: molsets_ids, items: props.molsets},
+      useModifiers: {type: "boolean", title: "Use Modifiers", enum: [true, false], default: false}
+    }
+  }
+  const ItemField = (props) => {
+    return (
+      <FormGroup>
+        <Label>{props.schema.title}</Label>
+        <Input type="select"
+               id={props.id}
+               required={props.required}
+               onChange={(event) => props.onChange(event.target.value)}>
+          {
+            props.schema.items.map(item => <option key={item.id} value={item.id}>{item.name}</option>)
+          }
+        </Input>
+      </FormGroup>
+    );
+  };
+  const uiSchema = {
+    molset: {
+      "ui:widget": ItemField
+    },
+    useModifiers: {
+      "ui:widget": "select"
+    }
+  }
+
+  async function postData(data) {
+    const response = await fetch(
+      new URL(`environments/${props.environment.id}/calculate/`, props.apiUrls.drugexRoot),
+      {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
+  }
+
+  const confirmSubmit = () => {
+    props.updateData();
+    setIsSubmitting(false);
+  };
+
+  return (
+    <div className="environment-evaluator">
+      <p>Evaluate this environment for a given set of compounds.</p>
+      <Form
+        showErrorList={false}
+        schema={schema}
+        uiSchema={uiSchema}
+        onError={data => console.log(data)}
+        onSubmit={(data) => {
+          data = data.formData;
+          data.molsets = [data.molset];
+          setIsSubmitting(true);
+          postData(data).then(data => data.taskID ? confirmSubmit() : console.error(data))
+        }}
+      >
+        <Button type="submit" color="primary" disabled={isSubmitting}>Evaluate</Button>
+      </Form>
+
+      {
+        props.activitySets.length > 0 ? (
+          <React.Fragment>
+            <hr/>
+            <h3>Already Evaluated</h3>
+            <UncontrolledAccordion>
+              {
+                props.activitySets.map(item => (
+                    <AccordionItem key={item.id}>
+                      <AccordionHeader targetId={`${item.id}`}>
+                        {props.molsets.find(molset => item.molecules === molset.id).name}
+                      </AccordionHeader>
+                      <AccordionBody accordionId={`${item.id}`}>
+                        {item.description}
+                      </AccordionBody>
+                    </AccordionItem>
+                  )
+                )
+              }
+            </UncontrolledAccordion>
+          </React.Fragment>
+        ) : null
+      }
+    </div>
+  );
+}
+
+function Evaluations(props) {
+  const definition = {
+    activitySets: props.apiUrls.activitySetsRoot,
+    molsets: new URL(`all/?project_id=${props.currentProject.id}`, props.apiUrls.compoundSetsRoot)
+  };
+
+  return (
+    <ComponentWithResources definition={definition}>
+      {
+        (isLoaded, data, update) => isLoaded ? <Evaluator updateData={() => update("activitySets")} {...props} molsets={data.molsets} activitySets={data.activitySets.filter(item => item.className === "DrugExEnvironmentScores")}/> : "Fetching resources..."
+      }
+    </ComponentWithResources>
+  )
+}
+
 function EnvCard(props) {
   const environment = props.environment;
   const tabs = [
@@ -204,6 +317,12 @@ function EnvCard(props) {
       title: "Scorers",
       renderedComponent: props => (
         <Scorers {...props}/>
+      )
+    },
+    {
+      title: "Evaluate",
+      renderedComponent: props => (
+        <Evaluations {...props}/>
       )
     }
   ];
