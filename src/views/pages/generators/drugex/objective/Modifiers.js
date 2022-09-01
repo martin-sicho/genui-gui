@@ -315,10 +315,9 @@ export default function Modifiers(props) {
     <div className="modifier-methods">
       {
         modifier_info.map(item => (
-          <React.Fragment>
+          <React.Fragment key={item.title}>
             <ComponentWithObjects
               {...props}
-              key={item.title}
               commitObjects={true}
               objectListURL={item.url}
               emptyClassName={item.title}
