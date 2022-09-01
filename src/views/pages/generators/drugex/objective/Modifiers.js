@@ -106,7 +106,9 @@ function ModifierGrid(props) {
 
 function ModifierForm(props) {
   const [useSliders, setUseSliders] = React.useState(true);
-  const [data, setData] = React.useState(props.initialData);
+  const initialData = props.initialData;
+  initialData.name = "";
+  const [data, setData] = React.useState(initialData);
   let [sliderMin, setSliderMin] = React.useState(props.sliderMin);
   let [sliderMax, setSliderMax] = React.useState(props.sliderMax);
   let [sliderStep, setSliderStep] = React.useState(props.sliderStep);
@@ -123,7 +125,7 @@ function ModifierForm(props) {
       name : {type: "string", title: "Name", minLength: 1},
     }
   };
-  const uiSchema = props.uiSchema;
+  const uiSchema = props.uiSchema ? props.uiSchema : {};
   for (const [key, value] of Object.entries(props.schema)) {
     schema.properties[key] = value;
     schema.properties[key].default = props.initialData[key];
@@ -201,7 +203,11 @@ function ModifierForm(props) {
               // liveValidate
                   showErrorList={false}
                   onChange={data => setData(data.formData)}
-                  onSubmit={data => props.onAdd(props.title, data.formData)}
+                  onSubmit={data => {
+                    data = data.formData;
+                    data.project = props.currentProject.id;
+                    props.onAdd(props.title, data);
+                  }}
                   onError={data => console.log(data)}
             >
               <Button type="submit" color="primary">Create</Button>
@@ -209,13 +215,7 @@ function ModifierForm(props) {
           </Col>
           <Col xs="6">
             <TestChart
-              data={{
-                upper: data.upper,
-                lower: data.lower,
-                high: data.high,
-                low: data.low,
-                smooth: data.smooth}
-              }
+              data={data}
               url={props.url}
               min={sliderMin}
               max={sliderMax}
@@ -235,9 +235,7 @@ function Clipped(props) {
     lower: -10,
     high: 1,
     low: 0,
-    name: "",
     smooth: false,
-    project: props.currentProject.id
   }
   const schema = {
     upper: {type: "number", title: "Upper"},
@@ -270,13 +268,46 @@ function Clipped(props) {
   );
 }
 
+function Hump(props) {
+  const initialData = {
+    upper: 5,
+    lower: -5,
+    sigma: 0.5
+  }
+  const schema = {
+    upper: {type: "number", title: "Upper"},
+    lower: {type: "number", title: "Lower"},
+    sigma: {type: "number", title: "Sigma", multipleOf: 0.1},
+  };
+
+  return (
+    <React.Fragment>
+      <ModifierGrid {...props} itemDataComponent={
+        (props) => (
+          <React.Fragment>
+            <em>Upper:</em> {props.item.upper}<br/>
+            <em>Lower:</em> {props.item.lower}<br/>
+            <em>Sigma:</em> {props.item.sigma}<br/>
+          </React.Fragment>
+        )
+      }/>
+      <ModifierForm {...props} initialData={initialData} schema={schema} sliderStep={0.1} sliderMin={-10} sliderMax={10}/>
+    </React.Fragment>
+  );
+}
+
 export default function Modifiers(props) {
   const prefix_modifiers = 'scorers/modifiers';
   const modifier_info = [
     {
       url: new URL(`${prefix_modifiers}/clipped/`, props.apiUrls.drugexRoot),
-      title: "Clipped Score",
+      title: "Clipped Scores",
       component: Clipped
+    },
+    {
+      url: new URL(`${prefix_modifiers}/hump/`, props.apiUrls.drugexRoot),
+      title: "Smooth Humps",
+      component: Hump
     }
   ];
 
@@ -284,14 +315,16 @@ export default function Modifiers(props) {
     <div className="modifier-methods">
       {
         modifier_info.map(item => (
-          <ComponentWithObjects
-            {...props}
-            key={item.title}
-            commitObjects={true}
-            objectListURL={item.url}
-            emptyClassName={item.title}
-            render={(data, x, handleAdd, handleDelete, requestUpdate) => <item.component {...props} {...item} url={item.url} data={data[item.title]} updateData={requestUpdate} onAdd={handleAdd} onDelete={handleDelete}/>}
-          />
+          <React.Fragment>
+            <ComponentWithObjects
+              {...props}
+              key={item.title}
+              commitObjects={true}
+              objectListURL={item.url}
+              emptyClassName={item.title}
+              render={(data, x, handleAdd, handleDelete, requestUpdate) => <item.component {...props} {...item} url={item.url} data={data[item.title]} updateData={requestUpdate} onAdd={handleAdd} onDelete={handleDelete}/>}
+            /><br/><hr/>
+          </React.Fragment>
         ))
       }
     </div>
