@@ -189,6 +189,8 @@ function Scorers(props) {
 
 function Evaluator(props) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [task, setTask] = React.useState(null);
+  const [isUpdating, setIsUpdating] = React.useState(null);
   const molsets_ids = props.molsets.map(item => item.id);
   const schema = {
     type: "object",
@@ -235,11 +237,50 @@ function Evaluator(props) {
     return response.json(); // parses JSON response into native JavaScript objects
   }
 
-  const confirmSubmit = () => {
-    props.updateData();
-    setIsSubmitting(false);
-  };
+  async function checkTask(taskID) {
+    const response = await fetch(
+      new URL(`${taskID}/`, props.apiUrls.celeryProgress),
+      {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+    return response.json(); // parses JSON response into native JavaScript objects
+  }
 
+  async function deleteItem(item) {
+    const response = await fetch(new URL(`${item.id}/`, resources.activitySets), {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response;
+  }
+
+  if (task && !isUpdating) {
+    const intid = setInterval(() => {
+      checkTask(task).then(data => {
+        if (data.complete) {
+          setIsSubmitting(false);
+          setTask(null);
+        }
+      })
+    }, 2000);
+    setIsUpdating(intid);
+  }
+
+  if (!task && isUpdating) {
+    clearInterval(isUpdating);
+    setIsUpdating(null);
+  }
+
+  const resources = {
+    activitySets: props.apiUrls.activitySetsRoot
+  }
   return (
     <div className="environment-evaluator">
       <p>Evaluate this environment for a given set of compounds.</p>
@@ -252,49 +293,54 @@ function Evaluator(props) {
           data = data.formData;
           data.molsets = [data.molset];
           setIsSubmitting(true);
-          postData(data).then(data => data.taskID ? confirmSubmit() : console.error(data))
+          postData(data).then(data => data.taskID ? setTask(data.taskID) : console.error(data))
         }}
       >
         <Button type="submit" color="primary" disabled={isSubmitting}>Evaluate</Button>
       </Form>
 
-      {
-        props.activitySets.length > 0 ? (
-          <React.Fragment>
-            <hr/>
-            <h3>Already Evaluated</h3>
-            <UncontrolledAccordion>
-              {
-                props.activitySets.map(item => (
-                    <AccordionItem key={item.id}>
-                      <AccordionHeader targetId={`${item.id}`}>
-                        {props.molsets.find(molset => item.molecules === molset.id).name}
-                      </AccordionHeader>
-                      <AccordionBody accordionId={`${item.id}`}>
-                        {item.description}
-                      </AccordionBody>
-                    </AccordionItem>
+      <ComponentWithResources task={task} definition={resources} updateCondition={(prevProps, currentProps) => prevProps.task !== currentProps.task}>
+        {
+          (isLoaded, data, update) => isLoaded ? (
+            data.activitySets.filter(item => item.className === "DrugExEnvironmentScores").length > 0 ? (
+            <React.Fragment>
+              <hr/>
+              <h3>Already Evaluated</h3>
+              <UncontrolledAccordion>
+                {
+                  data.activitySets.filter(item => item.className === "DrugExEnvironmentScores").map(item => (
+                      <AccordionItem key={item.id}>
+                        <AccordionHeader targetId={`${item.id}`}>
+                          {/*{item.name}*/}
+                          {props.molsets.find(molset => item.molecules === molset.id).name}
+                        </AccordionHeader>
+                        <AccordionBody accordionId={`${item.id}`}>
+                          <p>{item.description}</p>
+                          <p>Uses Modifiers: {item.extraArgs.modifiersOn ? "Yes" : "No"}</p>
+                          <Button color="danger" onClick={() => deleteItem(item).then(() => update("activitySets"))}>Delete</Button>
+                        </AccordionBody>
+                      </AccordionItem>
+                    )
                   )
-                )
-              }
-            </UncontrolledAccordion>
-          </React.Fragment>
-        ) : null
-      }
+                }
+              </UncontrolledAccordion>
+            </React.Fragment>
+          ) : null) : null
+        }
+      </ComponentWithResources>
     </div>
   );
 }
 
 function Evaluations(props) {
   const definition = {
-    activitySets: props.apiUrls.activitySetsRoot,
     molsets: new URL(`all/?project_id=${props.currentProject.id}`, props.apiUrls.compoundSetsRoot)
   };
 
   return (
     <ComponentWithResources definition={definition}>
       {
-        (isLoaded, data, update) => isLoaded ? <Evaluator updateData={() => update("activitySets")} {...props} molsets={data.molsets} activitySets={data.activitySets.filter(item => item.className === "DrugExEnvironmentScores")}/> : "Fetching resources..."
+        (isLoaded, data) => isLoaded ? <Evaluator {...props} {...data}/> : "Fetching resources..."
       }
     </ComponentWithResources>
   )
