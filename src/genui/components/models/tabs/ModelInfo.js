@@ -85,7 +85,7 @@ class ModelInfo extends React.Component {
     this.model = this.props.model;
     const trainingStrategy =  this.model.trainingStrategy;
 
-    this.trainingParams = [
+    this.trainingParams = (trainingStrategy ? [
       {
         name : "Algorithm",
         value : trainingStrategy.algorithm.name
@@ -98,7 +98,7 @@ class ModelInfo extends React.Component {
         name : "Mode",
         value : trainingStrategy.mode.name
       },
-    ].concat(
+    ] : []).concat(
       this.props.extraTrainingParams ? this.props.extraTrainingParams : []
     );
 
