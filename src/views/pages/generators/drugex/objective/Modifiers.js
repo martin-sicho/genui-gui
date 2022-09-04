@@ -130,8 +130,9 @@ function ModifierForm(props) {
     schema.properties[key] = value;
     schema.properties[key].default = props.initialData[key];
     if (value.type === "number") {
-      schema.properties[key].minimum = props.sliderMin;
-      schema.properties[key].maximum = props.sliderMax;
+      schema.properties[key].minimum = sliderMin;
+      schema.properties[key].maximum = sliderMax;
+      schema.properties[key].multipleOf = sliderStep;
       uiSchema[key] = {
         "ui:widget" : useSliders ? 'range' :'updown'
       };

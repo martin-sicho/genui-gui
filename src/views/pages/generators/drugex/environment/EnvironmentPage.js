@@ -150,8 +150,8 @@ function ScorerDesigner(props) {
     return (
       <ComponentWithResources definition={
         {
-          methods: new URL('scorers/methods/all/', props.apiUrls.drugexRoot),
-          modifiers: new URL('scorers/modifiers/all/', props.apiUrls.drugexRoot),
+          methods: new URL(`scorers/methods/all/?project_id=${props.currentProject.id}`, props.apiUrls.drugexRoot),
+          modifiers: new URL(`scorers/modifiers/all/?project_id=${props.currentProject.id}`, props.apiUrls.drugexRoot),
         }
       }>
         {
@@ -279,7 +279,7 @@ function Evaluator(props) {
   }
 
   const resources = {
-    activitySets: props.apiUrls.activitySetsRoot
+    activitySets: new URL(`?project_id=${props.currentProject.id}`, props.apiUrls.activitySetsRoot)
   }
   return (
     <div className="environment-evaluator">

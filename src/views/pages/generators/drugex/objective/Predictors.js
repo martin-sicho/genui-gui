@@ -27,7 +27,7 @@ function PredictorsOverview(props) {
 
 export default function Predictors(props) {
   const definition = {
-    predictors: new URL('models/', props.apiUrls.qsarRoot)
+    predictors: new URL(`models/?project_id=${props.currentProject.id}`, props.apiUrls.qsarRoot)
   }
   return (
     <ComponentWithResources definition={definition}>

@@ -41,7 +41,7 @@ export default function ObjectivePage (props) {
       )
     },
     {
-      title: "Score Modifiers",
+      title: "Desirability Modifiers",
       renderedComponent: (props) => (
         <div className="scoring-modifiers">
           <Modifiers {...props}/>

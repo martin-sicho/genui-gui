@@ -229,7 +229,7 @@ function DrugExAgentExtraFields(props) {
 function DrugExAgentCreateCardRenderer(props) {
   const infoTitle = "DrugEx Agent Unavailable";
   if (props.environments.length === 0) {
-    return <InfoCard title={infoTitle} text="You have to create a QSAR model before you can train the DrugEx agent. DrugEx agent needs it to create an environment for the generator."/>
+    return <InfoCard title={infoTitle} text="You have to create an environment for the agent before continuing. Go to the 'Objective Creator' tab to select and configure scoring functions and then add them to the environment in the 'Environment Creator'."/>
   }
 
   if (props.networks.length < 2) {
