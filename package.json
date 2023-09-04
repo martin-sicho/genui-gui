@@ -1,6 +1,6 @@
 {
   "name": "genui-gui",
-  "version": "0.0.0-alpha.3",
+  "version": "0.0.0-alpha.4",
   "description": "Frontend application of the GenUI project. It provides a GUI to the GenUI REST API web services.",
   "author": "Martin Šícho",
   "copyright": "Copyright © 2019 Nice Dash, 2019-2021 Martin Šícho. All rights reserved.",
