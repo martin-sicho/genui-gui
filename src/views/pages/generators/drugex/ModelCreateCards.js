@@ -335,11 +335,19 @@ export function DrugExNetFromFileCard(props) {
     vocabulary: undefined,
     vocabulary_note: "drugex_voc",
   };
+  const trainingStrategyInit = {
+    inputType: props.drexnetInputTypes[0].value,
+    modelClass: props.drexnetAlgorithms[0].value
+  }
 
   const extraParamsSchema = {
     vocabulary: Yup.mixed().required('Vocabulary file must be specified.'),
     vocabulary_note: Yup.string().matches(/drugex_voc/).required('Vocabulary file note is required'),
   };
+  const trainingStrategySchema = {
+    inputType: Yup.string().required("You have to specify input type."),
+    modelClass: Yup.string().required("You have to specify model class.")
+  }
 
   return (
     <ModelCardNew
@@ -351,6 +359,9 @@ export function DrugExNetFromFileCard(props) {
       enableFileUploads={true}
       extraParamsInit={extraParamInit}
       extraParamsSchema={extraParamsSchema}
+      trainingStrategyInit={trainingStrategyInit}
+      trainingStrategySchema={trainingStrategySchema}
+      trainingStrategyFields={DrugExNetTrainingFields}
       extraFields={ExtraFields}
     />)
 }
